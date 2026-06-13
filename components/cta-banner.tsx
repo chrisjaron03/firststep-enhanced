@@ -1,0 +1,118 @@
+"use client"
+
+import Link from "next/link"
+import { motion, useInView } from "framer-motion"
+import { useRef } from "react"
+import { ArrowRight, Phone } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+export function CtaBanner() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-80px" })
+
+  return (
+    <section className="relative bg-accent py-20 lg:py-24 overflow-hidden" ref={ref}>
+      {/* Animated gradient orbs in background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          animate={{
+            x: [0, 60, 0],
+            y: [0, -30, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-white/[0.06] blur-3xl"
+        />
+        <motion.div
+          animate={{
+            x: [0, -40, 0],
+            y: [0, 40, 0],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-40 -right-32 h-[30rem] w-[30rem] rounded-full bg-white/[0.05] blur-3xl"
+        />
+        <motion.div
+          animate={{
+            x: [0, 30, 0],
+            y: [0, 20, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/2 left-1/3 h-64 w-64 rounded-full bg-primary/[0.06] blur-3xl"
+        />
+      </div>
+
+      {/* Background dot pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0" style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }} />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-10 mx-auto max-w-7xl px-6 text-center lg:px-8"
+      >
+        <h2 className="font-serif text-3xl font-bold tracking-tight text-accent-foreground sm:text-4xl lg:text-5xl text-balance">
+          Ready to Take the First Step?
+        </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-accent-foreground/80">
+          Join hundreds of satisfied investors who trust First Step Consultancy
+          Services for their wealth management needs. Your free consultation is one click away.
+        </p>
+        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          {/* CTA button with pulse + shimmer */}
+          <Link href="/contact">
+            <motion.div
+              animate={{ scale: [1, 1.03, 1] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              className="relative"
+            >
+              {/* Shimmer sweep overlay */}
+              <motion.div
+                className="absolute inset-0 z-10 pointer-events-none overflow-hidden rounded-lg"
+              >
+                <motion.div
+                  className="absolute inset-0"
+                  style={{
+                    background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)",
+                    width: "40%",
+                  }}
+                  animate={{ x: ["-200%", "300%"] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
+                />
+              </motion.div>
+              <Button
+                size="lg"
+                className="relative bg-primary text-primary-foreground hover:bg-primary/90 gap-2 px-8 text-base cursor-pointer shadow-xl shadow-black/20"
+              >
+                Book Free Consultation
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </motion.div>
+          </Link>
+
+          {/* Phone number with animated call icon */}
+          <motion.a
+            href="tel:+919894163796"
+            className="flex items-center gap-2 text-base font-semibold text-accent-foreground underline-offset-4 hover:underline"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
+            >
+              <Phone className="h-5 w-5" />
+            </motion.div>
+            <span className="text-lg">+91 98941 63796</span>
+          </motion.a>
+        </div>
+      </motion.div>
+    </section>
+  )
+}

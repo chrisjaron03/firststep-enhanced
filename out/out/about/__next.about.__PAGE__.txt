@@ -1,0 +1,13 @@
+1:"$Sreact.fragment"
+2:I[13474,["/_next/static/chunks/a624b468970d3cc4.js","/_next/static/chunks/3471a63f820df983.js","/_next/static/chunks/ed2baa486c6fde5b.js"],"Navigation"]
+3:I[37242,["/_next/static/chunks/a624b468970d3cc4.js","/_next/static/chunks/3471a63f820df983.js","/_next/static/chunks/ed2baa486c6fde5b.js"],"PageHero"]
+4:I[77950,["/_next/static/chunks/a624b468970d3cc4.js","/_next/static/chunks/3471a63f820df983.js","/_next/static/chunks/ed2baa486c6fde5b.js"],"AboutContent"]
+5:I[18914,["/_next/static/chunks/a624b468970d3cc4.js","/_next/static/chunks/3471a63f820df983.js","/_next/static/chunks/ed2baa486c6fde5b.js"],"ProcessTimeline"]
+6:I[34311,["/_next/static/chunks/a624b468970d3cc4.js","/_next/static/chunks/3471a63f820df983.js","/_next/static/chunks/ed2baa486c6fde5b.js"],"TestimonialsSection"]
+7:I[8908,["/_next/static/chunks/a624b468970d3cc4.js","/_next/static/chunks/3471a63f820df983.js","/_next/static/chunks/ed2baa486c6fde5b.js"],"CtaBanner"]
+8:I[76841,["/_next/static/chunks/a624b468970d3cc4.js","/_next/static/chunks/3471a63f820df983.js","/_next/static/chunks/ed2baa486c6fde5b.js"],"Footer"]
+9:I[2291,["/_next/static/chunks/a624b468970d3cc4.js","/_next/static/chunks/3471a63f820df983.js","/_next/static/chunks/ed2baa486c6fde5b.js"],"WhatsAppButton"]
+a:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/d2be314c3ece3fbe.js"],"OutletBoundary"]
+b:"$Sreact.suspense"
+0:{"buildId":"2e8nmWMiNvUwuzs2tpvyv","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"About Us","title":"Your Trusted Partner in Wealth Creation","description":"Led by Francis J., we bring institutional-grade advisory to individual investors with a comprehensive suite of 120+ investment products.","image":"/images/about-team.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}],["$","$L6",null,{}],["$","$L7",null,{}]]}],["$","$L8",null,{}],["$","$L9",null,{}]],[["$","script","script-0",{"src":"/_next/static/chunks/3471a63f820df983.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/ed2baa486c6fde5b.js","async":true}]],["$","$La",null,{"children":["$","$b",null,{"name":"Next.MetadataOutlet","children":"$@c"}]}]]}],"loading":null,"isPartial":false}
+c:null
