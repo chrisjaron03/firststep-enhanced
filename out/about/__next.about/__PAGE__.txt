@@ -1,0 +1,13 @@
+1:"$Sreact.fragment"
+2:I[4702,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","88","static/chunks/88-373ac33c76049b15.js","220","static/chunks/app/about/page-893733e428ec24e7.js"],"Navigation"]
+3:I[2245,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","88","static/chunks/88-373ac33c76049b15.js","220","static/chunks/app/about/page-893733e428ec24e7.js"],"PageHero"]
+4:I[4172,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","88","static/chunks/88-373ac33c76049b15.js","220","static/chunks/app/about/page-893733e428ec24e7.js"],"AboutContent"]
+5:I[4456,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","88","static/chunks/88-373ac33c76049b15.js","220","static/chunks/app/about/page-893733e428ec24e7.js"],"ProcessTimeline"]
+6:I[415,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","88","static/chunks/88-373ac33c76049b15.js","220","static/chunks/app/about/page-893733e428ec24e7.js"],"TestimonialsSection"]
+7:I[9896,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","88","static/chunks/88-373ac33c76049b15.js","220","static/chunks/app/about/page-893733e428ec24e7.js"],"CtaBanner"]
+8:I[2200,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","88","static/chunks/88-373ac33c76049b15.js","220","static/chunks/app/about/page-893733e428ec24e7.js"],"Footer"]
+9:I[2988,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","88","static/chunks/88-373ac33c76049b15.js","220","static/chunks/app/about/page-893733e428ec24e7.js"],"WhatsAppButton"]
+a:I[484,[],"OutletBoundary"]
+b:"$Sreact.suspense"
+0:{"buildId":"ahNODkKZsRtbaqJtHQLyV","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"About Us","title":"Your Trusted Partner in Wealth Creation","description":"Led by Francis J., we bring institutional-grade advisory to individual investors with a comprehensive suite of 120+ investment products.","image":"/images/about-team.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}],["$","$L6",null,{}],["$","$L7",null,{}]]}],["$","$L8",null,{}],["$","$L9",null,{}]],null,["$","$La",null,{"children":["$","$b",null,{"name":"Next.MetadataOutlet","children":"$@c"}]}]]}],"loading":null,"isPartial":false}
+c:null

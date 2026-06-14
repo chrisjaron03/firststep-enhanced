@@ -107,7 +107,7 @@ export function SocialProofPopup() {
           animate={{ x: 0, opacity: 1, scale: 1 }}
           exit={{ x: -320, opacity: 0, scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
-          className="fixed bottom-20 lg:bottom-6 left-4 z-40 max-w-[300px] lg:max-w-[320px]"
+          className="fixed bottom-28 lg:bottom-6 left-4 z-40 max-w-[300px] lg:max-w-[320px]"
         >
           <div className="bg-white rounded-xl shadow-2xl border border-gray-100 p-4 flex items-start gap-3">
             {/* Avatar */}

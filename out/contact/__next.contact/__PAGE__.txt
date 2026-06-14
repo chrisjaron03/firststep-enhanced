@@ -1,0 +1,10 @@
+1:"$Sreact.fragment"
+2:I[4702,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","977","static/chunks/app/contact/page-70707a38cbe3dbc6.js"],"Navigation"]
+3:I[2245,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","977","static/chunks/app/contact/page-70707a38cbe3dbc6.js"],"PageHero"]
+4:I[8406,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","977","static/chunks/app/contact/page-70707a38cbe3dbc6.js"],"ContactForm"]
+5:I[2200,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","977","static/chunks/app/contact/page-70707a38cbe3dbc6.js"],"Footer"]
+6:I[2988,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","977","static/chunks/app/contact/page-70707a38cbe3dbc6.js"],"WhatsAppButton"]
+7:I[484,[],"OutletBoundary"]
+8:"$Sreact.suspense"
+0:{"buildId":"ahNODkKZsRtbaqJtHQLyV","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"Get in Touch","title":"Start Your Investment Journey","description":"Schedule a free, no-obligation consultation with our principal advisor. Your first step towards financial freedom begins here.","image":"/images/contact-hero.jpg"}],["$","$L4",null,{}]]}],["$","$L5",null,{}],["$","$L6",null,{}]],null,["$","$L7",null,{"children":["$","$8",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]]}],"loading":null,"isPartial":false}
+9:null

@@ -1,0 +1,11 @@
+1:"$Sreact.fragment"
+2:I[4702,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","763","static/chunks/app/services/page-60067be623a6148f.js"],"Navigation"]
+3:I[2245,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","763","static/chunks/app/services/page-60067be623a6148f.js"],"PageHero"]
+4:I[6071,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","763","static/chunks/app/services/page-60067be623a6148f.js"],"ServicesDetailGrid"]
+5:I[9896,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","763","static/chunks/app/services/page-60067be623a6148f.js"],"CtaBanner"]
+6:I[2200,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","763","static/chunks/app/services/page-60067be623a6148f.js"],"Footer"]
+7:I[2988,["292","static/chunks/292-230d2159437291e9.js","398","static/chunks/398-a799959bc311fe6a.js","763","static/chunks/app/services/page-60067be623a6148f.js"],"WhatsAppButton"]
+8:I[484,[],"OutletBoundary"]
+9:"$Sreact.suspense"
+0:{"buildId":"ahNODkKZsRtbaqJtHQLyV","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"Our Services","title":"Investment Solutions Tailored to Your Goals","description":"From wealth creation to wealth protection, we offer a comprehensive suite of 12+ financial services backed by top-tier fund houses and institutions.","image":"/images/services-hero.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}]]}],["$","$L6",null,{}],["$","$L7",null,{}]],null,["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
+a:null

@@ -7,6 +7,7 @@ import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Phone, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { UrgencyBar } from "@/components/urgency-bar"
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -47,6 +48,7 @@ export function Navigation() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${backdropClass}`}
     >
+      {isHome && <UrgencyBar showSolid={showSolid} />}
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group shrink-0">

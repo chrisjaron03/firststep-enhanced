@@ -28,7 +28,11 @@ const MESSAGES: UrgencyMessage[] = [
   },
 ];
 
-export function UrgencyBar() {
+interface UrgencyBarProps {
+  showSolid?: boolean;
+}
+
+export function UrgencyBar({ showSolid = false }: UrgencyBarProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
   const [isDismissed, setIsDismissed] = useState(false);
@@ -84,7 +88,9 @@ export function UrgencyBar() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                className="flex items-center gap-2 text-xs lg:text-sm font-medium text-[#1a2744]/80 pl-4 lg:pl-0"
+                className={`flex items-center gap-2 text-xs lg:text-sm font-medium pl-4 lg:pl-0 transition-colors duration-300 ${
+                  showSolid ? "text-[#1a2744]/80" : "text-white/95"
+                }`}
               >
                 <span className="text-[#D4AF37]">{currentMessage.icon}</span>
                 <span>{currentMessage.text}</span>
@@ -94,10 +100,12 @@ export function UrgencyBar() {
             {/* Dismiss button */}
             <button
               onClick={handleDismiss}
-              className="absolute right-3 p-1 rounded-full hover:bg-[#1a2744]/5 transition-colors"
+              className={`absolute right-3 p-1 rounded-full transition-colors ${
+                showSolid ? "hover:bg-[#1a2744]/5 text-[#1a2744]/50 hover:text-[#1a2744]/80" : "hover:bg-white/10 text-white/70 hover:text-white"
+              }`}
               aria-label="Dismiss urgency bar"
             >
-              <X className="w-3.5 h-3.5 text-[#1a2744]/50" />
+              <X className="w-3.5 h-3.5 transition-colors" />
             </button>
           </div>
         </motion.div>
