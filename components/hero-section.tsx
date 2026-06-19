@@ -113,12 +113,12 @@ export function HeroSection() {
           {/* Headline with TextShimmer on "Investing" */}
           <motion.h1
             variants={fadeInUp}
-            className="font-serif text-4xl font-bold leading-[1.1] tracking-tight text-card sm:text-5xl lg:text-7xl"
+            className="font-serif text-4xl font-bold leading-[1.35] tracking-tight text-card sm:text-5xl lg:text-7xl"
           >
             Unlock the Full{" "}
             <br className="hidden sm:block" />
             Power of{" "}
-            <span className="inline-block align-baseline">
+            <span className="inline-block align-baseline translate-y-[20px] pb-2">
               <TextShimmer className="italic text-chart-1">
                 Investing
               </TextShimmer>
