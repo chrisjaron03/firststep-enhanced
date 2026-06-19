@@ -1,0 +1,252 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - link "First Step Consultancy Services Logo First Step Consultancy Services" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "First Step Consultancy Services Logo" [ref=e5]
+        - generic [ref=e6]:
+          - paragraph [ref=e7]: First Step
+          - paragraph [ref=e8]: Consultancy Services
+      - generic [ref=e9]:
+        - link "Home" [ref=e10] [cursor=pointer]:
+          - /url: /
+        - link "Services" [ref=e11] [cursor=pointer]:
+          - /url: /services
+        - link "NRI" [ref=e12] [cursor=pointer]:
+          - /url: /nri
+        - link "SIP Calculator" [ref=e13] [cursor=pointer]:
+          - /url: /sip-calculator
+        - link "About" [ref=e14] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e15] [cursor=pointer]:
+          - /url: /contact
+          - text: Contact
+      - link "Consultation" [ref=e18] [cursor=pointer]:
+        - /url: /contact
+        - button "Consultation" [ref=e19]:
+          - text: Consultation
+          - img
+  - main [ref=e20]:
+    - generic [ref=e26]:
+      - generic [ref=e28]: Get in Touch
+      - heading "Start Your Investment Journey" [level=1] [ref=e29]
+      - paragraph [ref=e30]: Schedule a no-obligation consultation with our principal advisor. Your first step towards financial independence begins here.
+    - generic [ref=e31]:
+      - generic:
+        - img
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - heading "Let's Talk Investments" [level=2] [ref=e35]
+          - paragraph [ref=e36]: Whether you are starting your investment journey or looking to optimize an existing portfolio, our team is here to guide you every step of the way.
+          - generic [ref=e37]:
+            - generic [ref=e38]:
+              - img [ref=e40]
+              - generic [ref=e42]:
+                - paragraph [ref=e43]: Phone
+                - link "+91 98941 63796" [ref=e44] [cursor=pointer]:
+                  - /url: tel:+919894163796
+            - generic [ref=e45]:
+              - img [ref=e47]
+              - generic [ref=e49]:
+                - paragraph [ref=e50]: WhatsApp
+                - link "Chat with us instantly" [ref=e51] [cursor=pointer]:
+                  - /url: https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory%20services.
+            - generic [ref=e52]:
+              - img [ref=e54]
+              - generic [ref=e57]:
+                - paragraph [ref=e58]: Email
+                - link "francis@firststepcs.com" [ref=e59] [cursor=pointer]:
+                  - /url: mailto:francis@firststepcs.com
+            - generic [ref=e60]:
+              - img [ref=e62]
+              - generic [ref=e65]:
+                - paragraph [ref=e66]: Office
+                - paragraph [ref=e67]: Tamil Nadu, India
+            - generic [ref=e68]:
+              - img [ref=e70]
+              - generic [ref=e73]:
+                - paragraph [ref=e74]: Business Hours
+                - paragraph [ref=e75]: "Mon - Sat: 9:00 AM - 6:00 PM"
+          - generic [ref=e76]:
+            - paragraph [ref=e77]: Principal Advisor
+            - paragraph [ref=e78]: Francis J.
+            - paragraph [ref=e79]: Principal Investment Advisor
+            - paragraph [ref=e81]: With extensive experience in financial markets, Francis J. provides personalized investment strategies across equity, debt, alternatives, and insurance to help clients achieve their financial goals.
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - heading "Schedule Your Consultation" [level=3] [ref=e85]
+            - paragraph [ref=e86]: Fill in your details and our advisor will reach out within 24 hours.
+          - paragraph [ref=e91]: Only 3 consultation slots remaining this week
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - generic [ref=e94]:
+                - generic: First Name*
+                - textbox "First Name*" [ref=e95]:
+                  - /placeholder: ""
+              - generic [ref=e96]:
+                - generic: Last Name*
+                - textbox "Last Name*" [ref=e97]:
+                  - /placeholder: ""
+            - generic [ref=e98]:
+              - generic [ref=e99]:
+                - generic: Email*
+                - textbox "Email*" [ref=e100]:
+                  - /placeholder: ""
+              - generic [ref=e101]:
+                - generic: Phone*
+                - textbox "Phone*" [ref=e102]:
+                  - /placeholder: ""
+            - generic [ref=e103]:
+              - generic: Investment Amount (Approx)
+              - combobox "Investment Amount (Approx)" [ref=e104]:
+                - option "Select approximate amount" [selected]
+                - option "Under 5 Lakhs"
+                - option "5 - 25 Lakhs"
+                - option "25 - 50 Lakhs"
+                - option "50 Lakhs - 1 Crore"
+                - option "1 - 5 Crores"
+                - option "Above 5 Crores"
+            - generic [ref=e105]:
+              - generic: Interested In*
+              - combobox "Interested In*" [ref=e106]:
+                - option "Select a service" [selected]
+                - option "Mutual Funds"
+                - option "Portfolio Management (PMS)"
+                - option "Alternative Investment Funds"
+                - option "Unlisted & Pre-IPO"
+                - option "LRS & Global Investing"
+                - option "GIFT City Funds"
+                - option "Demat & Trading"
+                - option "Fixed Deposits"
+                - option "Bonds"
+                - option "Insurance"
+                - option "National Pension Scheme"
+                - option "Comprehensive Wealth Management"
+            - generic [ref=e107]:
+              - generic: Message (Optional)
+              - textbox "Message (Optional)" [ref=e108]:
+                - /placeholder: ""
+            - button "Book Consultation" [ref=e111] [cursor=pointer]:
+              - text: Book Consultation
+              - img
+            - generic [ref=e114]: or
+            - link "Chat on WhatsApp Instead" [ref=e116] [cursor=pointer]:
+              - /url: https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory%20services.
+              - img [ref=e117]
+              - text: Chat on WhatsApp Instead
+            - paragraph [ref=e119]: Your information is 100% secure and will never be shared with third parties.
+  - contentinfo [ref=e120]:
+    - generic [ref=e123]:
+      - generic [ref=e124]:
+        - paragraph [ref=e125]: Get Your Investment Guide
+        - paragraph [ref=e126]: Discover top strategies for 2026 -- curated by our experts.
+      - link "Download Now" [ref=e127] [cursor=pointer]:
+        - /url: /contact
+    - generic [ref=e128]:
+      - generic [ref=e129]:
+        - generic [ref=e130]:
+          - link "First Step Consultancy Services First Step Consultancy Services" [ref=e131] [cursor=pointer]:
+            - /url: /
+            - img "First Step Consultancy Services" [ref=e132]
+            - generic [ref=e133]:
+              - paragraph [ref=e134]: First Step
+              - paragraph [ref=e135]: Consultancy Services
+          - paragraph [ref=e136]: Unlock the full power of investing. Your trusted partner for comprehensive wealth management, from mutual funds to alternative investments and beyond.
+          - generic [ref=e137]:
+            - link "+91 98941 63796" [ref=e138] [cursor=pointer]:
+              - /url: tel:+919894163796
+              - img [ref=e139]
+              - text: +91 98941 63796
+            - link "francis@firststepcs.com" [ref=e141] [cursor=pointer]:
+              - /url: mailto:francis@firststepcs.com
+              - img [ref=e142]
+              - text: francis@firststepcs.com
+            - generic [ref=e145]:
+              - img [ref=e146]
+              - text: Tamil Nadu, India
+        - generic [ref=e149]:
+          - paragraph [ref=e150]: Products
+          - list [ref=e151]:
+            - listitem [ref=e152]:
+              - link "Mutual Funds" [ref=e153] [cursor=pointer]:
+                - /url: /services#mutual-funds
+            - listitem [ref=e154]:
+              - link "PMS" [ref=e155] [cursor=pointer]:
+                - /url: /services#pms
+            - listitem [ref=e156]:
+              - link "AIF" [ref=e157] [cursor=pointer]:
+                - /url: /services#aif
+            - listitem [ref=e158]:
+              - link "Unlisted & Pre-IPO" [ref=e159] [cursor=pointer]:
+                - /url: /services#unlisted
+            - listitem [ref=e160]:
+              - link "LRS & Global Investing" [ref=e161] [cursor=pointer]:
+                - /url: /services#lrs
+            - listitem [ref=e162]:
+              - link "GIFT City Funds" [ref=e163] [cursor=pointer]:
+                - /url: /services#gift-city
+            - listitem [ref=e164]:
+              - link "Demat & Trading" [ref=e165] [cursor=pointer]:
+                - /url: /services#demat
+            - listitem [ref=e166]:
+              - link "Fixed Deposits" [ref=e167] [cursor=pointer]:
+                - /url: /services#fds
+            - listitem [ref=e168]:
+              - link "Bonds" [ref=e169] [cursor=pointer]:
+                - /url: /services#bonds
+            - listitem [ref=e170]:
+              - link "Insurance" [ref=e171] [cursor=pointer]:
+                - /url: /services#insurance
+            - listitem [ref=e172]:
+              - link "Sovereign Gold Bonds" [ref=e173] [cursor=pointer]:
+                - /url: /services#sgb
+            - listitem [ref=e174]:
+              - link "National Pension Scheme" [ref=e175] [cursor=pointer]:
+                - /url: /services#nps
+        - generic [ref=e176]:
+          - paragraph [ref=e177]: Services
+          - list [ref=e178]:
+            - listitem [ref=e179]:
+              - link "Retirement Planning" [ref=e180] [cursor=pointer]:
+                - /url: /services#retirement-planning
+            - listitem [ref=e181]:
+              - link "Children's Education Fund" [ref=e182] [cursor=pointer]:
+                - /url: /services#education-planning
+            - listitem [ref=e183]:
+              - link "Legacy Creation" [ref=e184] [cursor=pointer]:
+                - /url: /services#legacy-creation
+            - listitem [ref=e185]:
+              - link "Protection Planning" [ref=e186] [cursor=pointer]:
+                - /url: /services#protection-planning
+            - listitem [ref=e187]:
+              - link "Wealth Creation" [ref=e188] [cursor=pointer]:
+                - /url: /services#wealth-creation
+            - listitem [ref=e189]:
+              - link "NRI Services" [ref=e190] [cursor=pointer]:
+                - /url: /nri
+        - generic [ref=e191]:
+          - paragraph [ref=e192]: Company
+          - list [ref=e193]:
+            - listitem [ref=e194]:
+              - link "About Us" [ref=e195] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e196]:
+              - link "Our Services" [ref=e197] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e198]:
+              - link "SIP Calculator" [ref=e199] [cursor=pointer]:
+                - /url: /sip-calculator
+            - listitem [ref=e200]:
+              - link "Contact" [ref=e201] [cursor=pointer]:
+                - /url: /contact
+      - generic [ref=e202]:
+        - paragraph [ref=e203]: © 2026 First Step Consultancy Services. All rights reserved.
+        - paragraph [ref=e204]: Francis J., Principal Advisor
+      - paragraph [ref=e206]:
+        - strong [ref=e207]: "Disclaimer:"
+        - text: Mutual Fund investments are subject to market risks. Please read the scheme information document carefully before investing. Past performance is not indicative of future returns. The information provided here is for general purposes only and should not be considered as investment advice. Please consult your financial advisor before making any investment decisions.
+  - link "Chat on WhatsApp":
+    - /url: https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory%20services.
+    - img
+  - button "Open Next.js Dev Tools" [ref=e213] [cursor=pointer]:
+    - img [ref=e214]

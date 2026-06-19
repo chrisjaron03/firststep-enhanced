@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[4702,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","864","static/chunks/app/sip-calculator/page-fa51e99c32463fd5.js"],"Navigation"]
+3:I[2762,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","864","static/chunks/app/sip-calculator/page-fa51e99c32463fd5.js"],"SipCalculator"]
+4:I[2200,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","864","static/chunks/app/sip-calculator/page-fa51e99c32463fd5.js"],"Footer"]
+5:I[2988,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","864","static/chunks/app/sip-calculator/page-fa51e99c32463fd5.js"],"WhatsAppButton"]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+0:{"buildId":"nx3J9f0gOHTuxtZfjUoAp","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"className":"pt-20","children":["$","$L3",null,{}]}],["$","$L4",null,{}],["$","$L5",null,{}]],null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+8:null

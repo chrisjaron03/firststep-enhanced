@@ -8,17 +8,17 @@ import { fadeInUp, staggerContainer, fadeInLeft } from "@/lib/animations"
 const metrics = [
   { icon: Users, value: 500, suffix: "+", label: "Happy Clients" },
   { icon: Award, value: 10, suffix: "+", label: "Years Experience" },
-  { icon: Target, value: 120, suffix: "+", label: "Investment Products" },
+  { icon: Target, value: 12, suffix: "+", label: "Investment Products" },
   { icon: Clock, value: 24, suffix: "hr", label: "Response Time" },
 ]
 
 const reasons = [
-  "AMFI-Registered Mutual Fund Distributor",
   "SEBI Compliant Advisory Practices",
   "Access to 60+ PMS & 60+ AIF Strategies",
   "Global Investment Access via LRS & GIFT City",
   "Comprehensive Insurance Solutions",
   "Personalized One-on-One Guidance",
+  "Client-First Wealth Management",
 ]
 
 /* ─── Count-up with spring physics ─── */
@@ -51,7 +51,7 @@ function AnimatedGradientBg() {
         animate={{
           background: [
             "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(212,175,55,0.06) 0%, transparent 50%)",
-            "radial-gradient(ellipse 80% 50% at 80% 50%, rgba(197,48,48,0.04) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 80% 50%, rgba(37,99,235,0.04) 0%, transparent 50%)",
             "radial-gradient(ellipse 80% 50% at 50% 80%, rgba(212,175,55,0.06) 0%, transparent 50%)",
             "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(212,175,55,0.06) 0%, transparent 50%)",
           ],
@@ -77,7 +77,7 @@ function GlassMetricCard({ metric, index, isInView }: { metric: typeof metrics[0
       <motion.div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: "linear-gradient(135deg, rgba(212,175,55,0.15) 0%, transparent 50%, rgba(197,48,48,0.1) 100%)",
+          background: "linear-gradient(135deg, rgba(212,175,55,0.15) 0%, transparent 50%, rgba(37,99,235,0.1) 100%)",
         }}
       />
       <div className="mb-4 inline-flex items-center justify-center rounded-full bg-accent/10 p-3">
@@ -135,7 +135,7 @@ export function TrustSection() {
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               Led by Francis J., we bring institutional-grade advisory to individual
-              investors with a comprehensive suite of investment products.
+              clients with a comprehensive suite of investment products.
             </p>
 
             {/* Checkpoints with pulsing check icons */}

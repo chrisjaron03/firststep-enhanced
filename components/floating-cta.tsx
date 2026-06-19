@@ -6,7 +6,6 @@ import { X, Phone, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 const WHATSAPP_NUMBER = "919894163796";
-const PHONE_NUMBER = "+91 98941 63796";
 
 export function FloatingCTA() {
   const [isVisible, setIsVisible] = useState(false);
@@ -71,20 +70,12 @@ export function FloatingCTA() {
               {/* Main CTA Button */}
               <Link
                 href="/contact"
-                className="flex-1 flex items-center justify-center gap-2 bg-[#C53030] hover:bg-[#a02828] text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-lg shadow-[#C53030]/20"
+                className="flex-1 flex items-center justify-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-lg shadow-[#2563eb]/20"
               >
                 <Phone className="w-4 h-4" />
-                <span className="text-sm">Get Free Consultation</span>
+                <span className="text-sm">Get Introductory Call</span>
               </Link>
             </div>
-
-            {/* Phone number */}
-            <a
-              href={`tel:${PHONE_NUMBER.replace(/\s/g, "")}`}
-              className="block text-center text-xs text-[#1a2744]/60 mt-2 hover:text-[#C53030] transition-colors"
-            >
-              {PHONE_NUMBER}
-            </a>
           </div>
         </motion.div>
       )}

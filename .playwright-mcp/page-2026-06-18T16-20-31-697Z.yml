@@ -1,0 +1,372 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e8]:
+        - img [ref=e10]
+        - generic [ref=e12]: Limited slots available for consultations this month
+      - button "Dismiss urgency bar" [ref=e13]:
+        - img [ref=e14]
+    - navigation [ref=e17]:
+      - link "First Step Consultancy Services Logo First Step Consultancy Services" [ref=e18] [cursor=pointer]:
+        - /url: /
+        - img "First Step Consultancy Services Logo" [ref=e19]
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: First Step
+          - paragraph [ref=e22]: Consultancy Services
+      - generic [ref=e23]:
+        - link "Home" [ref=e24] [cursor=pointer]:
+          - /url: /
+          - text: Home
+        - link "Services" [ref=e26] [cursor=pointer]:
+          - /url: /services
+        - link "NRI" [ref=e27] [cursor=pointer]:
+          - /url: /nri
+        - link "SIP Calculator" [ref=e28] [cursor=pointer]:
+          - /url: /sip-calculator
+        - link "About" [ref=e29] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e30] [cursor=pointer]:
+          - /url: /contact
+      - link "Consultation" [ref=e32] [cursor=pointer]:
+        - /url: /contact
+        - button "Consultation" [ref=e33]:
+          - text: Consultation
+          - img
+  - main [ref=e34]:
+    - generic [ref=e40]:
+      - generic [ref=e41]:
+        - generic [ref=e43]:
+          - img [ref=e44]
+          - generic [ref=e47]: SEBI-Compliant Investment Advisor
+        - heading "Unlock the Full Power of Investing" [level=1] [ref=e48]:
+          - text: Unlock the Full
+          - text: Power of
+          - generic [ref=e50]: Investing
+        - paragraph [ref=e51]: Comprehensive wealth management spanning Insurance, Mutual Funds, PMS, AIF, Bonds & beyond — your trusted partner for building generational wealth.
+        - generic [ref=e52]:
+          - link "Get Consultation" [ref=e53] [cursor=pointer]:
+            - /url: /contact
+            - button "Get Consultation" [ref=e56]:
+              - text: Get Consultation
+              - img
+          - link "Explore Services" [ref=e57] [cursor=pointer]:
+            - /url: /services
+            - button "Explore Services" [ref=e60]:
+              - img
+              - text: Explore Services
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - img [ref=e63]
+            - generic [ref=e65]: SEBI Compliant
+          - generic [ref=e67]:
+            - img [ref=e68]
+            - generic [ref=e71]: Proven Track Record
+          - generic [ref=e73]:
+            - img [ref=e74]
+            - generic [ref=e77]: 100+ Happy Clients
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - paragraph [ref=e80]:
+            - generic [ref=e81]: 0+
+          - paragraph [ref=e82]: PMS Strategies
+        - generic [ref=e83]:
+          - paragraph [ref=e84]:
+            - generic [ref=e85]: 0+
+          - paragraph [ref=e86]: AIF Access
+        - generic [ref=e87]:
+          - paragraph [ref=e88]:
+            - generic [ref=e89]: 0+
+          - paragraph [ref=e90]: Service Categories
+        - generic [ref=e91]:
+          - paragraph [ref=e92]:
+            - generic [ref=e93]: 0+
+          - paragraph [ref=e94]: Years of Trust
+    - generic [ref=e99]:
+      - generic [ref=e100]:
+        - paragraph [ref=e101]: What We Offer
+        - heading "Comprehensive Financial Services" [level=2] [ref=e102]
+        - paragraph [ref=e103]: From investment products to personalized advisory, we offer end-to-end wealth management solutions tailored to your financial aspirations.
+      - generic [ref=e104]:
+        - generic [ref=e107] [cursor=pointer]:
+          - generic [ref=e108]: Popular
+          - img [ref=e110]
+          - heading "Mutual Funds" [level=3] [ref=e113]
+          - paragraph [ref=e114]: All AMC schemes across equity, debt, hybrid & thematic categories with goal-based planning.
+          - generic [ref=e115]:
+            - text: Learn more
+            - img [ref=e116]
+        - generic [ref=e120] [cursor=pointer]:
+          - generic [ref=e121]: Premium
+          - img [ref=e123]
+          - heading "PMS" [level=3] [ref=e125]
+          - paragraph [ref=e126]: 60+ professionally managed portfolio strategies from top-tier PMS providers in India.
+          - generic [ref=e127]:
+            - text: Learn more
+            - img [ref=e128]
+        - generic [ref=e132] [cursor=pointer]:
+          - generic [ref=e133]: Exclusive
+          - img [ref=e135]
+          - heading "AIF" [level=3] [ref=e137]
+          - paragraph [ref=e138]: Access 60+ Alternative Investment Funds across Category I, II & III for diversification.
+          - generic [ref=e139]:
+            - text: Learn more
+            - img [ref=e140]
+        - generic [ref=e144] [cursor=pointer]:
+          - generic [ref=e145]: Global
+          - img [ref=e147]
+          - heading "Global Investing" [level=3] [ref=e150]
+          - paragraph [ref=e151]: International markets through LRS, GIFT City, global hedge funds & ETFs via Kristal.
+          - generic [ref=e152]:
+            - text: Learn more
+            - img [ref=e153]
+        - generic [ref=e157] [cursor=pointer]:
+          - generic [ref=e158]: Stable
+          - img [ref=e160]
+          - heading "Bonds & FDs" [level=3] [ref=e164]
+          - paragraph [ref=e165]: High-yield corporate bonds up to 10% returns and fixed deposits from top NBFCs.
+          - generic [ref=e166]:
+            - text: Learn more
+            - img [ref=e167]
+        - generic [ref=e171] [cursor=pointer]:
+          - generic [ref=e172]: Protection
+          - img [ref=e174]
+          - heading "Insurance" [level=3] [ref=e176]
+          - paragraph [ref=e177]: Life, health, general, group & business insurance solutions for complete protection.
+          - generic [ref=e178]:
+            - text: Learn more
+            - img [ref=e179]
+      - link "View All Services" [ref=e182] [cursor=pointer]:
+        - /url: /services
+        - button "View All Services" [ref=e183]:
+          - text: View All Services
+          - img
+    - generic [ref=e186]:
+      - generic [ref=e187]:
+        - paragraph [ref=e188]: Why Choose Us
+        - heading "A Trusted Name in Wealth Management" [level=2] [ref=e189]
+        - paragraph [ref=e190]: Led by Francis J., we bring institutional-grade advisory to individual clients with a comprehensive suite of financial solutions.
+        - generic [ref=e191]:
+          - generic [ref=e193]: SEBI-Compliant Advisory Practices
+          - generic [ref=e195]: Access to 60+ PMS & 60+ AIF Strategies
+          - generic [ref=e197]: Global Investment Access via LRS & GIFT City
+          - generic [ref=e199]: Comprehensive Insurance Solutions
+          - generic [ref=e201]: Personalized One-on-One Guidance
+          - generic [ref=e203]: Dedicated Relationship Manager
+      - generic [ref=e204]:
+        - generic [ref=e205]:
+          - img [ref=e207]
+          - paragraph [ref=e212]:
+            - generic [ref=e213]: 0+
+          - paragraph [ref=e214]: Happy Clients
+        - generic [ref=e215]:
+          - img [ref=e217]
+          - paragraph [ref=e220]:
+            - generic [ref=e221]: 0+
+          - paragraph [ref=e222]: Years Experience
+        - generic [ref=e223]:
+          - img [ref=e225]
+          - paragraph [ref=e229]:
+            - generic [ref=e230]: 0+
+          - paragraph [ref=e231]: Service Categories
+        - generic [ref=e232]:
+          - img [ref=e234]
+          - paragraph [ref=e237]:
+            - generic [ref=e238]: 0hr
+          - paragraph [ref=e239]: Response Time
+    - generic [ref=e241]:
+      - generic [ref=e242]:
+        - generic [ref=e243]:
+          - img [ref=e244]
+          - generic [ref=e246]: Free Tool
+        - heading "SIP Calculator" [level=2] [ref=e247]
+        - paragraph [ref=e248]: Find out how much your monthly investments can grow over time. Enter your details to get a personalized plan.
+      - generic [ref=e252]:
+        - heading "Enter Your Details to See Results" [level=3] [ref=e253]
+        - generic [ref=e254]:
+          - generic [ref=e255]:
+            - generic [ref=e256]: Your Name
+            - textbox "Enter your name" [ref=e257]
+          - generic [ref=e258]:
+            - generic [ref=e259]: Email Address
+            - textbox "your@email.com" [ref=e260]
+        - generic [ref=e261]:
+          - generic [ref=e262]:
+            - generic [ref=e263]: Monthly Investment (₹5,000)
+            - slider [ref=e264]: "5000"
+            - generic [ref=e265]:
+              - generic [ref=e266]: "500"
+              - generic [ref=e267]: 1,00,000
+          - generic [ref=e268]:
+            - generic [ref=e269]: Expected Return (12%)
+            - slider [ref=e270]: "12"
+            - generic [ref=e271]:
+              - generic [ref=e272]: 1%
+              - generic [ref=e273]: 30%
+          - generic [ref=e274]:
+            - generic [ref=e275]: Tenure (10 years)
+            - slider [ref=e276]: "10"
+            - generic [ref=e277]:
+              - generic [ref=e278]: 1 yr
+              - generic [ref=e279]: 30 yrs
+        - generic [ref=e280]:
+          - generic [ref=e281]:
+            - generic [ref=e282]: Phone Number
+            - textbox "+91 XXXXX XXXXX" [ref=e283]
+          - button "Calculate My Wealth" [ref=e285] [cursor=pointer]:
+            - text: Calculate My Wealth
+            - img
+        - paragraph [ref=e286]: We value your privacy. Your information is 100% secure and will never be shared.
+    - generic [ref=e287]:
+      - generic:
+        - generic: “
+        - generic: “
+      - generic [ref=e288]:
+        - generic [ref=e289]:
+          - paragraph [ref=e290]: Testimonials
+          - heading "Trusted by Investors Across India" [level=2] [ref=e291]
+        - generic [ref=e292]:
+          - img [ref=e294]
+          - generic [ref=e297]:
+            - paragraph [ref=e298]: "\"First Step Consultancy has been instrumental in diversifying my portfolio across PMS and AIF strategies. Francis Ji's deep understanding of the market and personalized approach has helped me achieve consistent returns well above my expectations.\""
+            - generic [ref=e300]:
+              - paragraph [ref=e301]: Rajesh Krishnamurthy
+              - paragraph [ref=e302]: Business Owner, Chennai
+          - generic [ref=e303]:
+            - button "Previous testimonial" [ref=e304] [cursor=pointer]:
+              - img [ref=e305]
+            - generic [ref=e307]:
+              - button "Go to testimonial 1" [ref=e308] [cursor=pointer]
+              - button "Go to testimonial 2" [ref=e309] [cursor=pointer]
+              - button "Go to testimonial 3" [ref=e310] [cursor=pointer]
+              - button "Go to testimonial 4" [ref=e311] [cursor=pointer]
+              - button "Go to testimonial 5" [ref=e312] [cursor=pointer]
+            - button "Next testimonial" [ref=e313] [cursor=pointer]:
+              - img [ref=e314]
+    - generic [ref=e319]:
+      - heading "Ready to Take the First Step?" [level=2] [ref=e320]
+      - paragraph [ref=e321]: Join hundreds of satisfied clients who trust First Step Consultancy Services for their wealth management needs. Your consultation is one click away.
+      - generic [ref=e322]:
+        - link "Book Consultation" [ref=e323] [cursor=pointer]:
+          - /url: /contact
+          - button "Book Consultation" [ref=e325]:
+            - text: Book Consultation
+            - img
+        - link "+91 98941 63796" [ref=e326] [cursor=pointer]:
+          - /url: tel:+919894163796
+          - img [ref=e328]
+          - generic [ref=e330]: +91 98941 63796
+  - contentinfo [ref=e331]:
+    - generic [ref=e334]:
+      - generic [ref=e335]:
+        - paragraph [ref=e336]: Get Your Investment Guide
+        - paragraph [ref=e337]: Discover top strategies for 2026 -- curated by our experts.
+      - link "Download Now" [ref=e338] [cursor=pointer]:
+        - /url: /contact
+    - generic [ref=e339]:
+      - generic [ref=e340]:
+        - generic [ref=e341]:
+          - link "First Step Consultancy Services First Step Consultancy Services" [ref=e342] [cursor=pointer]:
+            - /url: /
+            - img "First Step Consultancy Services" [ref=e343]
+            - generic [ref=e344]:
+              - paragraph [ref=e345]: First Step
+              - paragraph [ref=e346]: Consultancy Services
+          - paragraph [ref=e347]: Unlock the full power of investing. Your trusted partner for comprehensive wealth management, from mutual funds to alternative investments and beyond.
+          - generic [ref=e348]:
+            - link "+91 98941 63796" [ref=e349] [cursor=pointer]:
+              - /url: tel:+919894163796
+              - img [ref=e350]
+              - text: +91 98941 63796
+            - link "francis@firststepcs.com" [ref=e352] [cursor=pointer]:
+              - /url: mailto:francis@firststepcs.com
+              - img [ref=e353]
+              - text: francis@firststepcs.com
+            - generic [ref=e356]:
+              - img [ref=e357]
+              - text: Tamil Nadu, India
+        - generic [ref=e360]:
+          - paragraph [ref=e361]: Products
+          - list [ref=e362]:
+            - listitem [ref=e363]:
+              - link "Mutual Funds" [ref=e364] [cursor=pointer]:
+                - /url: /services#mutual-funds
+            - listitem [ref=e365]:
+              - link "PMS" [ref=e366] [cursor=pointer]:
+                - /url: /services#pms
+            - listitem [ref=e367]:
+              - link "AIF" [ref=e368] [cursor=pointer]:
+                - /url: /services#aif
+            - listitem [ref=e369]:
+              - link "Unlisted & Pre-IPO" [ref=e370] [cursor=pointer]:
+                - /url: /services#unlisted
+            - listitem [ref=e371]:
+              - link "LRS & Global Investing" [ref=e372] [cursor=pointer]:
+                - /url: /services#lrs
+            - listitem [ref=e373]:
+              - link "GIFT City Funds" [ref=e374] [cursor=pointer]:
+                - /url: /services#gift-city
+            - listitem [ref=e375]:
+              - link "Demat & Trading" [ref=e376] [cursor=pointer]:
+                - /url: /services#demat
+            - listitem [ref=e377]:
+              - link "Fixed Deposits" [ref=e378] [cursor=pointer]:
+                - /url: /services#fds
+            - listitem [ref=e379]:
+              - link "Bonds" [ref=e380] [cursor=pointer]:
+                - /url: /services#bonds
+            - listitem [ref=e381]:
+              - link "Insurance" [ref=e382] [cursor=pointer]:
+                - /url: /services#insurance
+            - listitem [ref=e383]:
+              - link "Sovereign Gold Bonds" [ref=e384] [cursor=pointer]:
+                - /url: /services#sgb
+            - listitem [ref=e385]:
+              - link "National Pension Scheme" [ref=e386] [cursor=pointer]:
+                - /url: /services#nps
+        - generic [ref=e387]:
+          - paragraph [ref=e388]: Services
+          - list [ref=e389]:
+            - listitem [ref=e390]:
+              - link "Retirement Planning" [ref=e391] [cursor=pointer]:
+                - /url: /services#retirement-planning
+            - listitem [ref=e392]:
+              - link "Children's Education Fund" [ref=e393] [cursor=pointer]:
+                - /url: /services#education-planning
+            - listitem [ref=e394]:
+              - link "Legacy Creation" [ref=e395] [cursor=pointer]:
+                - /url: /services#legacy-creation
+            - listitem [ref=e396]:
+              - link "Protection Planning" [ref=e397] [cursor=pointer]:
+                - /url: /services#protection-planning
+            - listitem [ref=e398]:
+              - link "Wealth Creation" [ref=e399] [cursor=pointer]:
+                - /url: /services#wealth-creation
+            - listitem [ref=e400]:
+              - link "NRI Services" [ref=e401] [cursor=pointer]:
+                - /url: /nri
+        - generic [ref=e402]:
+          - paragraph [ref=e403]: Company
+          - list [ref=e404]:
+            - listitem [ref=e405]:
+              - link "About Us" [ref=e406] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e407]:
+              - link "Our Services" [ref=e408] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=e409]:
+              - link "SIP Calculator" [ref=e410] [cursor=pointer]:
+                - /url: /sip-calculator
+            - listitem [ref=e411]:
+              - link "Contact" [ref=e412] [cursor=pointer]:
+                - /url: /contact
+      - generic [ref=e413]:
+        - paragraph [ref=e414]: © 2026 First Step Consultancy Services. All rights reserved.
+        - paragraph [ref=e415]: Francis J., Principal Advisor
+      - paragraph [ref=e417]:
+        - strong [ref=e418]: "Disclaimer:"
+        - text: Mutual Fund investments are subject to market risks. Please read the scheme information document carefully before investing. Past performance is not indicative of future returns. The information provided here is for general purposes only and should not be considered as investment advice. Please consult your financial advisor before making any investment decisions.
+  - link "Chat on WhatsApp":
+    - /url: https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory%20services.
+    - img
+  - button "Open Next.js Dev Tools" [ref=e424] [cursor=pointer]:
+    - img [ref=e425]

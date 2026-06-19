@@ -30,7 +30,7 @@ const testimonials = [
   },
   {
     name: "Meera & Karthik Raman",
-    role: "NRI Investors, Dubai",
+    role: "NRI Clients, Dubai",
     quote:
       "Managing investments from abroad was always challenging until we found FSCS. Their LRS and global investing solutions through Kristal, combined with Indian market expertise, made cross-border investing smooth and profitable for our family.",
     rating: 5,
@@ -146,7 +146,7 @@ export function TestimonialsSection() {
             Testimonials
           </motion.p>
           <motion.h2 variants={fadeInUp} className="mt-3 font-serif text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl lg:text-5xl text-balance">
-            Trusted by Investors Across India
+            Trusted by Clients Across India
           </motion.h2>
         </motion.div>
 

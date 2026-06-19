@@ -8,7 +8,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 export const metadata: Metadata = {
   title: "Contact Us | First Step Consultancy Services",
   description:
-    "Schedule a free consultation with Francis J., Principal Advisor at First Step Consultancy Services. Get expert investment guidance for Mutual Funds, PMS, AIF, and more.",
+    "Schedule a consultation with Francis J., Principal Advisor at First Step Consultancy Services. Get expert investment guidance for Mutual Funds, PMS, AIF, and more.",
 }
 
 export default function ContactPage() {
@@ -19,7 +19,7 @@ export default function ContactPage() {
         <PageHero
           badge="Get in Touch"
           title="Start Your Investment Journey"
-          description="Schedule a free, no-obligation consultation with our principal advisor. Your first step towards financial freedom begins here."
+          description="Schedule a no-obligation consultation with our principal advisor. Your first step towards financial freedom begins here."
           image="/images/contact-hero.jpg"
         />
         <ContactForm />

@@ -167,7 +167,7 @@ export function ServicesPreview() {
         >
           <Link href="/services">
             <Button variant="outline" size="lg" className="gap-2 cursor-pointer border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-              View All 12 Services
+              View All 12 Products
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>

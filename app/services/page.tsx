@@ -7,7 +7,7 @@ import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 
 export const metadata: Metadata = {
-  title: "Our Services | First Step Consultancy Services",
+  title: "Our Products | First Step Consultancy Services",
   description:
     "Explore our comprehensive investment solutions including Mutual Funds, PMS, AIF, Bonds, Insurance, GIFT City Funds, and more.",
 }
@@ -18,9 +18,9 @@ export default function ServicesPage() {
       <Navigation />
       <main>
         <PageHero
-          badge="Our Services"
+          badge="Our Products"
           title="Investment Solutions Tailored to Your Goals"
-          description="From wealth creation to wealth protection, we offer a comprehensive suite of 12+ financial services backed by top-tier fund houses and institutions."
+          description="From wealth creation to wealth protection, we offer a comprehensive suite of 12+ financial products backed by top-tier fund houses and institutions."
           image="/images/services-hero.jpg"
         />
         <ServicesDetailGrid />

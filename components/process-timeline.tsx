@@ -13,7 +13,7 @@ const steps = [
     step: "01",
     title: "Discovery Call",
     description:
-      "We start with a free, no-obligation consultation to understand your financial goals, risk appetite, investment horizon, and current portfolio.",
+      "We start with a no-obligation consultation to understand your financial goals, risk appetite, investment horizon, and current portfolio.",
   },
   {
     icon: Search,
@@ -27,7 +27,7 @@ const steps = [
     step: "03",
     title: "Tailored Strategy",
     description:
-      "We craft a personalized investment strategy leveraging our comprehensive product suite of 120+ options across MF, PMS, AIF, Bonds & more.",
+      "We craft a personalized investment strategy leveraging our comprehensive product suite of 12+ options across MF, PMS, AIF, Bonds & more.",
   },
   {
     icon: TrendingUp,

@@ -1,0 +1,11 @@
+1:"$Sreact.fragment"
+2:I[4702,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","926","static/chunks/app/nri/page-057da7aa5da4871c.js"],"Navigation"]
+3:I[2245,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","926","static/chunks/app/nri/page-057da7aa5da4871c.js"],"PageHero"]
+4:I[8634,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","926","static/chunks/app/nri/page-057da7aa5da4871c.js"],"NriContent"]
+5:I[9896,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","926","static/chunks/app/nri/page-057da7aa5da4871c.js"],"CtaBanner"]
+6:I[2200,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","926","static/chunks/app/nri/page-057da7aa5da4871c.js"],"Footer"]
+7:I[2988,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","926","static/chunks/app/nri/page-057da7aa5da4871c.js"],"WhatsAppButton"]
+8:I[484,[],"OutletBoundary"]
+9:"$Sreact.suspense"
+0:{"buildId":"nx3J9f0gOHTuxtZfjUoAp","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"NRI","title":"Wealth Management Solutions for NRIs","description":"Comprehensive cross-border financial planning and India investment solutions tailored for Non-Resident Indians worldwide.","image":"/images/contact-hero.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}]]}],["$","$L6",null,{}],["$","$L7",null,{}]],null,["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
+a:null

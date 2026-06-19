@@ -91,7 +91,7 @@ export function ExitIntentModal() {
             className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
           >
             {/* Gradient accent bar at top */}
-            <div className="h-2 bg-gradient-to-r from-[#1a2744] via-[#C53030] to-[#D4AF37]" />
+            <div className="h-2 bg-gradient-to-r from-[#1a2744] via-[#2563eb] to-[#D4AF37]" />
 
             {/* Close button */}
             <button
@@ -105,8 +105,8 @@ export function ExitIntentModal() {
             {!isSubmitted ? (
               <div className="p-6 lg:p-8">
                 {/* Gift icon */}
-                <div className="w-14 h-14 rounded-full bg-[#C53030]/10 flex items-center justify-center mb-4">
-                  <Gift className="w-7 h-7 text-[#C53030]" />
+                <div className="w-14 h-14 rounded-full bg-[#2563eb]/10 flex items-center justify-center mb-4">
+                  <Gift className="w-7 h-7 text-[#2563eb]" />
                 </div>
 
                 {/* Headline */}
@@ -116,7 +116,7 @@ export function ExitIntentModal() {
 
                 {/* Subheadline */}
                 <p className="text-[#1a2744]/70 mb-6">
-                  Get your free consultation + 2026 Investment Planning Guide
+                  Get your consultation + 2026 Investment Planning Guide
                 </p>
 
                 {/* Benefits */}
@@ -145,7 +145,7 @@ export function ExitIntentModal() {
                       required
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#C53030] focus:ring-2 focus:ring-[#C53030]/20 outline-none transition-all text-sm"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#2563eb] focus:ring-2 focus:ring-[#2563eb]/20 outline-none transition-all text-sm"
                     />
                   </div>
                   <div className="relative">
@@ -157,7 +157,7 @@ export function ExitIntentModal() {
                       required
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#C53030] focus:ring-2 focus:ring-[#C53030]/20 outline-none transition-all text-sm"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#2563eb] focus:ring-2 focus:ring-[#2563eb]/20 outline-none transition-all text-sm"
                     />
                   </div>
                   <div className="relative">
@@ -169,15 +169,15 @@ export function ExitIntentModal() {
                       required
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#C53030] focus:ring-2 focus:ring-[#C53030]/20 outline-none transition-all text-sm"
+                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-[#2563eb] focus:ring-2 focus:ring-[#2563eb]/20 outline-none transition-all text-sm"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 bg-[#C53030] hover:bg-[#a02828] text-white font-semibold py-3.5 px-6 rounded-xl transition-colors shadow-lg shadow-[#C53030]/20 mt-4"
+                    className="w-full flex items-center justify-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold py-3.5 px-6 rounded-xl transition-colors shadow-lg shadow-[#2563eb]/20 mt-4"
                   >
-                    <span>Get Free Guide</span>
+                    <span>Get Guide</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
@@ -225,7 +225,7 @@ export function ExitIntentModal() {
                 </h3>
                 <p className="text-[#1a2744]/70 text-sm">
                   Your 2026 Investment Planning Guide has been sent to your email.
-                  Our team will contact you shortly for your free consultation.
+                  Our team will contact you shortly for your consultation.
                 </p>
               </div>
             )}

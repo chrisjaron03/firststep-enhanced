@@ -5,13 +5,14 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Phone, ArrowRight } from "lucide-react"
+import { Menu, X, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { UrgencyBar } from "@/components/urgency-bar"
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "/services" },
+  { label: "Products", href: "/services" },
+  { label: "NRI", href: "/nri" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ]
@@ -114,18 +115,9 @@ export function Navigation() {
 
         {/* Desktop CTA - compact */}
         <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href="tel:+919894163796"
-            className={`hidden xl:flex items-center gap-1.5 text-sm font-medium transition-colors duration-300 ${
-              showSolid ? "text-foreground" : "text-card/90"
-            }`}
-          >
-            <Phone className="h-3.5 w-3.5" />
-            <span className="text-sm">+91 98941 63796</span>
-          </a>
           <Link href="/contact">
             <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 gap-1.5 cursor-pointer text-sm px-4">
-              Free Consultation
+              Introductory Call
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
           </Link>
@@ -174,16 +166,9 @@ export function Navigation() {
                 </motion.div>
               ))}
               <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
-                <a
-                  href="tel:+919894163796"
-                  className="flex items-center gap-2 px-4 text-sm font-medium text-foreground"
-                >
-                  <Phone className="h-4 w-4" />
-                  <span>+91 98941 63796</span>
-                </a>
                 <Link href="/contact">
                   <Button className="bg-accent text-accent-foreground hover:bg-accent/90 w-full gap-2 cursor-pointer">
-                    Free Consultation
+                    Introductory Call
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>

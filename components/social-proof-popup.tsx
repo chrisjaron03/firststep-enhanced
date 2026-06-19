@@ -16,7 +16,7 @@ const MESSAGES: SocialProofMessage[] = [
     id: 1,
     name: "Rajesh",
     location: "Chennai",
-    action: "just booked a free consultation",
+    action: "just booked an introductory call",
   },
   {
     id: 2,
@@ -28,7 +28,7 @@ const MESSAGES: SocialProofMessage[] = [
     id: 3,
     name: "Arun",
     location: "Bangalore",
-    action: "just enquired about PMS services",
+    action: "just enquired about PMS products",
   },
   {
     id: 4,

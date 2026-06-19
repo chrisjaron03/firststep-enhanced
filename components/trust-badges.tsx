@@ -17,7 +17,7 @@ const BADGES: TrustBadge[] = [
   },
   {
     id: 2,
-    label: "AMFI Registered",
+    label: "Experienced Advisor",
     icon: <BadgeCheck className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {
@@ -55,7 +55,7 @@ export function TrustBadges({ variant = "light", className = "" }: TrustBadgesPr
               : "bg-[#1a2744]/50 border-white/10 text-white/80 hover:border-[#D4AF37]/50 hover:shadow-[#D4AF37]/10"
           }`}
         >
-          <span className={isLight ? "text-[#C53030]" : "text-[#D4AF37]"}>
+          <span className={isLight ? "text-[#2563eb]" : "text-[#D4AF37]"}>
             {badge.icon}
           </span>
           <span>{badge.label}</span>

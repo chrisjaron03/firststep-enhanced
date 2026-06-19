@@ -15,7 +15,7 @@ import { useRef } from "react"
 const stats = [
   { label: "PMS Strategies", value: 60, suffix: "+" },
   { label: "AIF Access", value: 60, suffix: "+" },
-  { label: "Service Categories", value: 12, suffix: "+" },
+  { label: "Product Categories", value: 12, suffix: "+" },
   { label: "Years of Trust", value: 10, suffix: "+" },
 ]
 
@@ -110,16 +110,6 @@ export function HeroSection() {
           animate="visible"
           className="max-w-3xl"
         >
-          {/* Badge */}
-          <motion.div variants={fadeInUp}>
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-card/20 bg-card/10 px-4 py-2 backdrop-blur-sm">
-              <Award className="h-4 w-4 text-chart-1" />
-              <span className="text-sm font-medium text-card/90">
-                AMFI-Registered Mutual Fund Distributor
-              </span>
-            </div>
-          </motion.div>
-
           {/* Headline with TextShimmer on "Investing" */}
           <motion.h1
             variants={fadeInUp}
@@ -146,8 +136,8 @@ export function HeroSection() {
             variants={fadeInUp}
             className="mt-6 max-w-xl text-lg leading-relaxed text-card/80 lg:text-xl"
           >
-            Comprehensive wealth management spanning Mutual Funds, PMS,
-            AIF, Bonds, Insurance & beyond — your trusted partner for building
+            Comprehensive wealth management spanning Insurance, Mutual Funds, PMS,
+            AIF, Bonds & beyond — your trusted partner for building
             generational wealth.
           </motion.p>
 
@@ -159,7 +149,7 @@ export function HeroSection() {
                   size="lg"
                   className="bg-accent text-accent-foreground hover:bg-accent/90 gap-2 px-8 text-base cursor-pointer w-full sm:w-auto"
                 >
-                  Get Free Consultation
+                  Book Introductory Call
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </MagneticButton>
@@ -172,7 +162,7 @@ export function HeroSection() {
                   className="border-card/30 bg-card/10 text-card hover:bg-card/20 gap-2 px-8 text-base backdrop-blur-sm cursor-pointer w-full sm:w-auto"
                 >
                   <Play className="h-4 w-4" />
-                  Explore Services
+                  Explore Products
                 </Button>
               </MagneticButton>
             </Link>

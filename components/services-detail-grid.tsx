@@ -65,7 +65,7 @@ const services: ServiceItem[] = [
     icon: Briefcase,
     title: "Alternative Investment Funds (AIF)",
     description:
-      "Diversify into high-return alternative strategies through Category I, II & III AIFs. Access exclusive funds not available to retail investors, managed by India's best alternative fund managers.",
+      "Diversify into high-return alternative strategies through Category I, II & III AIFs. Access exclusive funds not available to retail clients, managed by India's best alternative fund managers.",
     highlights: ["60+ AIF Access", "Category I, II & III", "Exclusive Opportunities", "High Alpha"],
     providers: [
       "Carnelian Bharat Amritkaal",
@@ -299,10 +299,10 @@ export function ServicesDetailGrid() {
           className="mx-auto mb-16 max-w-2xl text-center"
         >
           <motion.h2 variants={fadeInUp} className="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
-            Complete Range of Services
+            Complete Range of Products
           </motion.h2>
           <motion.p variants={fadeInUp} className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Every service is backed by our deep market expertise and partnerships with India's leading fund houses, NBFCs, and insurance providers.
+            Every product is backed by our deep market expertise and partnerships with India's leading fund houses, NBFCs, and insurance providers.
           </motion.p>
         </motion.div>
 

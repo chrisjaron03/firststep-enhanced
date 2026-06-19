@@ -103,7 +103,7 @@ export function LeadCaptureModal() {
                       Thank You!
                     </h3>
                     <p className="mt-2 text-muted-foreground">
-                      Check your email for the free investment guide. Our advisor will reach out shortly.
+                      Check your email for the investment guide. Our advisor will reach out shortly.
                     </p>
                   </motion.div>
                 ) : (
@@ -111,12 +111,12 @@ export function LeadCaptureModal() {
                     <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1">
                       <Download className="h-3.5 w-3.5 text-accent" />
                       <span className="text-xs font-semibold uppercase tracking-wider text-accent">
-                        Free Guide
+                        Guide
                       </span>
                     </div>
 
                     <h3 className="font-serif text-2xl font-bold leading-tight text-foreground sm:text-3xl text-balance">
-                      Get Your Free 2026 Investment Planning Guide
+                      Get Your 2026 Investment Planning Guide
                     </h3>
                     <p className="mt-3 text-muted-foreground leading-relaxed">
                       Discover the top strategies across Mutual Funds, PMS, AIF & more. 
@@ -147,7 +147,7 @@ export function LeadCaptureModal() {
                         size="lg"
                         className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 text-base cursor-pointer"
                       >
-                        Download Free Guide
+                        Download Guide
                         <ArrowRight className="h-4 w-4" />
                       </Button>
                       <p className="text-center text-xs text-muted-foreground">

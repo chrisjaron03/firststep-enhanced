@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import { motion, useInView } from "framer-motion"
-import { Phone, Mail, MapPin, Clock, CheckCircle2, MessageCircle, ArrowRight } from "lucide-react"
+import { Mail, MapPin, Clock, CheckCircle2, MessageCircle, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -34,7 +34,7 @@ function FloatingInput({
         animate={{
           y: isFloating ? -24 : 14,
           scale: isFloating ? 0.82 : 1,
-          color: focused ? "#C53030" : "#6b7280",
+          color: focused ? "#2563eb" : "#6b7280",
         }}
         transition={{ duration: 0.2 }}
         className="absolute left-3 z-10 origin-left pointer-events-none text-muted-foreground bg-card px-1"
@@ -82,7 +82,7 @@ function FloatingSelect({
         animate={{
           y: isFloating ? -24 : 14,
           scale: isFloating ? 0.82 : 1,
-          color: focused ? "#C53030" : "#6b7280",
+          color: focused ? "#2563eb" : "#6b7280",
         }}
         transition={{ duration: 0.2 }}
         className="absolute left-3 z-10 origin-left pointer-events-none text-muted-foreground bg-card px-1"
@@ -128,7 +128,7 @@ function FloatingTextarea({
         animate={{
           y: isFloating ? -24 : 14,
           scale: isFloating ? 0.82 : 1,
-          color: focused ? "#C53030" : "#6b7280",
+          color: focused ? "#2563eb" : "#6b7280",
         }}
         transition={{ duration: 0.2 }}
         className="absolute left-3 z-10 origin-left pointer-events-none text-muted-foreground bg-card px-1"
@@ -178,7 +178,7 @@ function UrgencyText() {
         <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent" />
       </motion.div>
       <p className="text-sm font-medium text-accent">
-        Only 3 free consultation slots remaining this week
+        Only 3 consultation slots remaining this week
       </p>
     </div>
   )
@@ -221,27 +221,6 @@ export function ContactForm() {
             </p>
 
             <div className="mt-8 space-y-6">
-              {/* Phone */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ delay: 0.3 }}
-                className="flex gap-4"
-              >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-                  <Phone className="h-5 w-5" />
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">Phone</p>
-                  <a
-                    href="tel:+919894163796"
-                    className="mt-1 text-muted-foreground transition-colors hover:text-accent"
-                  >
-                    +91 98941 63796
-                  </a>
-                </div>
-              </motion.div>
-
               {/* WhatsApp */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -255,7 +234,7 @@ export function ContactForm() {
                 <div>
                   <p className="font-semibold text-foreground">WhatsApp</p>
                   <a
-                    href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory%20services."
+                    href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-1 text-muted-foreground transition-colors hover:text-accent"
@@ -333,7 +312,7 @@ export function ContactForm() {
                 Francis J.
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                AMFI-Registered Mutual Fund Distributor
+                Principal Investment Advisor
               </p>
               <div className="mt-4 rounded-lg bg-secondary p-3">
                 <p className="text-xs leading-relaxed text-muted-foreground">
@@ -388,7 +367,7 @@ export function ContactForm() {
                 <>
                   <div className="mb-6">
                     <h3 className="font-serif text-2xl font-bold text-card-foreground">
-                      Schedule Your Free Consultation
+                      Schedule Your Introductory Call
                     </h3>
                     <p className="mt-2 text-sm text-muted-foreground">
                       Fill in your details and our advisor will reach out within 24 hours.
@@ -442,7 +421,7 @@ export function ContactForm() {
                     </FloatingSelect>
 
                     <FloatingSelect id="service" label="Interested In" required>
-                      <option value="">Select a service</option>
+                      <option value="">Select a product</option>
                       <option value="mf">Mutual Funds</option>
                       <option value="pms">Portfolio Management (PMS)</option>
                       <option value="aif">Alternative Investment Funds</option>
@@ -478,7 +457,7 @@ export function ContactForm() {
                           </motion.span>
                         ) : (
                           <>
-                            Book Free Consultation
+                            Book Introductory Call
                             <ArrowRight className="h-4 w-4" />
                           </>
                         )}
@@ -492,7 +471,7 @@ export function ContactForm() {
                     </div>
 
                     <a
-                      href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory%20services."
+                      href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"

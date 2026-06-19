@@ -13,12 +13,12 @@ interface UrgencyMessage {
 const MESSAGES: UrgencyMessage[] = [
   {
     id: 1,
-    text: "Limited slots available for free consultations this month",
+    text: "Limited slots available for consultations this month",
     icon: <Calendar className="w-3.5 h-3.5" />,
   },
   {
     id: 2,
-    text: "AMFI-Registered Advisor | 10+ Years of Excellence",
+    text: "SEBI Compliant Advisor | 10+ Years of Excellence",
     icon: <Award className="w-3.5 h-3.5" />,
   },
   {
@@ -76,8 +76,8 @@ export function UrgencyBar({ showSolid = false }: UrgencyBarProps) {
           <div className="relative flex items-center justify-center px-4 py-2">
             {/* Pulsing dot */}
             <span className="absolute left-4 lg:left-6 flex h-2 w-2 mr-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C53030] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#C53030]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2563eb] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2563eb]" />
             </span>
 
             {/* Rotating message */}

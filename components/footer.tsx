@@ -2,10 +2,10 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Phone, Mail, MapPin } from "lucide-react"
+import { Mail, MapPin } from "lucide-react"
 
 const footerLinks = {
-  Services: [
+  Products: [
     { label: "Mutual Funds", href: "/services#mutual-funds" },
     { label: "PMS", href: "/services#pms" },
     { label: "AIF", href: "/services#aif" },
@@ -13,7 +13,7 @@ const footerLinks = {
     { label: "LRS & Global", href: "/services#lrs" },
     { label: "GIFT City Funds", href: "/services#gift-city" },
   ],
-  Products: [
+  Solutions: [
     { label: "Demat & Trading", href: "/services#demat" },
     { label: "Fixed Deposits", href: "/services#fds" },
     { label: "Bonds", href: "/services#bonds" },
@@ -23,7 +23,8 @@ const footerLinks = {
   ],
   Company: [
     { label: "About Us", href: "/about" },
-    { label: "Our Services", href: "/services" },
+    { label: "Our Products", href: "/services" },
+    { label: "NRI", href: "/nri" },
     { label: "Contact", href: "/contact" },
   ],
 }
@@ -37,7 +38,7 @@ export function Footer() {
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div>
               <p className="font-serif text-lg font-bold text-primary-foreground">
-                Get Your Free Investment Guide
+                Get Your Investment Guide
               </p>
               <p className="text-sm text-primary-foreground/60">
                 Discover top strategies for 2026 -- curated by our experts.
@@ -81,13 +82,6 @@ export function Footer() {
             </p>
             <div className="mt-6 space-y-3">
               <a
-                href="tel:+919894163796"
-                className="flex items-center gap-2 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
-              >
-                <Phone className="h-4 w-4" />
-                +91 98941 63796
-              </a>
-              <a
                 href="mailto:francis@firststepcs.com"
                 className="flex items-center gap-2 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
               >
@@ -129,7 +123,7 @@ export function Footer() {
             {`© ${new Date().getFullYear()} First Step Consultancy Services. All rights reserved.`}
           </p>
           <p className="text-xs text-primary-foreground/50">
-            Francis J., Principal Advisor - AMFI-Registered Mutual Fund Distributor
+            Francis J., Principal Advisor
           </p>
         </div>
 

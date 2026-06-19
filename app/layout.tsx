@@ -18,7 +18,7 @@ const playfairDisplay = Playfair_Display({
 export const metadata: Metadata = {
   title: 'First Step Consultancy Services | Unlock the Full Power of Investing',
   description:
-    'First Step Consultancy Services - Your trusted AMFI-registered investment advisor offering Mutual Funds, PMS, AIF, Bonds, Insurance, and comprehensive wealth management solutions.',
+    'First Step Consultancy Services - Your trusted investment advisor offering Mutual Funds, PMS, AIF, Bonds, Insurance, and comprehensive wealth management solutions.',
   keywords: [
     'investment advisory',
     'mutual funds',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     'AIF',
     'wealth management',
     'financial consultancy',
-    'AMFI registered',
+    'SEBI compliant',
   ],
   icons: {
     icon: '/images/logo.jpg',

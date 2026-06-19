@@ -16,9 +16,9 @@ const values = [
   },
   {
     icon: Award,
-    title: "AMFI Registered",
+    title: "SEBI Compliant",
     description:
-      "Fully registered and compliant with AMFI guidelines, ensuring transparent and ethical advisory practices.",
+      "Fully compliant with SEBI guidelines, ensuring transparent and ethical advisory practices.",
   },
   {
     icon: Users,
@@ -35,12 +35,12 @@ const values = [
 ]
 
 const checkpoints = [
-  "AMFI-Registered Mutual Fund Distributor",
+  "SEBI Compliant Advisory Practices",
   "Access to 60+ PMS Strategies",
   "Access to 60+ Alternative Investment Funds",
-  "SEBI Compliant Practices",
   "Comprehensive Insurance Solutions",
   "Global Investment Access via LRS & GIFT City",
+  "Personalized One-on-One Guidance",
 ]
 
 export function AboutContent() {
@@ -67,14 +67,13 @@ export function AboutContent() {
               Building Wealth, One First Step at a Time
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Led by <strong className="text-foreground">Francis J.</strong>, Principal Advisor and AMFI-Registered Mutual Fund
-              Distributor, First Step Consultancy Services has been guiding
-              investors through the complex world of financial markets for over a decade.
+              Led by <strong className="text-foreground">Francis J.</strong>, Principal Advisor, First Step Consultancy Services has been guiding
+              clients through the complex world of financial markets for over a decade.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               We believe that the right first step in investing can transform your financial
               future. Our mission is to democratize access to premium investment products
-              and provide institutional-grade advisory to individual investors.
+              and provide institutional-grade advisory to individual clients.
             </p>
 
             {/* Checkpoints */}

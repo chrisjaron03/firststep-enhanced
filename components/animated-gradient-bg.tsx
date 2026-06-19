@@ -16,15 +16,15 @@ const variantStyles = {
     blob4: "bg-[#1a2744]",
   },
   warm: {
-    blob1: "bg-[#8B2332]",
+    blob1: "bg-[#2563eb]",
     blob2: "bg-[#D4AF37]",
     blob3: "bg-[#1a2744]",
-    blob4: "bg-[#C53030]",
+    blob4: "bg-[#2563eb]",
   },
   subtle: {
     blob1: "bg-[#1a2744]",
     blob2: "bg-[#D4AF37]",
-    blob3: "bg-[#8B2332]",
+    blob3: "bg-[#2563eb]",
     blob4: "bg-[#1a2744]",
   },
 }

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
-import { ArrowRight, Phone } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function CtaBanner() {
@@ -61,8 +61,8 @@ export function CtaBanner() {
           Ready to Take the First Step?
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-accent-foreground/80">
-          Join hundreds of satisfied investors who trust First Step Consultancy
-          Services for their wealth management needs. Your free consultation is one click away.
+          Join hundreds of satisfied clients who trust First Step Consultancy
+          Services for their wealth management needs. Your consultation is one click away.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           {/* CTA button with pulse + shimmer */}
@@ -90,27 +90,12 @@ export function CtaBanner() {
                 size="lg"
                 className="relative bg-primary text-primary-foreground hover:bg-primary/90 gap-2 px-8 text-base cursor-pointer shadow-xl shadow-black/20"
               >
-                Book Free Consultation
+                Book Introductory Call
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </motion.div>
           </Link>
 
-          {/* Phone number with animated call icon */}
-          <motion.a
-            href="tel:+919894163796"
-            className="flex items-center gap-2 text-base font-semibold text-accent-foreground underline-offset-4 hover:underline"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <motion.div
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
-            >
-              <Phone className="h-5 w-5" />
-            </motion.div>
-            <span className="text-lg">+91 98941 63796</span>
-          </motion.a>
         </div>
       </motion.div>
     </section>
