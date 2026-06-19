@@ -4,12 +4,12 @@ import Link from "next/link"
 import { motion, useInView, useMotionValue, useTransform } from "framer-motion"
 import { useRef, type MouseEvent } from "react"
 import {
-  TrendingUp,
-  BarChart3,
+  Umbrella,
+  GraduationCap,
   Landmark,
+  ShieldCheck,
+  TrendingUp,
   Globe,
-  Building2,
-  Shield,
   ArrowRight,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -18,40 +18,40 @@ import { fadeInUp, staggerContainer } from "@/lib/animations"
 
 const services = [
   {
-    icon: TrendingUp,
-    title: "Mutual Funds",
-    description: "All AMC schemes across equity, debt, hybrid & thematic categories with goal-based planning.",
-    tag: "Popular",
+    icon: Umbrella,
+    title: "Retirement Planning",
+    description: "Build a stress-free retirement with tailored income plans, pension solutions, and corpus creation.",
+    tag: "Secure Future",
   },
   {
-    icon: BarChart3,
-    title: "PMS",
-    description: "60+ professionally managed portfolio strategies from top-tier PMS providers in India.",
-    tag: "Premium",
+    icon: GraduationCap,
+    title: "Children's Education Fund",
+    description: "Plan ahead for your child's education with smart savings and investment strategies.",
+    tag: "Future Ready",
   },
   {
     icon: Landmark,
-    title: "AIF",
-    description: "Access 60+ Alternative Investment Funds across Category I, II & III for diversification.",
-    tag: "Exclusive",
+    title: "Legacy Creation",
+    description: "Create generational wealth with structured estate planning and succession strategies.",
+    tag: "Generational",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Protection Planning",
+    description: "Safeguard your family and income with comprehensive protection planning.",
+    tag: "Safety First",
+  },
+  {
+    icon: TrendingUp,
+    title: "Wealth Creation",
+    description: "Grow your wealth with disciplined, goal-based investment strategies.",
+    tag: "Growth",
   },
   {
     icon: Globe,
-    title: "Global Investing",
-    description: "International markets through LRS, GIFT City, global hedge funds & ETFs via Kristal.",
+    title: "NRI Services",
+    description: "Specialized wealth planning for NRIs and global Tamils across borders.",
     tag: "Global",
-  },
-  {
-    icon: Building2,
-    title: "Bonds & FDs",
-    description: "High-yield corporate bonds up to 10% returns and fixed deposits from top NBFCs.",
-    tag: "Stable",
-  },
-  {
-    icon: Shield,
-    title: "Insurance",
-    description: "Life, health, general, group & business insurance solutions for complete protection.",
-    tag: "Protection",
   },
 ]
 
@@ -98,7 +98,7 @@ export function ServicesPreview() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section className="bg-background py-24 lg:py-32">
+    <section className="bg-gradient-to-tr from-[#e6f0ff] to-[#bfdbfe] py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8" ref={ref}>
         {/* Header */}
         <motion.div
@@ -108,14 +108,13 @@ export function ServicesPreview() {
           className="mx-auto max-w-2xl text-center"
         >
           <motion.p variants={fadeInUp} className="text-sm font-semibold uppercase tracking-widest text-accent">
-            What We Offer
+            Our Services
           </motion.p>
           <motion.h2 variants={fadeInUp} className="mt-3 font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance">
-            Comprehensive Investment Solutions
+            Goal-Based Financial Planning
           </motion.h2>
           <motion.p variants={fadeInUp} className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            From mutual funds to alternative investments, we offer end-to-end wealth
-            management tailored to your financial aspirations.
+            From retirement planning to children's education, legacy creation, and NRI wealth management — we help you plan every life goal.
           </motion.p>
         </motion.div>
 
@@ -167,7 +166,7 @@ export function ServicesPreview() {
         >
           <Link href="/services">
             <Button variant="outline" size="lg" className="gap-2 cursor-pointer border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-              View All 12 Products
+              View All Services
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>

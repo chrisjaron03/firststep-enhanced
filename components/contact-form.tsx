@@ -200,7 +200,7 @@ export function ContactForm() {
   }
 
   return (
-    <section className="relative bg-background py-24 lg:py-32 overflow-hidden" ref={ref}>
+    <section className="relative bg-gradient-to-br from-[#f0f7ff] to-[#e3efff] py-24 lg:py-32 overflow-hidden" ref={ref}>
       <AnimatedPattern />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -234,7 +234,7 @@ export function ContactForm() {
                 <div>
                   <p className="font-semibold text-foreground">WhatsApp</p>
                   <a
-                    href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory."
+                    href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-1 text-muted-foreground transition-colors hover:text-accent"
@@ -298,7 +298,7 @@ export function ContactForm() {
               </motion.div>
             </div>
 
-            {/* Advisor Card */}
+            {/* Consultant Card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -306,13 +306,13 @@ export function ContactForm() {
               className="mt-10 rounded-xl border border-border bg-card p-6"
             >
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Principal Advisor
+                AMFI Registered Mutual Funds Consultant
               </p>
               <p className="mt-2 font-serif text-xl font-bold text-card-foreground">
                 Francis J.
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                Principal Investment Advisor
+                AMFI Registered Mutual Funds Consultant
               </p>
               <div className="mt-4 rounded-lg bg-secondary p-3">
                 <p className="text-xs leading-relaxed text-muted-foreground">
@@ -350,7 +350,7 @@ export function ContactForm() {
                     Thank You!
                   </h3>
                   <p className="mt-3 max-w-sm text-muted-foreground leading-relaxed">
-                    Your message has been received successfully. Our advisor Francis J. will
+                    Your message has been received successfully. Our consultant Francis J. will
                     get back to you within 24 hours.
                   </p>
                   <a
@@ -370,7 +370,7 @@ export function ContactForm() {
                       Schedule Your Introductory Call
                     </h3>
                     <p className="mt-2 text-sm text-muted-foreground">
-                      Fill in your details and our advisor will reach out within 24 hours.
+                      Fill in your details and our consultant will reach out within 24 hours.
                     </p>
                   </div>
 
@@ -471,7 +471,7 @@ export function ContactForm() {
                     </div>
 
                     <a
-                      href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20advisory."
+                      href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"

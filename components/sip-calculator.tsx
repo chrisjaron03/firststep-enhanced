@@ -48,7 +48,7 @@ export function SipCalculator() {
   }
 
   return (
-    <section className="bg-gradient-to-br from-secondary via-background to-secondary py-24 lg:py-32" ref={ref}>
+    <section className="bg-gradient-to-tr from-[#e6f0ff] via-[#dbeafe] to-[#bfdbfe] py-24 lg:py-32" ref={ref}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial="hidden"

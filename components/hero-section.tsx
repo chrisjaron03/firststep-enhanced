@@ -118,16 +118,10 @@ export function HeroSection() {
             Unlock the Full{" "}
             <br className="hidden sm:block" />
             Power of{" "}
-            <span className="relative inline-block">
+            <span className="inline-block align-baseline">
               <TextShimmer className="italic text-chart-1">
                 Investing
               </TextShimmer>
-              <motion.span
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ delay: 1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -bottom-1 left-0 h-1 bg-chart-1/40 rounded-full"
-              />
             </span>
           </motion.h1>
 
@@ -154,7 +148,7 @@ export function HeroSection() {
                 </Button>
               </MagneticButton>
             </Link>
-            <Link href="/services">
+            <Link href="/products">
               <MagneticButton strength={0.2}>
                 <Button
                   size="lg"
@@ -175,7 +169,7 @@ export function HeroSection() {
           >
             <div className="flex items-center gap-2">
               <Shield className="h-5 w-5 text-chart-1" />
-              <span className="text-sm font-medium">SEBI Compliant</span>
+              <span className="text-sm font-medium">AMFI Registered</span>
             </div>
             <div className="hidden h-4 w-px bg-card/30 sm:block" />
             <div className="flex items-center gap-2">
@@ -185,7 +179,7 @@ export function HeroSection() {
             <div className="hidden h-4 w-px bg-card/30 sm:block" />
             <div className="flex items-center gap-2">
               <Award className="h-5 w-5 text-chart-1" />
-              <span className="text-sm font-medium">500+ Happy Clients</span>
+              <span className="text-sm font-medium">100+ Happy Clients</span>
             </div>
           </motion.div>
         </motion.div>

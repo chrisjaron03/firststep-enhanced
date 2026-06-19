@@ -18,7 +18,7 @@ const testimonials = [
     name: "Dr. Priya Venkatesh",
     role: "Senior Surgeon, Coimbatore",
     quote:
-      "As a medical professional with limited time for financial planning, I needed a trustworthy advisor. FSCS manages my investments across mutual funds, bonds, and insurance seamlessly. Their comprehensive approach gives me complete peace of mind.",
+      "As a medical professional with limited time for financial planning, I needed a trustworthy consultant. FSCS manages my investments across mutual funds, bonds, and insurance seamlessly. Their comprehensive approach gives me complete peace of mind.",
     rating: 5,
   },
   {

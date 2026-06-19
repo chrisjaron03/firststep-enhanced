@@ -18,12 +18,12 @@ const MESSAGES: UrgencyMessage[] = [
   },
   {
     id: 2,
-    text: "SEBI Compliant Advisor | 10+ Years of Excellence",
+    text: "AMFI Registered Mutual Funds Consultant | 10+ Years of Excellence",
     icon: <Award className="w-3.5 h-3.5" />,
   },
   {
     id: 3,
-    text: "500+ Satisfied Clients Across India & Abroad",
+    text: "100+ Satisfied Clients Across India & Abroad",
     icon: <Users className="w-3.5 h-3.5" />,
   },
 ];

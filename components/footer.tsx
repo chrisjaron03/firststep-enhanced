@@ -6,24 +6,25 @@ import { Mail, MapPin } from "lucide-react"
 
 const footerLinks = {
   Products: [
-    { label: "Mutual Funds", href: "/services#mutual-funds" },
-    { label: "PMS", href: "/services#pms" },
-    { label: "AIF", href: "/services#aif" },
-    { label: "Unlisted & Pre-IPO", href: "/services#unlisted" },
-    { label: "LRS & Global", href: "/services#lrs" },
-    { label: "GIFT City Funds", href: "/services#gift-city" },
+    { label: "Mutual Funds", href: "/products#mutual-funds" },
+    { label: "PMS", href: "/products#pms" },
+    { label: "AIF", href: "/products#aif" },
+    { label: "Unlisted & Pre-IPO", href: "/products#unlisted" },
+    { label: "LRS & Global", href: "/products#lrs" },
+    { label: "GIFT City Funds", href: "/products#gift-city" },
   ],
-  Solutions: [
-    { label: "Demat & Trading", href: "/services#demat" },
-    { label: "Fixed Deposits", href: "/services#fds" },
-    { label: "Bonds", href: "/services#bonds" },
-    { label: "Insurance", href: "/services#insurance" },
-    { label: "Gold Bonds", href: "/services#sgb" },
-    { label: "NPS", href: "/services#nps" },
+  Services: [
+    { label: "Retirement Planning", href: "/services#retirement-planning" },
+    { label: "Children's Education", href: "/services#children-education" },
+    { label: "Legacy Creation", href: "/services#legacy-creation" },
+    { label: "Protection Planning", href: "/services#protection-planning" },
+    { label: "Wealth Creation", href: "/services#wealth-creation" },
+    { label: "NRI Services", href: "/services#nri-services" },
   ],
   Company: [
     { label: "About Us", href: "/about" },
-    { label: "Our Products", href: "/services" },
+    { label: "Our Services", href: "/services" },
+    { label: "Our Products", href: "/products" },
     { label: "NRI", href: "/nri" },
     { label: "Contact", href: "/contact" },
   ],
@@ -123,7 +124,7 @@ export function Footer() {
             {`© ${new Date().getFullYear()} First Step Consultancy Services. All rights reserved.`}
           </p>
           <p className="text-xs text-primary-foreground/50">
-            Francis J., Principal Advisor
+            Francis J., AMFI Registered Mutual Funds Consultant
           </p>
         </div>
 
@@ -134,8 +135,8 @@ export function Footer() {
             Mutual Fund investments are subject to market risks. Please read the
             scheme information document carefully before investing. Past performance
             is not indicative of future returns. The information provided here is for
-            general purposes only and should not be considered as investment advice.
-            Please consult your financial advisor before making any investment
+            general purposes only and should not be considered as investment consultation.
+            Please consult your financial consultant before making any investment
             decisions.
           </p>
         </div>

@@ -1,11 +1,11 @@
 1:"$Sreact.fragment"
-2:I[4702,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","763","static/chunks/app/services/page-3d04cea7cab96d9c.js"],"Navigation"]
-3:I[2245,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","763","static/chunks/app/services/page-3d04cea7cab96d9c.js"],"PageHero"]
-4:I[2352,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","763","static/chunks/app/services/page-3d04cea7cab96d9c.js"],"ServicesDetailGrid"]
-5:I[9896,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","763","static/chunks/app/services/page-3d04cea7cab96d9c.js"],"CtaBanner"]
-6:I[2200,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","763","static/chunks/app/services/page-3d04cea7cab96d9c.js"],"Footer"]
-7:I[2988,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-0f4bb467ffd84aa8.js","763","static/chunks/app/services/page-3d04cea7cab96d9c.js"],"WhatsAppButton"]
+2:I[4702,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-768ac9a25f067820.js","763","static/chunks/app/services/page-8ad445ccf233f1ed.js"],"Navigation"]
+3:I[2245,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-768ac9a25f067820.js","763","static/chunks/app/services/page-8ad445ccf233f1ed.js"],"PageHero"]
+4:I[6270,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-768ac9a25f067820.js","763","static/chunks/app/services/page-8ad445ccf233f1ed.js"],"ServicesDetailGrid"]
+5:I[9896,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-768ac9a25f067820.js","763","static/chunks/app/services/page-8ad445ccf233f1ed.js"],"CtaBanner"]
+6:I[2200,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-768ac9a25f067820.js","763","static/chunks/app/services/page-8ad445ccf233f1ed.js"],"Footer"]
+7:I[2988,["867","static/chunks/867-80a4f81e9ae9b4d8.js","398","static/chunks/398-768ac9a25f067820.js","763","static/chunks/app/services/page-8ad445ccf233f1ed.js"],"WhatsAppButton"]
 8:I[484,[],"OutletBoundary"]
 9:"$Sreact.suspense"
-0:{"buildId":"nx3J9f0gOHTuxtZfjUoAp","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"Our Products","title":"Investment Solutions Tailored to Your Goals","description":"From wealth creation to wealth protection, we offer a comprehensive suite of 12+ financial products backed by top-tier fund houses and institutions.","image":"/images/services-hero.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}]]}],["$","$L6",null,{}],["$","$L7",null,{}]],null,["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"Guc_ars_E9uTtbg4HmxVw","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"Our Services","title":"Financial Planning for Every Life Goal","description":"From retirement planning to children's education, legacy creation, and NRI wealth management — we provide personalized services to help you achieve every milestone.","image":"/images/services-hero.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}]]}],["$","$L6",null,{}],["$","$L7",null,{}]],null,["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
 a:null

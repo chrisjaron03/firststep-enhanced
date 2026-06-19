@@ -11,7 +11,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 export const metadata: Metadata = {
   title: "About Us | First Step Consultancy Services",
   description:
-    "Learn about First Step Consultancy Services, led by Francis J., Principal Advisor with 10+ years of wealth management excellence.",
+    "Learn about First Step Consultancy Services, led by Francis J., AMFI Registered Mutual Funds Consultant with 10+ years of wealth management excellence.",
 }
 
 export default function AboutPage() {
@@ -22,7 +22,7 @@ export default function AboutPage() {
         <PageHero
           badge="About Us"
           title="Your Trusted Partner in Wealth Creation"
-          description="Led by Francis J., we bring institutional-grade advisory to individual clients with a comprehensive suite of 12+ investment products."
+          description="Led by Francis J., we bring institutional-grade consultancy to individual clients with a comprehensive suite of 12+ investment products."
           image="/images/about-team.jpg"
         />
         <AboutContent />

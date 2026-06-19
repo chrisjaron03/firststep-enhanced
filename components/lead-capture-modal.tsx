@@ -103,7 +103,7 @@ export function LeadCaptureModal() {
                       Thank You!
                     </h3>
                     <p className="mt-2 text-muted-foreground">
-                      Check your email for the investment guide. Our advisor will reach out shortly.
+                      Check your email for the investment guide. Our consultant will reach out shortly.
                     </p>
                   </motion.div>
                 ) : (

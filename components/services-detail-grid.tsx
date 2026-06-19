@@ -4,17 +4,12 @@ import { useRef } from "react"
 import Link from "next/link"
 import { motion, useInView } from "framer-motion"
 import {
-  TrendingUp,
-  BarChart3,
+  Umbrella,
+  GraduationCap,
   Landmark,
+  ShieldCheck,
+  TrendingUp,
   Globe,
-  Building2,
-  CreditCard,
-  Banknote,
-  Shield,
-  Briefcase,
-  PiggyBank,
-  FileText,
   ArrowRight,
   type LucideIcon,
 } from "lucide-react"
@@ -27,189 +22,107 @@ interface ServiceItem {
   title: string
   description: string
   highlights: string[]
-  providers: string[]
   tag: string
 }
 
 const services: ServiceItem[] = [
   {
-    id: "mutual-funds",
-    icon: TrendingUp,
-    title: "Mutual Funds",
+    id: "retirement-planning",
+    icon: Umbrella,
+    title: "Retirement Planning",
     description:
-      "Access all AMC schemes available across equity, debt, hybrid, and thematic categories. We help you select the right fund aligned with your risk profile and financial goals through SIP or lumpsum investments.",
-    highlights: ["All AMC Schemes", "SIP & Lumpsum", "Goal-Based Planning", "Tax Saving (ELSS)"],
-    providers: ["All major AMC houses available"],
-    tag: "Popular",
-  },
-  {
-    id: "pms",
-    icon: BarChart3,
-    title: "Portfolio Management Services (PMS)",
-    description:
-      "Professionally managed portfolios from India's top-tier PMS providers. Access strategies with proven track records and experienced fund managers who actively manage your wealth.",
-    highlights: ["60+ PMS Strategies", "Top Fund Managers", "Customized Portfolios", "Active Management"],
-    providers: [
-      "Buoyant Capital (SI: 21.80%)",
-      "Negen Capital (SI: 18.55%)",
-      "Carnelian Shift (SI: 36.04%)",
-      "Burman Capital (SI: 30.10%)",
-      "Abakkus (SI: 30.26%)",
-      "ICICI Prudential (SI: 13.05%)",
-      "Abakkus All Cap (SI: 25.03%)",
+      "Build a stress-free retirement with tailored income plans, pension solutions, and corpus creation strategies that ensure financial independence in your golden years.",
+    highlights: [
+      "Retirement Income Planning",
+      "Stress-Free Retirement Planning",
+      "Financial Freedom Planning",
+      "Pension & Retirement Solutions",
+      "Retirement Corpus Creation",
+      "Secure Retirement Blueprint",
+      "Dream Retirement Planning",
     ],
-    tag: "Premium",
+    tag: "Secure Future",
   },
   {
-    id: "aif",
-    icon: Briefcase,
-    title: "Alternative Investment Funds (AIF)",
+    id: "children-education",
+    icon: GraduationCap,
+    title: "Children's Education Fund",
     description:
-      "Diversify into high-return alternative strategies through Category I, II & III AIFs. Access exclusive funds not available to retail clients, managed by India's best alternative fund managers.",
-    highlights: ["60+ AIF Access", "Category I, II & III", "Exclusive Opportunities", "High Alpha"],
-    providers: [
-      "Carnelian Bharat Amritkaal",
-      "Buoyant Capital Opportunities",
-      "Motilal Oswal Founders Strategy",
-      "Bharat Value Fund Series IV",
-      "Transition VC Fund",
-      "Mosaic Multiyield Fund Series I",
-      "Neo Special Credit Opportunities",
+      "Plan ahead for your child's education with smart savings and investment strategies that cover schooling, higher education, and study abroad goals.",
+    highlights: [
+      "Children's Education Planning",
+      "Future Education Fund",
+      "Child Wealth Creation Plan",
+      "Higher Education Planning",
+      "Study Abroad Fund Planning",
+      "Smart Parent Financial Planning",
+      "Children's Future Security Plan",
+      "Education Corpus Creation",
     ],
-    tag: "Exclusive",
+    tag: "Future Ready",
   },
   {
-    id: "unlisted",
+    id: "legacy-creation",
     icon: Landmark,
-    title: "Unlisted & Pre-IPO Shares",
+    title: "Legacy Creation",
     description:
-      "Get early access to promising companies before they list on the stock exchange. Invest in proven businesses with strong fundamentals at pre-listing valuations for significant wealth creation.",
-    highlights: ["Pre-IPO Shares", "Unlisted Equities", "High Growth Potential", "Early Access"],
-    providers: [
-      "SBI AMC",
-      "InCred Holdings",
-      "ORBIS",
-      "Parag Parikh Financial Advisory Services",
-      "NSE",
-      "Cochin International Airport Ltd.",
+      "Create generational wealth with structured estate planning, succession strategies, and wealth transfer solutions that preserve your family legacy.",
+    highlights: [
+      "Legacy Creation Planning",
+      "Generational Wealth Planning",
+      "Wealth Transfer Planning",
+      "Family Legacy Planning",
+      "Estate & Succession Planning",
+      "Family Wealth Preservation",
+      "Leave a Legacy, Not Just Assets",
+      "Multi-Generational Wealth Planning",
+    ],
+    tag: "Generational",
+  },
+  {
+    id: "protection-planning",
+    icon: ShieldCheck,
+    title: "Protection Planning",
+    description:
+      "Safeguard your family and income with comprehensive protection planning covering health, life, income, and wealth risks.",
+    highlights: [
+      "Family Protection Planning",
+      "Health Insurance Planning",
+      "Income Protection Planning",
+      "Financial Risk Management",
+      "Wealth Protection Strategies",
+    ],
+    tag: "Safety First",
+  },
+  {
+    id: "wealth-creation",
+    icon: TrendingUp,
+    title: "Wealth Creation",
+    description:
+      "Grow your wealth with disciplined, goal-based investment strategies including long-term planning, SIP building, and financial independence roadmaps.",
+    highlights: [
+      "Goal-Based Wealth Creation",
+      "Long-Term Wealth Planning",
+      "SIP Wealth Building",
+      "Investment Planning",
+      "Financial Independence Planning",
     ],
     tag: "Growth",
   },
   {
-    id: "lrs",
+    id: "nri-services",
     icon: Globe,
-    title: "LRS & Global Investing",
+    title: "NRI Services",
     description:
-      "Diversify globally through the Liberalised Remittance Scheme. Access international markets with global hedge funds, ETFs, and arbitrage strategies through the Kristal platform.",
-    highlights: ["Global Hedge Funds", "International ETFs", "Kristal Platform", "Currency Diversification"],
-    providers: [
-      "Abans Global Arbitrage Fund",
-      "Aravali Global Arbitrage Fund",
-      "FengHe Asia (UTSE) Fund",
-      "Ginkgo AGT Global Growth Fund",
-      "Many more through Kristal",
+      "Specialized wealth planning for NRIs and global Tamils, covering India investments, retirement planning, and cross-border financial solutions.",
+    highlights: [
+      "NRI Wealth Planning",
+      "NRI Retirement Planning",
+      "India Investment Solutions for NRIs",
+      "Global Tamil Wealth Planning",
+      "Cross-Border Financial Planning",
     ],
     tag: "Global",
-  },
-  {
-    id: "gift-city",
-    icon: Building2,
-    title: "GIFT City Funds",
-    description:
-      "Both inbound and outbound investment opportunities through India's premier International Financial Services Centre in GIFT City, Gujarat. Tax-efficient access to global and India-focused strategies.",
-    highlights: ["Inbound & Outbound", "Tax Efficient", "Global Exposure", "IFSC Advantage"],
-    providers: [
-      "Alchemy India Long Term Gift Fund",
-      "Carnelian India Amritkaal Gift City Fund",
-      "Sage One SCP Gift City Fund",
-      "UNIFI India Rangoli Gift City Fund",
-      "DSP Global Equity Fund",
-      "Ionic Global Innovation Fund",
-    ],
-    tag: "Tax Smart",
-  },
-  {
-    id: "demat",
-    icon: CreditCard,
-    title: "Demat & Trading",
-    description:
-      "Complete demat account and trading services for direct equity investment, IPO applications, pre-IPO investments, and access to Sovereign Gold Bonds and National Pension Scheme.",
-    highlights: ["IPO & Pre-IPO", "Sovereign Gold Bonds", "NPS", "Equity Trading"],
-    providers: ["Trading", "Depository", "IPO", "Pre-IPO", "Sovereign Gold Bonds", "National Pension Scheme"],
-    tag: "Essential",
-  },
-  {
-    id: "fds",
-    icon: PiggyBank,
-    title: "Fixed Deposits",
-    description:
-      "Attractive fixed deposit rates from top NBFCs and Small Finance Banks. Secure your capital while earning competitive interest rates higher than traditional bank FDs.",
-    highlights: ["Corporate FDs", "Bank FDs", "High Returns", "Capital Safety"],
-    providers: [
-      "Shriram Finance Limited",
-      "LIC Housing Finance",
-      "PNB Housing Finance",
-      "ICICI Home Finance",
-      "Bajaj Finance Limited",
-      "Mahindra & Mahindra Financial Services",
-      "Suryoday & Unity Small Finance Banks",
-    ],
-    tag: "Stable",
-  },
-  {
-    id: "bonds",
-    icon: FileText,
-    title: "Bonds",
-    description:
-      "Invest in high-quality corporate bonds offering attractive yields with varying maturity profiles. Choose from secured and unsecured options based on your risk appetite and income needs.",
-    highlights: ["Up to 10% Returns", "Secured Options", "Regular Income", "Rated Issuers"],
-    providers: [
-      "NAVI Finserv (10.00%, Mar 2027)",
-      "Vivriti Capital (9.86%, Apr 2027)",
-      "Oxyzo Financial (9.75%, Feb 2027)",
-      "AYE Finance (10.25%, Jun 2027)",
-      "Telangana State Infrastructure (9.35%)",
-      "Andhra Pradesh Mineral Dev Corp (9.30%)",
-    ],
-    tag: "Income",
-  },
-  {
-    id: "insurance",
-    icon: Shield,
-    title: "Insurance Solutions",
-    description:
-      "Comprehensive insurance solutions covering every aspect of your life and business. From term plans to group covers, we ensure complete financial protection for you and your family.",
-    highlights: ["Life & Health", "Business Insurance", "Group Plans", "Personal Accident"],
-    providers: [
-      "All Life Insurance Products",
-      "All Health Insurance Products",
-      "All General Insurance Products",
-      "Group Health Insurance",
-      "Group Term Insurance",
-      "Group Personal Accident Insurance",
-      "Business Insurance Sec 37(1)",
-    ],
-    tag: "Protection",
-  },
-  {
-    id: "sgb",
-    icon: Banknote,
-    title: "Sovereign Gold Bonds",
-    description:
-      "Government-backed gold investment offering the dual benefit of gold price appreciation and a guaranteed interest of 2.5% per annum. Capital gains exemption on maturity after 8 years.",
-    highlights: ["Government Backed", "2.5% Interest", "Capital Gains Exempt", "Sovereign Safety"],
-    providers: ["Reserve Bank of India issued", "Available through Demat"],
-    tag: "Safe Haven",
-  },
-  {
-    id: "nps",
-    icon: BarChart3,
-    title: "National Pension Scheme",
-    description:
-      "Secure your retirement with NPS offering excellent tax benefits under Section 80C and 80CCD(1B), professional fund management, and flexible investment choices across equity and debt.",
-    highlights: ["Tax Benefits", "Retirement Security", "Flexible Options", "Professional Management"],
-    providers: ["All NPS fund managers available", "Tier I & Tier II accounts"],
-    tag: "Retirement",
   },
 ]
 
@@ -256,26 +169,6 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
         ))}
       </div>
 
-      {/* Providers */}
-      <div className="mt-6 border-t border-border pt-5">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground/60">
-          Key Partners / Options
-        </p>
-        <ul className="space-y-1.5">
-          {service.providers.slice(0, 4).map((p) => (
-            <li key={p} className="flex items-start gap-2 text-sm text-muted-foreground">
-              <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-              {p}
-            </li>
-          ))}
-          {service.providers.length > 4 && (
-            <li className="text-xs font-medium text-accent">
-              + {service.providers.length - 4} more available
-            </li>
-          )}
-        </ul>
-      </div>
-
       {/* CTA */}
       <Link href="/contact" className="mt-6 flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent/80">
         Enquire Now <ArrowRight className="h-3.5 w-3.5" />
@@ -289,7 +182,7 @@ export function ServicesDetailGrid() {
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <section className="bg-background py-24 lg:py-32" ref={ref}>
+    <section className="bg-gradient-to-br from-[#f0f7ff] to-[#d4e6ff] py-24 lg:py-32" ref={ref}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Intro */}
         <motion.div
@@ -299,10 +192,10 @@ export function ServicesDetailGrid() {
           className="mx-auto mb-16 max-w-2xl text-center"
         >
           <motion.h2 variants={fadeInUp} className="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
-            Complete Range of Products
+            Comprehensive Financial Services
           </motion.h2>
           <motion.p variants={fadeInUp} className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Every product is backed by our deep market expertise and partnerships with India's leading fund houses, NBFCs, and insurance providers.
+            Goal-based financial planning services designed to help you retire well, educate your children, protect your family, create wealth, and leave a lasting legacy.
           </motion.p>
         </motion.div>
 
@@ -321,11 +214,11 @@ export function ServicesDetailGrid() {
           className="mt-16 text-center"
         >
           <p className="text-lg text-muted-foreground">
-            {"Can't find what you're looking for?"}
+            Need a personalized financial plan?
           </p>
           <Link href="/contact">
             <Button size="lg" className="mt-4 bg-accent text-accent-foreground hover:bg-accent/90 gap-2 cursor-pointer">
-              Talk to Our Advisor
+              Talk to Our Consultant
               <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>

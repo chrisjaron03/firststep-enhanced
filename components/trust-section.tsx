@@ -6,14 +6,14 @@ import { Users, Award, Target, Clock, CheckCircle2 } from "lucide-react"
 import { fadeInUp, staggerContainer, fadeInLeft } from "@/lib/animations"
 
 const metrics = [
-  { icon: Users, value: 500, suffix: "+", label: "Happy Clients" },
+  { icon: Users, value: 100, suffix: "+", label: "Happy Clients" },
   { icon: Award, value: 10, suffix: "+", label: "Years Experience" },
   { icon: Target, value: 12, suffix: "+", label: "Investment Products" },
   { icon: Clock, value: 24, suffix: "hr", label: "Response Time" },
 ]
 
 const reasons = [
-  "SEBI Compliant Advisory Practices",
+  "AMFI Registered Mutual Funds Consultancy Practices",
   "Access to 60+ PMS & 60+ AIF Strategies",
   "Global Investment Access via LRS & GIFT City",
   "Comprehensive Insurance Solutions",
@@ -50,16 +50,16 @@ function AnimatedGradientBg() {
       <motion.div
         animate={{
           background: [
-            "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(212,175,55,0.06) 0%, transparent 50%)",
-            "radial-gradient(ellipse 80% 50% at 80% 50%, rgba(37,99,235,0.04) 0%, transparent 50%)",
-            "radial-gradient(ellipse 80% 50% at 50% 80%, rgba(212,175,55,0.06) 0%, transparent 50%)",
-            "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(212,175,55,0.06) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(37,99,235,0.08) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 80% 50%, rgba(26,39,68,0.06) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 50% 80%, rgba(37,99,235,0.08) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(26,39,68,0.06) 0%, transparent 50%)",
           ],
         }}
         transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
         className="absolute inset-0"
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-background opacity-80" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#eff6ff] via-[#e6f0ff] to-[#d4e6ff] opacity-95" />
     </div>
   )
 }
@@ -116,7 +116,7 @@ export function TrustSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <section className="relative bg-secondary py-24 lg:py-32 overflow-hidden" ref={ref}>
+    <section className="relative bg-gradient-to-br from-[#eff6ff] to-[#d4e6ff] py-24 lg:py-32 overflow-hidden" ref={ref}>
       <AnimatedGradientBg />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -134,7 +134,7 @@ export function TrustSection() {
               A Trusted Name in Wealth Management
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-              Led by Francis J., we bring institutional-grade advisory to individual
+              Led by Francis J., we bring institutional-grade consultancy to individual
               clients with a comprehensive suite of investment products.
             </p>
 

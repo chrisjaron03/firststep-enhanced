@@ -43,7 +43,7 @@ export function ProcessTimeline() {
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <section className="bg-secondary py-24 lg:py-32" ref={ref}>
+    <section className="bg-gradient-to-br from-[#f0f7ff] to-[#d4e6ff] py-24 lg:py-32" ref={ref}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <motion.div

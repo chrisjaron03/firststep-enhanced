@@ -12,12 +12,12 @@ interface TrustBadge {
 const BADGES: TrustBadge[] = [
   {
     id: 1,
-    label: "SEBI Compliant",
+    label: "AMFI Registered",
     icon: <ShieldCheck className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {
     id: 2,
-    label: "Experienced Advisor",
+    label: "AMFI Registered Mutual Funds Consultant",
     icon: <BadgeCheck className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {
@@ -27,7 +27,7 @@ const BADGES: TrustBadge[] = [
   },
   {
     id: 4,
-    label: "500+ Clients",
+    label: "100+ Clients",
     icon: <Users className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
 ];

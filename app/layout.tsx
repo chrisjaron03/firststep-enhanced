@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { DM_Sans, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { ScrollToTop } from '@/components/scroll-to-top'
 import './globals.css'
 
 const dmSans = DM_Sans({
@@ -18,15 +19,15 @@ const playfairDisplay = Playfair_Display({
 export const metadata: Metadata = {
   title: 'First Step Consultancy Services | Unlock the Full Power of Investing',
   description:
-    'First Step Consultancy Services - Your trusted investment advisor offering Mutual Funds, PMS, AIF, Bonds, Insurance, and comprehensive wealth management solutions.',
+    'First Step Consultancy Services - Your trusted investment consultant offering Mutual Funds, PMS, AIF, Bonds, Insurance, and comprehensive wealth management solutions.',
   keywords: [
-    'investment advisory',
+    'investment consultancy',
     'mutual funds',
     'PMS',
     'AIF',
     'wealth management',
     'financial consultancy',
-    'SEBI compliant',
+    'AMFI registered',
   ],
   icons: {
     icon: '/images/logo.jpg',
@@ -50,6 +51,7 @@ export default function RootLayout({
     <html lang="en" className={`${dmSans.variable} ${playfairDisplay.variable}`}>
       <body className="font-sans antialiased">
         {children}
+        <ScrollToTop />
         <Analytics />
       </body>
     </html>

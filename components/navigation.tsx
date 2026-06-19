@@ -11,7 +11,8 @@ import { UrgencyBar } from "@/components/urgency-bar"
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Products", href: "/services" },
+  { label: "Services", href: "/services" },
+  { label: "Products", href: "/products" },
   { label: "NRI", href: "/nri" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },

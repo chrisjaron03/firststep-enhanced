@@ -1,5 +1,6 @@
 import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
+import { ProductsPreview } from "@/components/products-preview"
 import { ServicesPreview } from "@/components/services-preview"
 import { TrustSection } from "@/components/trust-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
@@ -17,6 +18,7 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
+        <ProductsPreview />
         <ServicesPreview />
         <TrustSection />
         <TestimonialsSection />

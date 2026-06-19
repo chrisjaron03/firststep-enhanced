@@ -16,15 +16,15 @@ const values = [
   },
   {
     icon: Award,
-    title: "SEBI Compliant",
+    title: "AMFI Registered",
     description:
-      "Fully compliant with SEBI guidelines, ensuring transparent and ethical advisory practices.",
+      "Fully compliant with AMFI guidelines, ensuring transparent and ethical consultancy practices.",
   },
   {
     icon: Users,
     title: "Personalized Guidance",
     description:
-      "One-on-one consultations with our principal advisor to craft bespoke investment strategies for your portfolio.",
+      "One-on-one consultations with our consultant to craft bespoke investment strategies for your portfolio.",
   },
   {
     icon: TrendingUp,
@@ -35,7 +35,7 @@ const values = [
 ]
 
 const checkpoints = [
-  "SEBI Compliant Advisory Practices",
+  "AMFI Registered Mutual Funds Consultancy Practices",
   "Access to 60+ PMS Strategies",
   "Access to 60+ Alternative Investment Funds",
   "Comprehensive Insurance Solutions",
@@ -50,7 +50,7 @@ export function AboutContent() {
   const valuesInView = useInView(valuesRef, { once: true, margin: "-80px" })
 
   return (
-    <section className="bg-background py-24 lg:py-32" ref={ref}>
+    <section className="bg-gradient-to-tr from-[#e6f0ff] to-[#bfdbfe] py-24 lg:py-32" ref={ref}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Top Section: Text + Image */}
         <div className="grid items-center gap-16 lg:grid-cols-2">
@@ -67,13 +67,13 @@ export function AboutContent() {
               Building Wealth, One First Step at a Time
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Led by <strong className="text-foreground">Francis J.</strong>, Principal Advisor, First Step Consultancy Services has been guiding
+              Led by <strong className="text-foreground">Francis J.</strong>, Principal Consultant, First Step Consultancy Services has been guiding
               clients through the complex world of financial markets for over a decade.
             </p>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               We believe that the right first step in investing can transform your financial
               future. Our mission is to democratize access to premium investment products
-              and provide institutional-grade advisory to individual clients.
+              and provide institutional-grade consultancy to individual clients.
             </p>
 
             {/* Checkpoints */}
@@ -103,7 +103,7 @@ export function AboutContent() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               <Image
                 src="/images/about-team.jpg"
-                alt="First Step Consultancy Services - Professional financial advisory"
+                alt="First Step Consultancy Services - Professional financial consultancy"
                 fill
                 priority
                 className="object-cover"
@@ -129,7 +129,7 @@ export function AboutContent() {
               className="absolute -top-4 -right-4 rounded-xl border border-border bg-card p-5 shadow-xl"
             >
               <p className="font-serif text-3xl font-bold text-foreground">
-                <AnimatedCounter end={500} suffix="+" />
+                <AnimatedCounter end={100} suffix="+" />
               </p>
               <p className="text-sm text-muted-foreground">Happy Clients</p>
             </motion.div>
