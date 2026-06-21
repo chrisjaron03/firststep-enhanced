@@ -102,8 +102,8 @@ export function AboutContent() {
           >
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               <Image
-                src="/images/about-team.jpg"
-                alt="First Step Consultancy Services - Professional financial consultancy"
+                src="/images/francis-j.jpeg"
+                alt="Francis J., Principal Consultant at First Step Consultancy Services"
                 fill
                 priority
                 className="object-cover"

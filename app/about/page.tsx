@@ -23,7 +23,7 @@ export default function AboutPage() {
           badge="About Us"
           title="Your Trusted Partner in Wealth Creation"
           description="Led by Francis J., we bring institutional-grade consultancy to individual clients with a comprehensive suite of 12+ investment products."
-          image="/images/about-team.jpg"
+          image="/images/francis-j.jpeg"
         />
         <AboutContent />
         <ProcessTimeline />

@@ -18,6 +18,11 @@ import {
   Briefcase,
   ChevronRight,
   PlaneIcon,
+  UserCheck,
+  Monitor,
+  Languages,
+  Quote,
+  Star,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,10 +35,26 @@ import { ParticleField } from "@/components/particle-field"
 import { fadeInUp, staggerContainer } from "@/lib/animations"
 
 const globalRegions = [
-  { region: "Middle East", cities: ["Dubai", "Abu Dhabi", "Doha", "Riyadh", "Kuwait"], count: "5,000+" },
-  { region: "North America", cities: ["New York", "Toronto", "San Francisco", "Chicago"], count: "2,500+" },
-  { region: "Europe", cities: ["London", "Singapore", "Frankfurt", "Paris"], count: "1,800+" },
-  { region: "Asia Pacific", cities: ["Singapore", "Sydney", "Hong Kong", "Kuala Lumpur"], count: "1,200+" },
+  {
+    region: "Middle East",
+    cities: ["Dubai", "Abu Dhabi", "Doha", "Riyadh", "Kuwait"],
+    note: "NRE/NRO setup, DTAA with GCC nations, repatriation",
+  },
+  {
+    region: "North America",
+    cities: ["New York", "Toronto", "San Francisco", "Chicago"],
+    note: "India portfolio diversification, FEMA compliance",
+  },
+  {
+    region: "Europe",
+    cities: ["London", "Frankfurt", "Paris", "Amsterdam"],
+    note: "Cross-border tax planning, currency risk management",
+  },
+  {
+    region: "Asia Pacific",
+    cities: ["Singapore", "Sydney", "Hong Kong", "Kuala Lumpur"],
+    note: "GIFT City funds, LRS investments, dual-market strategy",
+  },
 ]
 
 const nriServices = [
@@ -72,7 +93,7 @@ const nriServices = [
 const whyIndia = [
   { label: "GDP Growth", value: "7%+", sub: "Fastest growing major economy" },
   { label: "Market Returns", value: "12%+", sub: "Long-term equity wealth creation" },
-  { label: "NRI Investors", value: "35M+", sub: "Global Indians building India wealth" },
+  { label: "Overseas Indians", value: "35M+", sub: "Global diaspora building India wealth" },
   { label: "Remittances", value: "$125B", sub: "India receives the highest globally" },
 ]
 
@@ -124,6 +145,61 @@ const faqs = [
     question: "Do you support clients in the Gulf, US, UK, and Singapore?",
     answer: "Yes, we work with NRIs across the Middle East, North America, Europe, and Asia Pacific. We offer virtual consultations and secure online access to your portfolio from anywhere.",
   },
+  {
+    question: "I live abroad — can I complete the entire process remotely?",
+    answer: "Yes. Our entire onboarding process is digital. From KYC verification to NRE/NRO account opening, PIS registration, and demat setup — everything is handled online through secure portals. You never need to visit India to start investing. We also conduct all consultations via video call or WhatsApp.",
+  },
+]
+
+const whyFirstStep = [
+  {
+    icon: UserCheck,
+    title: "Direct Access to Your Consultant",
+    description:
+      "No call centers, no junior associates juggling hundreds of files. You work directly with Francis J. — every consultation, every portfolio review, every decision.",
+  },
+  {
+    icon: Monitor,
+    title: "100% Digital Onboarding",
+    description:
+      "Complete KYC, open NRE/NRO and PIS accounts, and start investing entirely online. Paperless, secure, and built for NRIs who can't visit a branch in person.",
+  },
+  {
+    icon: Languages,
+    title: "Tamil-Speaking Expertise",
+    description:
+      "Cultural context matters in wealth planning. We speak your language — especially important for family decisions, property matters, and generational wealth transfer.",
+  },
+  {
+    icon: Shield,
+    title: "AMFI Registered & Compliant",
+    description:
+      "Fully AMFI-registered consultancy with FEMA-compliant transactions, transparent fee structures, and regulatory adherence on every single investment.",
+  },
+]
+
+const nriTestimonials = [
+  {
+    name: "Meera & Karthik Raman",
+    location: "Dubai, UAE",
+    quote:
+      "Managing India investments from Dubai was always a hassle — paperwork, compliance, finding someone trustworthy. First Step handled everything remotely. KYC, NRE accounts, mutual fund SIPs, all digital. Francis Sir personally reviews our portfolio every quarter.",
+    rating: 5,
+  },
+  {
+    name: "Suresh Subramanian",
+    location: "Singapore",
+    quote:
+      "I was looking for someone who understands both Indian markets and the NRI tax landscape. The DTAA optimization alone saved me significantly. What I value most is the direct access — I can WhatsApp Francis Sir anytime.",
+    rating: 5,
+  },
+  {
+    name: "Anand Krishnan",
+    location: "London, UK",
+    quote:
+      "Tamil-speaking consultant who actually understands cross-border complexities. They set up my GIFT City investments and helped plan repatriation efficiently. Startup-level personal attention that big firms just can't match.",
+    rating: 5,
+  },
 ]
 
 function TiltCard({ children, index }: { children: React.ReactNode; index: number }) {
@@ -168,7 +244,7 @@ export function NriContent() {
 
   return (
     <div ref={ref}>
-      {/* Global Presence Strip */}
+      {/* Global Reach Strip */}
       <section className="relative overflow-hidden bg-primary py-16 lg:py-20">
         <div className="absolute inset-0 opacity-20">
           <ParticleField particleCount={40} />
@@ -181,11 +257,14 @@ export function NriContent() {
             className="text-center"
           >
             <motion.p variants={fadeInUp} className="text-sm font-semibold uppercase tracking-widest text-chart-1">
-              Trusted Worldwide
+              Wherever You Are
             </motion.p>
             <motion.h2 variants={fadeInUp} className="mt-3 font-serif text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl text-balance">
-              Serving NRIs Across the Globe
+              Built for Global Indians
             </motion.h2>
+            <motion.p variants={fadeInUp} className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-primary-foreground/70">
+              Virtual consultations, digital onboarding, and secure online portfolio access — manage your India investments from anywhere in the world.
+            </motion.p>
           </motion.div>
 
           <motion.div
@@ -201,10 +280,15 @@ export function NriContent() {
                 transition={{ delay: i * 0.1 }}
                 className="rounded-xl border border-primary-foreground/10 bg-primary-foreground/5 p-6 text-center backdrop-blur-sm transition-all duration-300 hover:border-chart-1/30 hover:bg-primary-foreground/10"
               >
-                <p className="font-serif text-3xl font-bold text-chart-1">{region.count}</p>
-                <p className="mt-1 text-lg font-semibold text-primary-foreground">{region.region}</p>
-                <p className="mt-2 text-xs leading-relaxed text-primary-foreground/60">
+                <div className="mb-3 flex items-center justify-center gap-2">
+                  <MapPin className="h-4 w-4 text-chart-1" />
+                  <p className="text-lg font-semibold text-primary-foreground">{region.region}</p>
+                </div>
+                <p className="text-xs leading-relaxed text-primary-foreground/60">
                   {region.cities.join(" • ")}
+                </p>
+                <p className="mt-3 text-xs font-medium text-chart-1/80">
+                  {region.note}
                 </p>
               </motion.div>
             ))}
@@ -320,6 +404,63 @@ export function NriContent() {
         </div>
       </section>
 
+      {/* Why First Step for NRI Section */}
+      <section className="bg-gradient-to-bl from-[#eef6ff] to-[#d4e6ff] py-24 lg:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="mx-auto max-w-2xl text-center"
+          >
+            <motion.p variants={fadeInUp} className="text-sm font-semibold uppercase tracking-widest text-accent">
+              The First Step Advantage
+            </motion.p>
+            <motion.h2 variants={fadeInUp} className="mt-3 font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
+              Why NRIs Choose First Step
+            </motion.h2>
+            <motion.p variants={fadeInUp} className="mt-4 text-lg leading-relaxed text-muted-foreground">
+              Big firms treat you like an account number. We treat you like family. Here&apos;s what sets our NRI service apart.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="mt-16 grid gap-6 md:grid-cols-2"
+          >
+            {whyFirstStep.map((item, i) => {
+              const Icon = item.icon
+              return (
+                <motion.div
+                  key={item.title}
+                  variants={fadeInUp}
+                  transition={{ delay: i * 0.1 }}
+                  className="group flex gap-5 rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20"
+                >
+                  <div className="shrink-0">
+                    <div className="inline-flex items-center justify-center rounded-xl bg-secondary p-4 transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
+                      <Icon className="h-6 w-6 text-primary group-hover:text-primary-foreground" />
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-card-foreground">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </motion.div>
+        </div>
+      </section>
+
       {/* Roadmap Section */}
       <section className="bg-gradient-to-tr from-[#e6f0ff] to-[#bfdbfe] py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -373,6 +514,63 @@ export function NriContent() {
               })}
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* NRI Testimonials Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f1a30] to-[#1a2744] py-24 lg:py-32">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }} />
+        </div>
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="text-center"
+          >
+            <motion.p variants={fadeInUp} className="text-sm font-semibold uppercase tracking-widest text-chart-1">
+              NRI Client Voices
+            </motion.p>
+            <motion.h2 variants={fadeInUp} className="mt-3 font-serif text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl text-balance">
+              What Our Global Clients Say
+            </motion.h2>
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="mt-16 grid gap-6 md:grid-cols-3"
+          >
+            {nriTestimonials.map((testimonial, i) => (
+              <motion.div
+                key={testimonial.name}
+                variants={fadeInUp}
+                transition={{ delay: i * 0.1 }}
+                className="flex flex-col rounded-2xl border border-primary-foreground/10 bg-primary-foreground/5 p-8 backdrop-blur-sm"
+              >
+                <Quote className="h-8 w-8 text-chart-1/40" />
+                <p className="mt-4 flex-1 text-sm leading-relaxed text-primary-foreground/80">
+                  &ldquo;{testimonial.quote}&rdquo;
+                </p>
+                <div className="mt-6 flex gap-1">
+                  {Array.from({ length: testimonial.rating }).map((_, j) => (
+                    <Star key={j} className="h-4 w-4 fill-chart-1 text-chart-1" />
+                  ))}
+                </div>
+                <div className="mt-4">
+                  <p className="font-semibold text-primary-foreground">{testimonial.name}</p>
+                  <p className="text-xs text-primary-foreground/60">{testimonial.location}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
@@ -450,7 +648,7 @@ export function NriContent() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button size="lg" variant="outline" className="border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 gap-2 px-8 cursor-pointer">
+                <Button size="lg" variant="outline" className="bg-transparent border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/10 gap-2 px-8 cursor-pointer">
                   Chat on WhatsApp
                 </Button>
               </a>

@@ -1,11 +1,11 @@
 1:"$Sreact.fragment"
-2:I[4702,["740","static/chunks/740-f14e29c424c7bf1b.js","48","static/chunks/48-88eb4af959c4c4af.js","398","static/chunks/398-086cd4f33e206005.js","571","static/chunks/app/products/page-69fba28b6e996fbf.js"],"Navigation"]
-3:I[2245,["740","static/chunks/740-f14e29c424c7bf1b.js","48","static/chunks/48-88eb4af959c4c4af.js","398","static/chunks/398-086cd4f33e206005.js","571","static/chunks/app/products/page-69fba28b6e996fbf.js"],"PageHero"]
-4:I[4363,["740","static/chunks/740-f14e29c424c7bf1b.js","48","static/chunks/48-88eb4af959c4c4af.js","398","static/chunks/398-086cd4f33e206005.js","571","static/chunks/app/products/page-69fba28b6e996fbf.js"],"ProductsDetailGrid"]
-5:I[9896,["740","static/chunks/740-f14e29c424c7bf1b.js","48","static/chunks/48-88eb4af959c4c4af.js","398","static/chunks/398-086cd4f33e206005.js","571","static/chunks/app/products/page-69fba28b6e996fbf.js"],"CtaBanner"]
-6:I[2200,["740","static/chunks/740-f14e29c424c7bf1b.js","48","static/chunks/48-88eb4af959c4c4af.js","398","static/chunks/398-086cd4f33e206005.js","571","static/chunks/app/products/page-69fba28b6e996fbf.js"],"Footer"]
-7:I[2988,["740","static/chunks/740-f14e29c424c7bf1b.js","48","static/chunks/48-88eb4af959c4c4af.js","398","static/chunks/398-086cd4f33e206005.js","571","static/chunks/app/products/page-69fba28b6e996fbf.js"],"WhatsAppButton"]
-8:I[484,[],"OutletBoundary"]
+2:I[114,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/0d9bfebbb9080143.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"Navigation"]
+3:I[51058,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/0d9bfebbb9080143.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"PageHero"]
+4:I[17129,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/0d9bfebbb9080143.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"ProductsDetailGrid"]
+5:I[14409,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/0d9bfebbb9080143.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"CtaBanner"]
+6:I[16615,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/0d9bfebbb9080143.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"Footer"]
+7:I[42884,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/0d9bfebbb9080143.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"WhatsAppButton"]
+8:I[82796,["/_next/static/chunks/2d54d808fd4f728c.js","/_next/static/chunks/c7484448bff35515.js"],"OutletBoundary"]
 9:"$Sreact.suspense"
-0:{"buildId":"c0uMvtlszYT3C28oOMMtM","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"Our Products","title":"Investment Solutions Tailored to Your Goals","description":"From wealth creation to wealth protection, we offer a comprehensive suite of 12+ financial products backed by top-tier fund houses and institutions.","image":"/images/services-hero.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}]]}],["$","$L6",null,{}],["$","$L7",null,{}]],null,["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"9EgFRdnAG_kiY8PFIJDBN","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"Our Products","title":"Investment Solutions Tailored to Your Goals","description":"From wealth creation to wealth protection, we offer a comprehensive suite of 12+ financial products backed by top-tier fund houses and institutions.","image":"/images/services-hero.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}]]}],["$","$L6",null,{}],["$","$L7",null,{}]],[["$","script","script-0",{"src":"/_next/static/chunks/0d9bfebbb9080143.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/ad052d4edee3c3b2.js","async":true}]],["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
 a:null

@@ -32,6 +32,7 @@ export function Navigation() {
 
   useEffect(() => {
     setIsMobileMenuOpen(false)
+    window.scrollTo(0, 0)
   }, [pathname])
 
   const showSolid = isScrolled || !isHome
