@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { MagneticButton } from "@/components/magnetic-button"
 import { fadeInLeft, fadeInRight } from "@/lib/animations"
+import { api } from "@/lib/api"
 
 /* ─── Floating label input wrapper ─── */
 function FloatingInput({
@@ -190,13 +191,22 @@ export function ContactForm() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-    }, 1500)
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    await api.submitContact({
+      first_name: formData.get("firstName") as string,
+      last_name: formData.get("lastName") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      investment_range: formData.get("investmentRange") as string,
+      service: formData.get("service") as string,
+      message: formData.get("message") as string,
+    })
+    setIsSubmitting(false)
+    setIsSubmitted(true)
   }
 
   return (

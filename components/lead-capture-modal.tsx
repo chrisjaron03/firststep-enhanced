@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, Download, ArrowRight, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { api } from "@/lib/api"
 
 export function LeadCaptureModal() {
   const [isOpen, setIsOpen] = useState(false)
@@ -47,8 +48,14 @@ export function LeadCaptureModal() {
     sessionStorage.setItem("fscs-lead-dismissed", "true")
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    const name = (formData.get("name") as string) || ""
+    const email = (formData.get("email") as string) || ""
+    const phone = (formData.get("phone") as string) || ""
+    await api.submitLead({ source: "lead_capture_modal", name, email, phone })
     setIsSubmitted(true)
     setTimeout(() => {
       setIsOpen(false)
@@ -126,18 +133,21 @@ export function LeadCaptureModal() {
                     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                       <Input
                         type="text"
+                        name="name"
                         placeholder="Your full name"
                         required
                         className="h-12 bg-background"
                       />
                       <Input
                         type="email"
+                        name="email"
                         placeholder="your@email.com"
                         required
                         className="h-12 bg-background"
                       />
                       <Input
                         type="tel"
+                        name="phone"
                         placeholder="+91 XXXXX XXXXX"
                         required
                         className="h-12 bg-background"

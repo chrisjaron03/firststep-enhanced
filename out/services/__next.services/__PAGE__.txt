@@ -1,11 +1,11 @@
 1:"$Sreact.fragment"
-2:I[114,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/8892c8216c16f109.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"Navigation"]
-3:I[51058,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/8892c8216c16f109.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"PageHero"]
-4:I[47799,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/8892c8216c16f109.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"ServicesDetailGrid"]
-5:I[14409,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/8892c8216c16f109.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"CtaBanner"]
-6:I[16615,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/8892c8216c16f109.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"Footer"]
-7:I[42884,["/_next/static/chunks/cdac0d4865ad766d.js","/_next/static/chunks/8892c8216c16f109.js","/_next/static/chunks/ad052d4edee3c3b2.js"],"WhatsAppButton"]
-8:I[82796,["/_next/static/chunks/2d54d808fd4f728c.js","/_next/static/chunks/c7484448bff35515.js"],"OutletBoundary"]
+2:I[4702,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","763","static/chunks/app/services/page-d1abb28c997c25c7.js"],"Navigation"]
+3:I[2245,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","763","static/chunks/app/services/page-d1abb28c997c25c7.js"],"PageHero"]
+4:I[6270,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","763","static/chunks/app/services/page-d1abb28c997c25c7.js"],"ServicesDetailGrid"]
+5:I[9896,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","763","static/chunks/app/services/page-d1abb28c997c25c7.js"],"CtaBanner"]
+6:I[2200,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","763","static/chunks/app/services/page-d1abb28c997c25c7.js"],"Footer"]
+7:I[2988,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","763","static/chunks/app/services/page-d1abb28c997c25c7.js"],"WhatsAppButton"]
+8:I[484,[],"OutletBoundary"]
 9:"$Sreact.suspense"
-0:{"buildId":"9EgFRdnAG_kiY8PFIJDBN","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"Our Services","title":"Financial Planning for Every Life Goal","description":"From retirement planning to children's education, legacy creation, and NRI wealth management — we provide personalized services to help you achieve every milestone.","image":"/images/services-hero.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}]]}],["$","$L6",null,{}],["$","$L7",null,{}]],[["$","script","script-0",{"src":"/_next/static/chunks/8892c8216c16f109.js","async":true}],["$","script","script-1",{"src":"/_next/static/chunks/ad052d4edee3c3b2.js","async":true}]],["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"56I2-R9H4HgdONkTFrOSo","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"children":[["$","$L3",null,{"badge":"Our Services","title":"Financial Planning for Every Life Goal","description":"From retirement planning to children's education, legacy creation, and NRI wealth management — we provide personalized services to help you achieve every milestone.","image":"/images/services-hero.jpg"}],["$","$L4",null,{}],["$","$L5",null,{}]]}],["$","$L6",null,{}],["$","$L7",null,{}]],null,["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],"loading":null,"isPartial":false}
 a:null

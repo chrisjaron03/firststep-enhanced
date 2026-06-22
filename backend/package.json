@@ -1,0 +1,21 @@
+{
+  "name": "firststep-backend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:create": "wrangler d1 create firststep-db",
+    "db:migrate": "wrangler d1 execute firststep-db --file=src/schema.sql",
+    "db:migrate:remote": "wrangler d1 execute firststep-db --remote --file=src/schema.sql",
+    "db:query": "wrangler d1 execute firststep-db --command",
+    "db:query:remote": "wrangler d1 execute firststep-db --remote --command",
+    "db:seed-admin": "npx tsx src/seed-admin.ts",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "typescript": "^5.7.3",
+    "wrangler": "^3.99.0"
+  }
+}

@@ -6,6 +6,7 @@ import { Calculator, ArrowRight, Download, CheckCircle2, TrendingUp, BarChart3 }
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { fadeInUp } from "@/lib/animations"
+import { api } from "@/lib/api"
 
 export function SipCalculator() {
   const [showForm, setShowForm] = useState(true)
@@ -34,8 +35,18 @@ export function SipCalculator() {
     }).format(value)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    await api.submitLead({
+      source: "sip_calculator",
+      name,
+      email,
+      phone,
+      monthly_investment: monthlyInvestment,
+      expected_return: expectedReturn,
+      tenure_years: tenure,
+      projected_value: Math.round(futureValue),
+    })
     setIsSubmitted(true)
     setTimeout(() => {
       setShowForm(false)

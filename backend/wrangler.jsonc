@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "firststep-backend",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-01-01",
+  "vars": {
+    "ALLOWED_ORIGINS": "http://localhost:3000,https://firststep-enhanced.pages.dev,https://firststep-enhanced-ybh.pages.dev,https://www.firststepcs.com,https://firststepcs.com"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "firststep-db",
+      "database_id": "d93f1a80-4003-46ee-a5d8-64031a06ebe2"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

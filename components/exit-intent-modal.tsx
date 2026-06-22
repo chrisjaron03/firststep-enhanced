@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Download, User, Mail, Phone, Gift, ArrowRight } from "lucide-react";
+import { api } from "@/lib/api";
 
 interface FormData {
   name: string;
@@ -49,9 +50,9 @@ export function ExitIntentModal() {
     setIsVisible(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate submission - in production, send to your backend
+    await api.submitLead({ source: "exit_intent_modal", ...formData });
     setIsSubmitted(true);
     setTimeout(() => {
       setIsVisible(false);
