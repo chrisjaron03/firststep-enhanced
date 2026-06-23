@@ -21,7 +21,7 @@ interface ParticleFieldProps {
   className?: string
 }
 
-const COLORS = ["#D4AF37", "#FFD700", "#F4E4BC", "#E8C547", "#F0D878"]
+const COLORS = ["#DC2626", "#1a2744", "#FFFFFF"]
 
 export function ParticleField({ particleCount = 60, className }: ParticleFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)

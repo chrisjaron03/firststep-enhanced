@@ -35,10 +35,10 @@ function FloatingInput({
         animate={{
           y: isFloating ? -24 : 14,
           scale: isFloating ? 0.82 : 1,
-          color: focused ? "#2563eb" : "#6b7280",
+          color: focused ? "#DC2626" : "rgba(26, 39, 68, 0.6)",
         }}
         transition={{ duration: 0.2 }}
-        className="absolute left-3 z-10 origin-left pointer-events-none text-muted-foreground bg-card px-1"
+        className="absolute left-3 z-10 origin-left pointer-events-none text-primary/60 bg-card px-1"
       >
         {label}
         {required && <span className="text-accent ml-0.5">*</span>}
@@ -83,10 +83,10 @@ function FloatingSelect({
         animate={{
           y: isFloating ? -24 : 14,
           scale: isFloating ? 0.82 : 1,
-          color: focused ? "#2563eb" : "#6b7280",
+          color: focused ? "#DC2626" : "rgba(26, 39, 68, 0.6)",
         }}
         transition={{ duration: 0.2 }}
-        className="absolute left-3 z-10 origin-left pointer-events-none text-muted-foreground bg-card px-1"
+        className="absolute left-3 z-10 origin-left pointer-events-none text-primary/60 bg-card px-1"
       >
         {label}
         {required && <span className="text-accent ml-0.5">*</span>}
@@ -129,10 +129,10 @@ function FloatingTextarea({
         animate={{
           y: isFloating ? -24 : 14,
           scale: isFloating ? 0.82 : 1,
-          color: focused ? "#2563eb" : "#6b7280",
+          color: focused ? "#DC2626" : "rgba(26, 39, 68, 0.6)",
         }}
         transition={{ duration: 0.2 }}
-        className="absolute left-3 z-10 origin-left pointer-events-none text-muted-foreground bg-card px-1"
+        className="absolute left-3 z-10 origin-left pointer-events-none text-primary/60 bg-card px-1"
       >
         {label}
       </motion.label>
@@ -210,7 +210,7 @@ export function ContactForm() {
   }
 
   return (
-    <section className="relative bg-gradient-to-br from-[#f0f7ff] to-[#e3efff] py-24 lg:py-32 overflow-hidden" ref={ref}>
+    <section className="relative bg-gradient-to-br from-[var(--section-navy-soft)] via-[var(--section-warm)] to-[var(--section-cool)] py-24 lg:py-32 overflow-hidden" ref={ref}>
       <AnimatedPattern />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -315,17 +315,17 @@ export function ContactForm() {
               transition={{ delay: 0.8 }}
               className="mt-10 rounded-xl border border-border bg-card p-6"
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary/60">
                 AMFI Registered Mutual Funds Consultant
               </p>
               <p className="mt-2 font-serif text-xl font-bold text-card-foreground">
                 Francis J.
               </p>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-1 text-sm text-primary/80">
                 AMFI Registered Mutual Funds Consultant
               </p>
               <div className="mt-4 rounded-lg bg-secondary p-3">
-                <p className="text-xs leading-relaxed text-muted-foreground">
+                <p className="text-xs leading-relaxed text-primary/80">
                   With extensive experience in financial markets, Francis J. provides
                   personalized investment strategies across equity, debt, alternatives,
                   and insurance to help clients achieve their financial goals.
@@ -341,7 +341,9 @@ export function ContactForm() {
             animate={isInView ? "visible" : "hidden"}
             className="lg:col-span-3"
           >
-            <div className="rounded-2xl border border-border bg-card p-8 shadow-sm lg:p-10">
+            <div className="rounded-2xl border border-border/50 bg-white p-8 shadow-lg shadow-primary/5 lg:p-10 relative overflow-hidden">
+              {/* Gold top accent line */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--gold)]/60 via-accent to-[var(--gold)]/60" />
               {isSubmitted ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -379,7 +381,7 @@ export function ContactForm() {
                     <h3 className="font-serif text-2xl font-bold text-card-foreground">
                       Schedule Your Introductory Call
                     </h3>
-                    <p className="mt-2 text-sm text-muted-foreground">
+                    <p className="mt-2 text-sm text-primary/80">
                       Fill in your details and our consultant will reach out within 24 hours.
                     </p>
                   </div>
@@ -476,7 +478,7 @@ export function ContactForm() {
 
                     <div className="flex items-center justify-center gap-4 pt-2">
                       <div className="h-px flex-1 bg-border" />
-                      <span className="text-xs text-muted-foreground">or</span>
+                      <span className="text-xs text-primary/60">or</span>
                       <div className="h-px flex-1 bg-border" />
                     </div>
 
@@ -490,7 +492,7 @@ export function ContactForm() {
                       Chat on WhatsApp Instead
                     </a>
 
-                    <p className="text-center text-xs text-muted-foreground">
+                    <p className="text-center text-xs text-primary/60">
                       Your information is 100% secure and will never be shared with third parties.
                     </p>
                   </form>

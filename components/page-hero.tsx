@@ -17,8 +17,9 @@ export function PageHero({ badge, title, description, image }: PageHeroProps) {
       {/* Background */}
       <div className="absolute inset-0">
         <Image src={image} alt="" fill className="object-cover" priority />
-        <div className="absolute inset-0 bg-primary/85" />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/60 to-primary/95" />
+        <div className="absolute inset-0 bg-[var(--navy-deep)]/85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--navy-mid)]/60 to-[var(--navy-deep)]/95" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[var(--gold)]/[0.03] to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -29,7 +30,7 @@ export function PageHero({ badge, title, description, image }: PageHeroProps) {
           className="mx-auto max-w-3xl text-center"
         >
           <motion.div variants={fadeInUp}>
-            <span className="inline-flex items-center rounded-full border border-card/20 bg-card/10 px-4 py-1.5 text-sm font-medium text-card/90 backdrop-blur-sm">
+            <span className="inline-flex items-center rounded-full border border-[var(--gold)]/25 bg-white/[0.08] px-4 py-1.5 text-sm font-medium text-card/90 backdrop-blur-md shadow-sm shadow-[var(--gold)]/10">
               {badge}
             </span>
           </motion.div>

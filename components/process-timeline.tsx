@@ -43,7 +43,7 @@ export function ProcessTimeline() {
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <section className="bg-gradient-to-br from-[#f0f7ff] to-[#d4e6ff] py-24 lg:py-32" ref={ref}>
+    <section className="bg-[var(--section-cool)] py-24 lg:py-32" ref={ref}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -66,7 +66,7 @@ export function ProcessTimeline() {
         {/* Timeline */}
         <div className="relative">
           {/* Connecting line */}
-          <div className="absolute left-8 top-0 bottom-0 hidden w-px bg-border lg:left-1/2 lg:block" />
+          <div className="absolute left-8 top-0 bottom-0 hidden w-px lg:left-1/2 lg:block" style={{ background: 'linear-gradient(to bottom, var(--gold), rgba(26,39,68,0.3), var(--gold))' }} />
 
           <div className="space-y-12 lg:space-y-16">
             {steps.map((step, i) => {
@@ -84,21 +84,21 @@ export function ProcessTimeline() {
                 >
                   {/* Content */}
                   <div className={`flex-1 ${isEven ? "lg:text-right" : "lg:text-left"}`}>
-                    <div className={`rounded-2xl border border-border bg-card p-8 shadow-sm transition-shadow hover:shadow-lg ${isEven ? "lg:ml-auto lg:mr-0" : "lg:mr-auto lg:ml-0"} max-w-lg`}>
+                    <div className={`rounded-2xl border border-border/60 bg-white p-8 shadow-sm transition-all duration-500 hover:shadow-lg hover:border-[var(--gold)]/30 hover:shadow-[var(--gold)]/5 ${isEven ? "lg:ml-auto lg:mr-0" : "lg:mr-auto lg:ml-0"} max-w-lg`}>
                       <span className="text-xs font-bold uppercase tracking-widest text-accent">
                         Step {step.step}
                       </span>
                       <h3 className="mt-2 font-serif text-xl font-bold text-foreground">
                         {step.title}
                       </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      <p className="mt-3 text-sm leading-relaxed text-primary/80">
                         {step.description}
                       </p>
                     </div>
                   </div>
 
                   {/* Center icon */}
-                  <div className="absolute left-0 hidden h-16 w-16 items-center justify-center rounded-full border-4 border-background bg-accent text-accent-foreground lg:relative lg:left-auto lg:flex lg:shrink-0">
+                  <div className="absolute left-0 hidden h-16 w-16 items-center justify-center rounded-full border-4 border-[var(--section-cool)] bg-gradient-to-br from-accent to-[#B91C1C] text-accent-foreground shadow-lg shadow-accent/20 lg:relative lg:left-auto lg:flex lg:shrink-0">
                     <Icon className="h-6 w-6" />
                   </div>
 

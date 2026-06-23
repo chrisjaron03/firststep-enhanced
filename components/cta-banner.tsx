@@ -11,7 +11,7 @@ export function CtaBanner() {
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <section className="relative bg-accent py-20 lg:py-24 overflow-hidden" ref={ref}>
+    <section className="relative bg-gradient-to-br from-[var(--navy-deep)] via-accent to-[#B91C1C] py-20 lg:py-24 overflow-hidden" ref={ref}>
       {/* Animated gradient orbs in background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -21,7 +21,7 @@ export function CtaBanner() {
             scale: [1, 1.2, 1],
           }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-white/[0.06] blur-3xl"
+          className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-white/[0.08] blur-3xl"
         />
         <motion.div
           animate={{
@@ -30,7 +30,7 @@ export function CtaBanner() {
             scale: [1, 1.3, 1],
           }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-40 -right-32 h-[30rem] w-[30rem] rounded-full bg-white/[0.05] blur-3xl"
+          className="absolute -bottom-40 -right-32 h-[30rem] w-[30rem] rounded-full bg-white/[0.07] blur-3xl"
         />
         <motion.div
           animate={{
@@ -39,7 +39,7 @@ export function CtaBanner() {
             scale: [1, 1.1, 1],
           }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/2 left-1/3 h-64 w-64 rounded-full bg-primary/[0.06] blur-3xl"
+          className="absolute top-1/2 left-1/3 h-64 w-64 rounded-full bg-[var(--gold)]/[0.08] blur-3xl"
         />
       </div>
 
@@ -88,7 +88,7 @@ export function CtaBanner() {
               </motion.div>
               <Button
                 size="lg"
-                className="relative bg-primary text-primary-foreground hover:bg-primary/90 gap-2 px-8 text-base cursor-pointer shadow-xl shadow-black/20"
+                className="relative bg-white text-[var(--navy-deep)] hover:bg-white/90 gap-2 px-8 text-base cursor-pointer shadow-xl shadow-black/20 font-bold"
               >
                 Book Introductory Call
                 <ArrowRight className="h-4 w-4" />

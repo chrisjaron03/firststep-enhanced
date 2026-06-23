@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-2:I[4702,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","864","static/chunks/app/sip-calculator/page-56a4f70ef85d7e89.js"],"Navigation"]
-3:I[2762,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","864","static/chunks/app/sip-calculator/page-56a4f70ef85d7e89.js"],"SipCalculator"]
-4:I[2200,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","864","static/chunks/app/sip-calculator/page-56a4f70ef85d7e89.js"],"Footer"]
-5:I[2988,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-e0e720810758a89e.js","864","static/chunks/app/sip-calculator/page-56a4f70ef85d7e89.js"],"WhatsAppButton"]
+2:I[4702,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-be7cc4d8e8d46e18.js","864","static/chunks/app/sip-calculator/page-61b7d36b8475e244.js"],"Navigation"]
+3:I[2762,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-be7cc4d8e8d46e18.js","864","static/chunks/app/sip-calculator/page-61b7d36b8475e244.js"],"SipCalculator"]
+4:I[2200,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-be7cc4d8e8d46e18.js","864","static/chunks/app/sip-calculator/page-61b7d36b8475e244.js"],"Footer"]
+5:I[2988,["111","static/chunks/111-8eed768577183c71.js","854","static/chunks/854-b8b75c8811b0bb1e.js","398","static/chunks/398-be7cc4d8e8d46e18.js","864","static/chunks/app/sip-calculator/page-61b7d36b8475e244.js"],"WhatsAppButton"]
 6:I[484,[],"OutletBoundary"]
 7:"$Sreact.suspense"
-0:{"buildId":"56I2-R9H4HgdONkTFrOSo","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"className":"pt-20","children":["$","$L3",null,{}]}],["$","$L4",null,{}],["$","$L5",null,{}]],null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
+0:{"buildId":"Xqd587IFHeq4r48x4Jv2B","rsc":["$","$1","c",{"children":[[["$","$L2",null,{}],["$","main",null,{"className":"pt-20","children":["$","$L3",null,{}]}],["$","$L4",null,{}],["$","$L5",null,{}]],null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],"loading":null,"isPartial":false}
 8:null

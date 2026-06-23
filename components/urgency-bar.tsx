@@ -71,13 +71,13 @@ export function UrgencyBar({ showSolid = false }: UrgencyBarProps) {
           animate={{ height: "auto", opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-[#D4AF37]/15 border-b border-[#D4AF37]/30 overflow-hidden"
+          className="bg-gradient-to-r from-accent/10 via-accent/15 to-[var(--gold)]/10 border-b border-accent/20 overflow-hidden"
         >
           <div className="relative flex items-center justify-center px-4 py-2">
             {/* Pulsing dot */}
             <span className="absolute left-4 lg:left-6 flex h-2 w-2 mr-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2563eb] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2563eb]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent" />
             </span>
 
             {/* Rotating message */}
@@ -89,10 +89,10 @@ export function UrgencyBar({ showSolid = false }: UrgencyBarProps) {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
                 className={`flex items-center gap-2 text-xs lg:text-sm font-medium pl-4 lg:pl-0 transition-colors duration-300 ${
-                  showSolid ? "text-[#1a2744]/80" : "text-white/95"
+                  showSolid ? "text-primary/80" : "text-white/95"
                 }`}
               >
-                <span className="text-[#D4AF37]">{currentMessage.icon}</span>
+                <span className="text-accent">{currentMessage.icon}</span>
                 <span>{currentMessage.text}</span>
               </motion.div>
             </AnimatePresence>
@@ -101,7 +101,7 @@ export function UrgencyBar({ showSolid = false }: UrgencyBarProps) {
             <button
               onClick={handleDismiss}
               className={`absolute right-3 p-1 rounded-full transition-colors ${
-                showSolid ? "hover:bg-[#1a2744]/5 text-[#1a2744]/50 hover:text-[#1a2744]/80" : "hover:bg-white/10 text-white/70 hover:text-white"
+                showSolid ? "hover:bg-primary/5 text-primary/40 hover:text-primary/70" : "hover:bg-white/10 text-white/70 hover:text-white"
               }`}
               aria-label="Dismiss urgency bar"
             >

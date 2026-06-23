@@ -27,7 +27,7 @@ function TextShimmer({ children, className }: { children: React.ReactNode; class
       <motion.span
         className="absolute inset-0 z-20 pointer-events-none"
         style={{
-          background: "linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.4) 50%, transparent 100%)",
+          background: "linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.4) 50%, transparent 100%)",
           mixBlendMode: "overlay",
         }}
         animate={{ x: ["-100%", "200%"] }}
@@ -66,8 +66,9 @@ export function HeroSection() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-primary/80" />
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-transparent to-primary/95" />
+        <div className="absolute inset-0 bg-[var(--navy-deep)]/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--navy-mid)]/40 via-transparent to-[var(--navy-deep)]/95" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[var(--gold)]/[0.03] to-transparent" />
       </motion.div>
 
       {/* Particle field overlay */}
@@ -89,13 +90,13 @@ export function HeroSection() {
           style={{ y: orbY1 }}
           animate={{ y: [0, -20, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 right-1/4 h-72 w-72 rounded-full bg-accent/5 blur-3xl"
+          className="absolute top-1/4 right-1/4 h-72 w-72 rounded-full bg-accent/[0.08] blur-3xl"
         />
         <motion.div
           style={{ y: orbY2 }}
           animate={{ y: [0, 20, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-1/4 left-1/4 h-96 w-96 rounded-full bg-chart-1/5 blur-3xl"
+          className="absolute bottom-1/4 left-1/4 h-96 w-96 rounded-full bg-chart-1/[0.08] blur-3xl"
         />
       </div>
 
@@ -197,7 +198,7 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1 + i * 0.1 }}
-              className="group rounded-xl border border-white/10 bg-white/[0.07] px-6 py-5 backdrop-blur-xl shadow-lg shadow-black/5 transition-all duration-300 hover:bg-white/[0.12] hover:border-chart-1/30 hover:shadow-xl hover:shadow-chart-1/5"
+              className="group rounded-xl border border-white/10 bg-white/[0.07] px-6 py-5 backdrop-blur-xl shadow-lg shadow-black/5 transition-all duration-500 hover:bg-white/[0.14] hover:border-[var(--gold)]/40 hover:shadow-xl hover:shadow-[var(--gold)]/10"
             >
               <p className="font-serif text-3xl font-bold text-card lg:text-4xl">
                 <AnimatedCounter end={stat.value} suffix={stat.suffix} />

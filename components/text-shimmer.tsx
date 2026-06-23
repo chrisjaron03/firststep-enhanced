@@ -37,7 +37,7 @@ export function TextShimmer({ children, className, speed = 3 }: TextShimmerProps
   return (
     <span
       className={cn(
-        "relative inline align-baseline bg-gradient-to-r from-[#D4AF37] via-[#F4E4BC] to-[#FFD700] bg-clip-text text-transparent text-shimmer-animated",
+        "relative inline align-baseline bg-gradient-to-r from-[#DC2626] via-white to-[#DC2626] bg-clip-text text-transparent text-shimmer-animated",
         className
       )}
       style={{ "--shimmer-speed": `${speed}s` } as React.CSSProperties}

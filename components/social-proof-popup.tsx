@@ -109,25 +109,25 @@ export function SocialProofPopup() {
           transition={{ type: "spring", stiffness: 400, damping: 30 }}
           className="fixed bottom-28 lg:bottom-6 left-4 z-40 max-w-[300px] lg:max-w-[320px]"
         >
-          <div className="bg-white rounded-xl shadow-2xl border border-gray-100 p-4 flex items-start gap-3">
+          <div className="bg-white rounded-xl shadow-2xl shadow-primary/10 border border-border/60 p-4 flex items-start gap-3">
             {/* Avatar */}
-            <div className="shrink-0 w-10 h-10 rounded-full bg-[#1a2744]/10 flex items-center justify-center">
-              <User className="w-5 h-5 text-[#1a2744]" />
+            <div className="shrink-0 w-10 h-10 rounded-full bg-[var(--gold)]/12 flex items-center justify-center border border-[var(--gold)]/20">
+              <User className="w-5 h-5 text-primary" />
             </div>
 
             {/* Content */}
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-[#1a2744] leading-snug">
+              <p className="text-sm text-primary leading-snug">
                 <span className="font-semibold">{message.name}</span>{" "}
-                <span className="text-[#1a2744]/70">from {message.location}</span>{" "}
-                <span className="text-[#1a2744]/80">{message.action}</span>
+                <span className="text-primary/60">from {message.location}</span>{" "}
+                <span className="text-primary/70">{message.action}</span>
               </p>
               <div className="flex items-center gap-1.5 mt-1.5">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#22C55E] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#22C55E]" />
                 </span>
-                <span className="text-xs text-green-600 font-medium">Just now</span>
+                <span className="text-xs text-[#22C55E] font-medium">Just now</span>
               </div>
             </div>
           </div>

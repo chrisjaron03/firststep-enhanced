@@ -49,13 +49,13 @@ export function TrustBadges({ variant = "light", className = "" }: TrustBadgesPr
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: index * 0.1, duration: 0.4 }}
-          className={`inline-flex items-center gap-1.5 lg:gap-2 px-3 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-medium border transition-all hover:shadow-md ${
+          className={`inline-flex items-center gap-1.5 lg:gap-2 px-3 lg:px-4 py-2 rounded-full text-xs lg:text-sm font-medium border transition-all duration-500 hover:shadow-md ${
             isLight
-              ? "bg-white/80 border-[#1a2744]/10 text-[#1a2744]/80 hover:border-[#D4AF37]/50 hover:shadow-[#D4AF37]/10"
-              : "bg-[#1a2744]/50 border-white/10 text-white/80 hover:border-[#D4AF37]/50 hover:shadow-[#D4AF37]/10"
+              ? "bg-white/80 border-primary/10 text-primary/80 hover:border-[var(--gold)]/40 hover:shadow-[var(--gold)]/10"
+              : "bg-primary/50 border-white/10 text-white/80 hover:border-[var(--gold)]/40 hover:shadow-[var(--gold)]/10"
           }`}
         >
-          <span className={isLight ? "text-[#2563eb]" : "text-[#D4AF37]"}>
+          <span className={isLight ? "text-accent" : "text-[var(--gold)]"}>
             {badge.icon}
           </span>
           <span>{badge.label}</span>

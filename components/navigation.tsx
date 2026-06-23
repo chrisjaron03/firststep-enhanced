@@ -40,7 +40,7 @@ export function Navigation() {
   /* Backdrop blur intensity increases on scroll */
   const backdropClass = showSolid
     ? isScrolled
-      ? "bg-card/[0.97] backdrop-blur-xl shadow-lg border-b border-border"
+      ? "bg-card/[0.97] backdrop-blur-xl shadow-lg shadow-primary/5 border-b border-[var(--gold)]/10"
       : "bg-card/95 backdrop-blur-md shadow-lg border-b border-border"
     : "bg-transparent"
 
@@ -104,8 +104,8 @@ export function Navigation() {
                     layoutId="nav-indicator"
                     className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full"
                     style={{
-                      background: "linear-gradient(90deg, transparent, #D4AF37, transparent)",
-                      boxShadow: "0 0 8px rgba(212,175,55,0.6), 0 0 20px rgba(212,175,55,0.3)",
+                      background: "linear-gradient(90deg, transparent, var(--gold), transparent)",
+                      boxShadow: "0 0 10px rgba(212,175,55,0.5), 0 0 24px rgba(212,175,55,0.2)",
                     }}
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
@@ -118,7 +118,7 @@ export function Navigation() {
         {/* Desktop CTA - compact */}
         <div className="hidden items-center gap-3 lg:flex">
           <Link href="/contact">
-            <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 gap-1.5 cursor-pointer text-sm px-4">
+            <Button size="sm" className="bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground hover:from-[#B91C1C] hover:to-accent gap-1.5 cursor-pointer text-sm px-4 shadow-md shadow-accent/20">
               Introductory Call
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
@@ -169,7 +169,7 @@ export function Navigation() {
               ))}
               <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
                 <Link href="/contact">
-                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90 w-full gap-2 cursor-pointer">
+                  <Button className="bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground hover:from-[#B91C1C] hover:to-accent w-full gap-2 cursor-pointer shadow-md shadow-accent/20">
                     Introductory Call
                     <ArrowRight className="h-4 w-4" />
                   </Button>

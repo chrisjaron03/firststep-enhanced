@@ -137,23 +137,23 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: (index % 3) * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:shadow-xl hover:shadow-accent/5 hover:border-accent/20"
+      className="group relative rounded-2xl border border-border/50 bg-white p-8 transition-all duration-500 hover:shadow-xl hover:shadow-[var(--gold)]/8 hover:border-[var(--gold)]/30"
     >
       {/* Tag */}
-      <span className="absolute top-6 right-6 rounded-full bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
+      <span className="absolute top-6 right-6 rounded-full bg-[var(--gold)]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">
         {service.tag}
       </span>
 
       {/* Icon */}
-      <div className="mb-6 inline-flex items-center justify-center rounded-xl bg-secondary p-4 transition-colors duration-300 group-hover:bg-accent group-hover:text-accent-foreground">
-        <service.icon className="h-6 w-6 text-primary group-hover:text-accent-foreground" />
+      <div className="mb-6 inline-flex items-center justify-center rounded-xl bg-[var(--section-navy-soft)] p-4 transition-all duration-500 group-hover:bg-[var(--gold)]/10 group-hover:shadow-sm group-hover:shadow-[var(--gold)]/10">
+        <service.icon className="h-6 w-6 text-primary transition-colors duration-500 group-hover:text-[var(--gold)]" />
       </div>
 
       {/* Title & Description */}
       <h3 className="font-serif text-xl font-bold text-card-foreground lg:text-2xl">
         {service.title}
       </h3>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+      <p className="mt-3 text-sm leading-relaxed text-primary/80">
         {service.description}
       </p>
 
@@ -182,7 +182,7 @@ export function ServicesDetailGrid() {
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <section className="bg-gradient-to-br from-[#f0f7ff] to-[#d4e6ff] py-24 lg:py-32" ref={ref}>
+    <section className="bg-[var(--section-warm)] py-24 lg:py-32" ref={ref}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Intro */}
         <motion.div

@@ -59,7 +59,7 @@ export function SipCalculator() {
   }
 
   return (
-    <section className="bg-gradient-to-tr from-[#e6f0ff] via-[#dbeafe] to-[#bfdbfe] py-24 lg:py-32" ref={ref}>
+    <section className="bg-[var(--section-warm)] py-24 lg:py-32" ref={ref}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <motion.div
           initial="hidden"
@@ -129,7 +129,7 @@ export function SipCalculator() {
                         onChange={(e) => setMonthlyInvestment(Number(e.target.value))}
                         className="w-full accent-primary"
                       />
-                      <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                      <div className="flex justify-between text-xs text-primary/60 mt-1">
                         <span>500</span>
                         <span>1,00,000</span>
                       </div>
@@ -147,7 +147,7 @@ export function SipCalculator() {
                         onChange={(e) => setExpectedReturn(Number(e.target.value))}
                         className="w-full accent-primary"
                       />
-                      <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                      <div className="flex justify-between text-xs text-primary/60 mt-1">
                         <span>1%</span>
                         <span>30%</span>
                       </div>
@@ -165,7 +165,7 @@ export function SipCalculator() {
                         onChange={(e) => setTenure(Number(e.target.value))}
                         className="w-full accent-primary"
                       />
-                      <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                      <div className="flex justify-between text-xs text-primary/60 mt-1">
                         <span>1 yr</span>
                         <span>30 yrs</span>
                       </div>
@@ -196,7 +196,7 @@ export function SipCalculator() {
                     </div>
                   </div>
 
-                  <p className="text-center text-xs text-muted-foreground">
+                  <p className="text-center text-xs text-primary/60">
                     We value your privacy. Your information is 100% secure and will never be shared.
                   </p>
                 </form>
@@ -235,19 +235,19 @@ export function SipCalculator() {
 
                 <div className="grid gap-6 sm:grid-cols-3">
                   <div className="rounded-xl border border-border bg-secondary p-6 text-center">
-                    <p className="text-sm font-medium text-muted-foreground">Total Invested</p>
+                    <p className="text-sm font-medium text-primary/80">Total Invested</p>
                     <p className="mt-2 font-serif text-2xl font-bold text-foreground">
                       {formatCurrency(totalInvestment)}
                     </p>
                   </div>
                   <div className="rounded-xl border border-border bg-primary/5 p-6 text-center">
-                    <p className="text-sm font-medium text-muted-foreground">Estimated Returns</p>
+                    <p className="text-sm font-medium text-primary/80">Estimated Returns</p>
                     <p className="mt-2 font-serif text-2xl font-bold text-primary">
                       {formatCurrency(estimatedReturns)}
                     </p>
                   </div>
                   <div className="rounded-xl border border-border bg-secondary p-6 text-center">
-                    <p className="text-sm font-medium text-muted-foreground">Total Value</p>
+                    <p className="text-sm font-medium text-primary/80">Total Value</p>
                     <p className="mt-2 font-serif text-2xl font-bold text-foreground">
                       {formatCurrency(Math.round(futureValue))}
                     </p>
@@ -259,7 +259,7 @@ export function SipCalculator() {
                     <BarChart3 className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                     <div>
                       <h4 className="font-semibold text-foreground">Breakdown</h4>
-                      <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+                      <ul className="mt-2 space-y-1 text-sm text-primary/80">
                         <li>Monthly SIP: {formatCurrency(monthlyInvestment)}</li>
                         <li>Duration: {tenure} years</li>
                         <li>Expected Return: {expectedReturn}% p.a.</li>
@@ -295,7 +295,7 @@ export function SipCalculator() {
                   </Button>
                 </div>
 
-                <p className="text-center text-xs text-muted-foreground">
+                <p className="text-center text-xs text-primary/60">
                   Mutual Fund investments are subject to market risks. This calculator provides only an estimate and does not guarantee future returns.
                 </p>
               </motion.div>

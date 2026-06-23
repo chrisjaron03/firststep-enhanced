@@ -8,7 +8,7 @@ export function WhatsAppButton() {
       href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-28 lg:bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/30 transition-transform hover:scale-110"
+      className="fixed bottom-28 lg:bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] hover:bg-[#20bd5a] shadow-lg shadow-[#25D366]/30 transition-transform hover:scale-110 border border-white/20"
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ delay: 2, type: "spring", stiffness: 200 }}

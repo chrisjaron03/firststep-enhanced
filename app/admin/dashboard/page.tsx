@@ -72,13 +72,13 @@ interface AuditEntry {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  new: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  contacted: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-  qualified: "bg-purple-500/10 text-purple-400 border-purple-500/20",
-  scheduled: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
-  converted: "bg-green-500/10 text-green-400 border-green-500/20",
-  completed: "bg-green-500/10 text-green-400 border-green-500/20",
-  lost: "bg-red-500/10 text-red-400 border-red-500/20",
+  new: "bg-red-500/15 text-red-400 border-red-500/30",
+  contacted: "bg-white/10 text-white/80 border-white/20",
+  qualified: "bg-[#1a2744]/40 text-white/90 border-[#1a2744]/50",
+  scheduled: "bg-[#1a2744]/20 text-white/70 border-[#1a2744]/30",
+  converted: "bg-red-500/25 text-red-300 border-red-500/40",
+  completed: "bg-red-500/25 text-red-300 border-red-500/40",
+  lost: "bg-red-950/20 text-red-500/60 border-red-950/30",
 }
 
 const SERVICE_LABELS: Record<string, string> = {
@@ -222,7 +222,7 @@ export default function AdminDashboardPage() {
   if (!authChecked) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#0a0f1c]">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-red-500" />
       </div>
     )
   }
@@ -241,7 +241,7 @@ export default function AdminDashboardPage() {
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[#0a0f1c]/80 backdrop-blur-xl">
         <div className="flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-[#1a2744]">
               <Shield className="h-5 w-5 text-white" />
             </div>
             <div>
@@ -277,7 +277,7 @@ export default function AdminDashboardPage() {
                   onClick={() => setTab(t.id)}
                   className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                     tab === t.id
-                      ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                      ? "bg-red-500/10 text-red-400 border border-red-500/20"
                       : "text-white/50 hover:bg-white/5 hover:text-white/80 border border-transparent"
                   }`}
                 >
@@ -324,7 +324,7 @@ export default function AdminDashboardPage() {
 
                   {/* Stat cards */}
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-                    <StatCard icon={Eye} label="Page Views" value={insights.summary.pageviews} color="blue" />
+                    <StatCard icon={Eye} label="Page Views" value={insights.summary.pageviews} color="red" />
                     <StatCard icon={MousePointerClick} label="Clicks" value={insights.summary.clicks} color="cyan" />
                     <StatCard icon={Users} label="Sessions" value={insights.summary.sessions} color="purple" />
                     <StatCard icon={TrendingUp} label="Leads" value={insights.summary.leads} color="green" />
@@ -340,7 +340,7 @@ export default function AdminDashboardPage() {
                         {insights.top_pages.map((p, i) => (
                           <div key={i} className="flex items-center justify-between text-sm">
                             <span className="text-white/70">{p.page_path}</span>
-                            <span className="font-semibold text-blue-400">{p.views}</span>
+                            <span className="font-semibold text-red-400">{p.views}</span>
                           </div>
                         ))}
                       </div>
@@ -353,7 +353,7 @@ export default function AdminDashboardPage() {
                         {insights.top_clicks.map((c, i) => (
                           <div key={i} className="flex items-center justify-between text-sm">
                             <span className="text-white/70">{c.element_text || c.element_id || "Unknown"}</span>
-                            <span className="font-semibold text-cyan-400">{c.clicks}</span>
+                            <span className="font-semibold text-red-400">{c.clicks}</span>
                           </div>
                         ))}
                       </div>
@@ -366,7 +366,7 @@ export default function AdminDashboardPage() {
                         {insights.leads_by_source.map((s, i) => (
                           <div key={i} className="flex items-center justify-between text-sm">
                             <span className="text-white/70">{s.source.replace(/_/g, " ")}</span>
-                            <span className="font-semibold text-green-400">{s.count}</span>
+                            <span className="font-semibold text-red-400">{s.count}</span>
                           </div>
                         ))}
                       </div>
@@ -379,7 +379,7 @@ export default function AdminDashboardPage() {
                         {insights.contacts_by_service.map((s, i) => (
                           <div key={i} className="flex items-center justify-between text-sm">
                             <span className="text-white/70">{SERVICE_LABELS[s.service] || s.service}</span>
-                            <span className="font-semibold text-orange-400">{s.count}</span>
+                            <span className="font-semibold text-white/80">{s.count}</span>
                           </div>
                         ))}
                       </div>
@@ -508,7 +508,7 @@ export default function AdminDashboardPage() {
                               <div className="flex gap-2">
                                 {editingId === lead.id ? (
                                   <>
-                                    <button onClick={() => handleUpdateLead(lead.id)} className="text-green-400 hover:text-green-300">
+                                    <button onClick={() => handleUpdateLead(lead.id)} className="text-red-400 hover:text-red-300">
                                       <Check className="h-4 w-4" />
                                     </button>
                                     <button onClick={() => setEditingId(null)} className="text-white/40 hover:text-white/60">
@@ -519,7 +519,7 @@ export default function AdminDashboardPage() {
                                   <>
                                     <button
                                       onClick={() => { setEditingId(lead.id); setEditStatus(lead.status); setEditNotes(lead.notes || "") }}
-                                      className="text-white/40 hover:text-blue-400"
+                                      className="text-white/40 hover:text-red-400"
                                     >
                                       <Edit2 className="h-4 w-4" />
                                     </button>
@@ -624,7 +624,7 @@ export default function AdminDashboardPage() {
                               <div className="flex gap-2">
                                 {editingId === c.id ? (
                                   <>
-                                    <button onClick={() => handleUpdateContact(c.id)} className="text-green-400 hover:text-green-300">
+                                    <button onClick={() => handleUpdateContact(c.id)} className="text-red-400 hover:text-red-300">
                                       <Check className="h-4 w-4" />
                                     </button>
                                     <button onClick={() => setEditingId(null)} className="text-white/40 hover:text-white/60">
@@ -635,7 +635,7 @@ export default function AdminDashboardPage() {
                                   <>
                                     <button
                                       onClick={() => { setEditingId(c.id); setEditStatus(c.status); setEditNotes(c.notes || "") }}
-                                      className="text-white/40 hover:text-blue-400"
+                                      className="text-white/40 hover:text-red-400"
                                     >
                                       <Edit2 className="h-4 w-4" />
                                     </button>
@@ -671,7 +671,7 @@ export default function AdminDashboardPage() {
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-3">
-                    <StatCard icon={Eye} label="Page Views" value={insights.summary.pageviews} color="blue" />
+                    <StatCard icon={Eye} label="Page Views" value={insights.summary.pageviews} color="red" />
                     <StatCard icon={MousePointerClick} label="Clicks" value={insights.summary.clicks} color="cyan" />
                     <StatCard icon={Users} label="Sessions" value={insights.summary.sessions} color="purple" />
                   </div>
@@ -686,11 +686,11 @@ export default function AdminDashboardPage() {
                             <div className="flex items-center gap-2">
                               <div className="h-1.5 w-24 rounded-full bg-white/10">
                                 <div
-                                  className="h-full rounded-full bg-blue-500"
+                                  className="h-full rounded-full bg-red-500"
                                   style={{ width: `${(p.views / Math.max(...insights.top_pages.map((x) => x.views), 1)) * 100}%` }}
                                 />
                               </div>
-                              <span className="font-semibold text-blue-400">{p.views}</span>
+                              <span className="font-semibold text-red-400">{p.views}</span>
                             </div>
                           </div>
                         ))}
@@ -703,7 +703,7 @@ export default function AdminDashboardPage() {
                         {insights.top_clicks.map((c, i) => (
                           <div key={i} className="flex items-center justify-between text-sm">
                             <span className="text-white/70 truncate max-w-[200px]">{c.element_text || c.element_id || "Unknown"}</span>
-                            <span className="font-semibold text-cyan-400">{c.clicks}</span>
+                            <span className="font-semibold text-red-400">{c.clicks}</span>
                           </div>
                         ))}
                       </div>
@@ -715,7 +715,7 @@ export default function AdminDashboardPage() {
                         {insights.by_country.map((c, i) => (
                           <div key={i} className="flex items-center justify-between text-sm">
                             <span className="text-white/70">{c.country}</span>
-                            <span className="font-semibold text-purple-400">{c.count}</span>
+                            <span className="font-semibold text-red-400">{c.count}</span>
                           </div>
                         ))}
                       </div>
@@ -727,7 +727,7 @@ export default function AdminDashboardPage() {
                         {insights.by_device.map((d, i) => (
                           <div key={i} className="flex items-center justify-between text-sm">
                             <span className="text-white/70 capitalize">{d.device}</span>
-                            <span className="font-semibold text-green-400">{d.count}</span>
+                            <span className="font-semibold text-red-400">{d.count}</span>
                           </div>
                         ))}
                       </div>
@@ -799,11 +799,11 @@ export default function AdminDashboardPage() {
 
 function StatCard({ icon: Icon, label, value, color }: { icon: typeof Eye; label: string; value: number; color: string }) {
   const colors: Record<string, string> = {
-    blue: "from-blue-500/20 to-blue-600/5 text-blue-400 border-blue-500/20",
-    cyan: "from-cyan-500/20 to-cyan-600/5 text-cyan-400 border-cyan-500/20",
-    purple: "from-purple-500/20 to-purple-600/5 text-purple-400 border-purple-500/20",
-    green: "from-green-500/20 to-green-600/5 text-green-400 border-green-500/20",
-    orange: "from-orange-500/20 to-orange-600/5 text-orange-400 border-orange-500/20",
+    blue: "from-red-500/20 to-red-600/5 text-red-400 border-red-500/20",
+    cyan: "from-[#1a2744]/25 to-[#1a2744]/5 text-white/80 border-[#1a2744]/30",
+    purple: "from-red-500/10 to-red-600/5 text-red-400 border-red-500/15",
+    green: "from-red-500/20 to-red-600/5 text-red-400 border-red-500/20",
+    orange: "from-[#1a2744]/20 to-[#1a2744]/5 text-white/70 border-[#1a2744]/20",
   }
   return (
     <div className={`rounded-xl border bg-gradient-to-br p-4 ${colors[color]}`}>

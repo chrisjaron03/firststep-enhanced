@@ -50,7 +50,7 @@ export function AboutContent() {
   const valuesInView = useInView(valuesRef, { once: true, margin: "-80px" })
 
   return (
-    <section className="bg-gradient-to-tr from-[#e6f0ff] to-[#bfdbfe] py-24 lg:py-32" ref={ref}>
+    <section className="bg-gradient-to-tr from-[var(--section-warm)] via-white to-[var(--section-navy-soft)] py-24 lg:py-32" ref={ref}>
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Top Section: Text + Image */}
         <div className="grid items-center gap-16 lg:grid-cols-2">
@@ -114,24 +114,24 @@ export function AboutContent() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.8 }}
-              className="absolute -bottom-6 -left-6 rounded-xl border border-border bg-card p-5 shadow-xl"
+              className="absolute -bottom-6 -left-6 rounded-xl border border-[var(--gold)]/20 bg-white p-5 shadow-xl shadow-[var(--gold)]/10"
             >
               <p className="font-serif text-3xl font-bold text-foreground">
                 <AnimatedCounter end={10} suffix="+" />
               </p>
-              <p className="text-sm text-muted-foreground">Years of Excellence</p>
+              <p className="text-sm text-primary/80">Years of Excellence</p>
             </motion.div>
             {/* Second floating card */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 1 }}
-              className="absolute -top-4 -right-4 rounded-xl border border-border bg-card p-5 shadow-xl"
+              className="absolute -top-4 -right-4 rounded-xl border border-[var(--gold)]/20 bg-white p-5 shadow-xl shadow-[var(--gold)]/10"
             >
               <p className="font-serif text-3xl font-bold text-foreground">
                 <AnimatedCounter end={100} suffix="+" />
               </p>
-              <p className="text-sm text-muted-foreground">Happy Clients</p>
+              <p className="text-sm text-primary/80">Happy Clients</p>
             </motion.div>
           </motion.div>
         </div>
@@ -151,7 +151,7 @@ export function AboutContent() {
                 key={value.title}
                 variants={fadeInUp}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="rounded-2xl border border-border bg-card p-8 text-center transition-shadow hover:shadow-lg"
+                className="rounded-2xl border border-border/50 bg-white p-8 text-center transition-all duration-500 hover:shadow-lg hover:shadow-[var(--gold)]/8 hover:border-[var(--gold)]/20"
               >
                 <div className="mx-auto mb-4 inline-flex items-center justify-center rounded-full bg-primary p-4">
                   <Icon className="h-6 w-6 text-primary-foreground" />
@@ -159,7 +159,7 @@ export function AboutContent() {
                 <h3 className="font-serif text-lg font-bold text-foreground">
                   {value.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-2 text-sm leading-relaxed text-primary/80">
                   {value.description}
                 </p>
               </motion.div>

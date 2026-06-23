@@ -32,9 +32,9 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground">
+    <footer className="bg-gradient-to-b from-primary to-[var(--navy-deep)] text-primary-foreground">
       {/* Lead magnet strip */}
-      <div className="border-b border-primary-foreground/10 bg-primary-foreground/5">
+      <div className="border-b border-[var(--gold)]/15 bg-[var(--gold)]/[0.06]">
         <div className="mx-auto max-w-7xl px-6 py-6 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div>
@@ -47,7 +47,7 @@ export function Footer() {
             </div>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90"
+              className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-all hover:bg-accent/90 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30"
             >
               Download Now
             </Link>
@@ -107,7 +107,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+                      className="text-sm text-primary-foreground/70 transition-colors hover:text-[var(--gold)]"
                     >
                       {link.label}
                     </Link>
@@ -129,7 +129,7 @@ export function Footer() {
         </div>
 
         {/* Disclaimer */}
-        <div className="mt-6 rounded-lg border border-primary-foreground/10 bg-primary-foreground/5 p-4">
+        <div className="mt-6 rounded-lg border border-[var(--gold)]/10 bg-primary-foreground/[0.04] p-4">
           <p className="text-xs leading-relaxed text-primary-foreground/40">
             <strong className="text-primary-foreground/60">Disclaimer:</strong>{" "}
             Mutual Fund investments are subject to market risks. Please read the

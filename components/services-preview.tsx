@@ -98,7 +98,7 @@ export function ServicesPreview() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section className="bg-gradient-to-tr from-[#e6f0ff] to-[#bfdbfe] py-24 lg:py-32">
+    <section className="bg-[var(--section-cool)] py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8" ref={ref}>
         {/* Header */}
         <motion.div
@@ -130,22 +130,22 @@ export function ServicesPreview() {
             return (
               <TiltCard key={service.title} index={i}>
                 <GlowCard
-                  className="group relative cursor-pointer rounded-xl border border-border bg-card p-7 transition-all duration-300 hover:border-chart-1/40 hover:shadow-xl hover:shadow-chart-1/5 h-full"
-                  glowColor="rgba(212,175,55,0.15)"
-                  glowIntensity={12}
+                  className="group relative cursor-pointer rounded-xl border border-border/60 bg-white p-7 transition-all duration-500 hover:border-[var(--gold)]/40 hover:shadow-xl hover:shadow-[var(--gold)]/8 h-full"
+                  glowColor="rgba(212,175,55,0.18)"
+                  glowIntensity={14}
                 >
                   {/* Tag */}
                   <span className="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-widest text-accent/60">
                     {service.tag}
                   </span>
                   {/* Icon with gold hover effect */}
-                  <div className="mb-5 inline-flex items-center justify-center rounded-lg bg-secondary p-3 transition-all duration-300 group-hover:bg-chart-1/10 group-hover:text-chart-1">
-                    <Icon className="h-5 w-5 text-primary transition-colors duration-300 group-hover:text-chart-1" />
+                  <div className="mb-5 inline-flex items-center justify-center rounded-lg bg-[var(--section-navy-soft)] p-3 transition-all duration-500 group-hover:bg-[var(--gold)]/10 group-hover:text-[var(--gold)] group-hover:shadow-sm group-hover:shadow-[var(--gold)]/10">
+                    <Icon className="h-5 w-5 text-primary transition-colors duration-500 group-hover:text-[var(--gold)]" />
                   </div>
                   <h3 className="font-serif text-lg font-bold text-card-foreground">
                     {service.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-2 text-sm leading-relaxed text-primary/80">
                     {service.description}
                   </p>
                   <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-accent opacity-0 transition-opacity duration-300 group-hover:opacity-100">

@@ -47,7 +47,7 @@ export default function AdminLoginPage() {
   if (checkingAuth) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#0a0f1c]">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-red-500" />
       </div>
     )
   }
@@ -56,9 +56,9 @@ export default function AdminLoginPage() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a0f1c] px-4">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-indigo-600/20 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-red-600/20 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-[#1a2744]/20 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/10 blur-3xl" />
       </div>
 
       {/* Grid pattern */}
@@ -83,7 +83,7 @@ export default function AdminLoginPage() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-            className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30"
+            className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-red-600 to-[#1a2744] shadow-lg shadow-red-500/30"
           >
             <Shield className="h-8 w-8 text-white" />
           </motion.div>
@@ -109,7 +109,7 @@ export default function AdminLoginPage() {
                   autoFocus
                   autoComplete="username"
                   placeholder="Enter your username"
-                  className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-sm text-white placeholder-white/30 transition-all focus:border-blue-500/50 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-sm text-white placeholder-white/30 transition-all focus:border-red-500/50 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-red-500/20"
                 />
               </div>
             </div>
@@ -128,7 +128,7 @@ export default function AdminLoginPage() {
                   required
                   autoComplete="current-password"
                   placeholder="Enter your password"
-                  className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-10 pr-10 text-sm text-white placeholder-white/30 transition-all focus:border-blue-500/50 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-10 pr-10 text-sm text-white placeholder-white/30 transition-all focus:border-red-500/50 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-red-500/20"
                 />
                 <button
                   type="button"
@@ -156,7 +156,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition-all hover:from-blue-600 hover:to-indigo-700 hover:shadow-blue-500/40 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-600 to-[#1a2744] py-3 text-sm font-semibold text-white shadow-lg shadow-red-500/30 transition-all hover:from-red-700 hover:to-[#0f1a30] hover:shadow-red-500/40 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

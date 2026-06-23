@@ -85,7 +85,7 @@ export function LeadCaptureModal() {
           >
             <div className="relative overflow-hidden rounded-2xl bg-card shadow-2xl">
               {/* Accent bar */}
-              <div className="h-1.5 bg-gradient-to-r from-accent via-primary to-accent" />
+              <div className="h-1.5 bg-gradient-to-r from-[var(--gold)] via-accent to-primary" />
 
               {/* Close button */}
               <button
@@ -109,7 +109,7 @@ export function LeadCaptureModal() {
                     <h3 className="font-serif text-2xl font-bold text-foreground">
                       Thank You!
                     </h3>
-                    <p className="mt-2 text-muted-foreground">
+                    <p className="mt-2 text-primary/80">
                       Check your email for the investment guide. Our consultant will reach out shortly.
                     </p>
                   </motion.div>
@@ -125,7 +125,7 @@ export function LeadCaptureModal() {
                     <h3 className="font-serif text-2xl font-bold leading-tight text-foreground sm:text-3xl text-balance">
                       Get Your 2026 Investment Planning Guide
                     </h3>
-                    <p className="mt-3 text-muted-foreground leading-relaxed">
+                    <p className="mt-3 text-primary/80 leading-relaxed">
                       Discover the top strategies across Mutual Funds, PMS, AIF & more. 
                       Curated by our experts to help you maximize returns in the current market.
                     </p>
@@ -160,7 +160,7 @@ export function LeadCaptureModal() {
                         Download Guide
                         <ArrowRight className="h-4 w-4" />
                       </Button>
-                      <p className="text-center text-xs text-muted-foreground">
+                      <p className="text-center text-xs text-primary/60">
                         No spam. Unsubscribe anytime. Your data is 100% secure.
                       </p>
                     </form>

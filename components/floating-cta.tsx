@@ -45,15 +45,15 @@ export function FloatingCTA() {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed bottom-0 left-0 right-0 z-50 lg:hidden"
         >
-          <div className="bg-white/95 backdrop-blur-md border-t border-[#1a2744]/10 shadow-[0_-4px_20px_rgba(0,0,0,0.15)] px-4 py-3">
+          <div className="bg-white/95 backdrop-blur-md border-t border-primary/10 shadow-[0_-4px_24px_rgba(0,0,0,0.12)] px-4 py-3">
             <div className="flex items-center gap-3 max-w-lg mx-auto">
               {/* Close button */}
               <button
                 onClick={handleDismiss}
-                className="shrink-0 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                className="shrink-0 p-1.5 rounded-full hover:bg-primary/5 transition-colors"
                 aria-label="Dismiss"
               >
-                <X className="w-4 h-4 text-[#1a2744]/60" />
+                <X className="w-4 h-4 text-primary/50" />
               </button>
 
               {/* WhatsApp Button */}
@@ -61,7 +61,7 @@ export function FloatingCTA() {
                 href={`https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="shrink-0 flex items-center justify-center w-11 h-11 rounded-full bg-green-500 hover:bg-green-600 text-white transition-colors shadow-lg"
+                className="shrink-0 flex items-center justify-center w-11 h-11 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors shadow-lg shadow-[#25D366]/25 border border-white/10"
                 aria-label="Chat on WhatsApp"
               >
                 <MessageCircle className="w-5 h-5" />
@@ -70,7 +70,7 @@ export function FloatingCTA() {
               {/* Main CTA Button */}
               <Link
                 href="/contact"
-                className="flex-1 flex items-center justify-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-lg shadow-[#2563eb]/20"
+                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-accent to-[#B91C1C] hover:from-[#B91C1C] hover:to-accent text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-accent/25"
               >
                 <Phone className="w-4 h-4" />
                 <span className="text-sm">Get Introductory Call</span>

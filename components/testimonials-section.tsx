@@ -104,7 +104,7 @@ export function TestimonialsSection() {
   }
 
   return (
-    <section className="relative bg-primary py-24 lg:py-32 overflow-hidden" ref={ref}>
+    <section className="relative bg-gradient-to-br from-[var(--navy-deep)] via-primary to-[var(--navy-mid)] py-24 lg:py-32 overflow-hidden" ref={ref}>
       {/* Subtle particle field overlay */}
       <div className="absolute inset-0 z-[1] pointer-events-none opacity-20">
         <ParticleField
@@ -116,7 +116,7 @@ export function TestimonialsSection() {
       <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden select-none">
         <motion.span
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 0.04 } : {}}
+          animate={isInView ? { opacity: 0.06 } : {}}
           transition={{ delay: 0.5, duration: 1.5 }}
           className="absolute -top-16 left-8 font-serif text-[28rem] leading-none text-chart-1"
           style={{ fontFamily: "Georgia, serif" }}
@@ -125,7 +125,7 @@ export function TestimonialsSection() {
         </motion.span>
         <motion.span
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 0.04 } : {}}
+          animate={isInView ? { opacity: 0.06 } : {}}
           transition={{ delay: 0.8, duration: 1.5 }}
           className="absolute -bottom-40 right-8 font-serif text-[28rem] leading-none text-chart-1 rotate-180"
           style={{ fontFamily: "Georgia, serif" }}

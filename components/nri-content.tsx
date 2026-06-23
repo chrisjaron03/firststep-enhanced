@@ -202,7 +202,7 @@ const nriTestimonials = [
   },
 ]
 
-function TiltCard({ children, index }: { children: React.ReactNode; index: number }) {
+function TiltCard({ children, index, className }: { children: React.ReactNode; index: number; className?: string }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
@@ -231,7 +231,7 @@ function TiltCard({ children, index }: { children: React.ReactNode; index: numbe
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       variants={fadeInUp}
       transition={{ delay: index * 0.1 }}
-      className="perspective-[800px]"
+      className={`perspective-[800px] ${className || ""}`}
     >
       {children}
     </motion.div>
@@ -245,7 +245,7 @@ export function NriContent() {
   return (
     <div ref={ref}>
       {/* Global Reach Strip */}
-      <section className="relative overflow-hidden bg-primary py-16 lg:py-20">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--navy-deep)] to-primary py-16 lg:py-20">
         <div className="absolute inset-0 opacity-20">
           <ParticleField particleCount={40} />
         </div>
@@ -278,7 +278,7 @@ export function NriContent() {
                 key={region.region}
                 variants={fadeInUp}
                 transition={{ delay: i * 0.1 }}
-                className="rounded-xl border border-primary-foreground/10 bg-primary-foreground/5 p-6 text-center backdrop-blur-sm transition-all duration-300 hover:border-chart-1/30 hover:bg-primary-foreground/10"
+                className="rounded-xl border border-primary-foreground/10 bg-primary-foreground/5 p-6 text-center backdrop-blur-sm transition-all duration-500 hover:border-[var(--gold)]/30 hover:bg-primary-foreground/10 hover:shadow-lg hover:shadow-[var(--gold)]/5"
               >
                 <div className="mb-3 flex items-center justify-center gap-2">
                   <MapPin className="h-4 w-4 text-chart-1" />
@@ -297,7 +297,7 @@ export function NriContent() {
       </section>
 
       {/* Services Section */}
-      <section className="bg-gradient-to-bl from-[#eef6ff] to-[#d4e6ff] py-24 lg:py-32">
+      <section className="bg-[var(--section-warm)] py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             variants={staggerContainer}
@@ -322,20 +322,24 @@ export function NriContent() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
-            className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            className="mt-16 flex flex-wrap justify-center gap-6"
           >
             {nriServices.map((service, i) => {
               const Icon = service.icon
               return (
-                <TiltCard key={service.title} index={i}>
-                  <div className="group h-full rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20">
-                    <div className="mb-5 inline-flex items-center justify-center rounded-xl bg-secondary p-4 transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                      <Icon className="h-6 w-6 text-primary group-hover:text-primary-foreground" />
+                <TiltCard
+                  key={service.title}
+                  index={i}
+                  className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex"
+                >
+                  <div className="group w-full h-full rounded-2xl border border-border/50 bg-white p-8 transition-all duration-500 hover:shadow-xl hover:shadow-[var(--gold)]/8 hover:border-[var(--gold)]/30">
+                    <div className="mb-5 inline-flex items-center justify-center rounded-xl bg-[var(--section-navy-soft)] p-4 transition-all duration-500 group-hover:bg-[var(--gold)]/10 group-hover:shadow-sm group-hover:shadow-[var(--gold)]/10">
+                      <Icon className="h-6 w-6 text-primary transition-colors duration-500 group-hover:text-[var(--gold)]" />
                     </div>
                     <h3 className="font-serif text-xl font-bold text-card-foreground">
                       {service.title}
                     </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-3 text-sm leading-relaxed text-primary/80">
                       {service.description}
                     </p>
                     <ul className="mt-5 space-y-2">
@@ -393,7 +397,7 @@ export function NriContent() {
                 key={stat.label}
                 variants={fadeInUp}
                 transition={{ delay: i * 0.1 }}
-                className="rounded-2xl border border-primary-foreground/10 bg-primary-foreground/5 p-8 text-center backdrop-blur-sm transition-all duration-300 hover:border-chart-1/30"
+                className="rounded-2xl border border-primary-foreground/10 bg-primary-foreground/5 p-8 text-center backdrop-blur-sm transition-all duration-500 hover:border-[var(--gold)]/30 hover:shadow-lg hover:shadow-[var(--gold)]/5"
               >
                 <p className="font-serif text-4xl font-bold text-chart-1">{stat.value}</p>
                 <p className="mt-2 text-sm font-semibold text-primary-foreground">{stat.label}</p>
@@ -405,7 +409,7 @@ export function NriContent() {
       </section>
 
       {/* Why First Step for NRI Section */}
-      <section className="bg-gradient-to-bl from-[#eef6ff] to-[#d4e6ff] py-24 lg:py-32">
+      <section className="bg-[var(--section-cool)] py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             variants={staggerContainer}
@@ -439,18 +443,18 @@ export function NriContent() {
                   key={item.title}
                   variants={fadeInUp}
                   transition={{ delay: i * 0.1 }}
-                  className="group flex gap-5 rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20"
+                  className="group flex gap-5 rounded-2xl border border-border/50 bg-white p-8 transition-all duration-500 hover:shadow-xl hover:shadow-[var(--gold)]/8 hover:border-[var(--gold)]/30"
                 >
                   <div className="shrink-0">
-                    <div className="inline-flex items-center justify-center rounded-xl bg-secondary p-4 transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-                      <Icon className="h-6 w-6 text-primary group-hover:text-primary-foreground" />
+                    <div className="inline-flex items-center justify-center rounded-xl bg-[var(--section-navy-soft)] p-4 transition-all duration-500 group-hover:bg-[var(--gold)]/10 group-hover:shadow-sm group-hover:shadow-[var(--gold)]/10">
+                      <Icon className="h-6 w-6 text-primary transition-colors duration-500 group-hover:text-[var(--gold)]" />
                     </div>
                   </div>
                   <div>
                     <h3 className="font-serif text-lg font-bold text-card-foreground">
                       {item.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-2 text-sm leading-relaxed text-primary/80">
                       {item.description}
                     </p>
                   </div>
@@ -462,7 +466,7 @@ export function NriContent() {
       </section>
 
       {/* Roadmap Section */}
-      <section className="bg-gradient-to-tr from-[#e6f0ff] to-[#bfdbfe] py-24 lg:py-32">
+      <section className="bg-[var(--section-warm)] py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             variants={staggerContainer}
@@ -499,13 +503,13 @@ export function NriContent() {
                     className={`relative flex flex-col items-center gap-8 lg:flex-row ${isLeft ? "lg:flex-row" : "lg:flex-row-reverse"}`}
                   >
                     <div className={`flex-1 ${isLeft ? "lg:text-right" : "lg:text-left"}`}>
-                      <div className={`inline-block rounded-2xl border border-border bg-card p-6 shadow-sm ${isLeft ? "lg:ml-auto" : ""}`}>
+                      <div className={`inline-block rounded-2xl border border-border/50 bg-white p-6 shadow-sm transition-all duration-500 hover:shadow-lg hover:border-[var(--gold)]/20 ${isLeft ? "lg:ml-auto" : ""}`}>
                         <p className="font-serif text-4xl font-bold text-accent/20">{item.step}</p>
                         <h3 className="mt-2 font-serif text-xl font-bold text-card-foreground">{item.title}</h3>
-                        <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                        <p className="mt-2 text-sm text-primary/80">{item.description}</p>
                       </div>
                     </div>
-                    <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full border-4 border-[#e6f0ff] bg-accent text-accent-foreground shadow-lg">
+                    <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full border-4 border-accent/30 bg-gradient-to-br from-accent to-[#B91C1C] text-accent-foreground shadow-lg shadow-accent/20">
                       <Icon className="h-6 w-6" />
                     </div>
                     <div className="flex-1 hidden lg:block" />
@@ -553,7 +557,7 @@ export function NriContent() {
                 key={testimonial.name}
                 variants={fadeInUp}
                 transition={{ delay: i * 0.1 }}
-                className="flex flex-col rounded-2xl border border-primary-foreground/10 bg-primary-foreground/5 p-8 backdrop-blur-sm"
+                className="flex flex-col rounded-2xl border border-primary-foreground/10 bg-primary-foreground/5 p-8 backdrop-blur-sm transition-all duration-500 hover:border-[var(--gold)]/25 hover:bg-primary-foreground/8"
               >
                 <Quote className="h-8 w-8 text-chart-1/40" />
                 <p className="mt-4 flex-1 text-sm leading-relaxed text-primary-foreground/80">
@@ -575,7 +579,7 @@ export function NriContent() {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-gradient-to-br from-[#f0f7ff] to-[#d4e6ff] py-24 lg:py-32">
+      <section className="bg-[var(--section-cool)] py-24 lg:py-32">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
           <motion.div
             variants={staggerContainer}
@@ -597,7 +601,7 @@ export function NriContent() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ delay: 0.2 }}
-            className="mt-12 rounded-2xl border border-border bg-card p-2 shadow-sm"
+            className="mt-12 rounded-2xl border border-border/50 bg-white p-2 shadow-md shadow-primary/5"
           >
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, i) => (
@@ -605,7 +609,7 @@ export function NriContent() {
                   <AccordionTrigger className="text-left text-base font-semibold hover:no-underline">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+                  <AccordionContent className="text-sm leading-relaxed text-primary/80">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -638,7 +642,7 @@ export function NriContent() {
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/contact">
-                <Button size="lg" className="bg-chart-1 text-primary-foreground hover:bg-chart-1/90 gap-2 px-8 cursor-pointer">
+                <Button size="lg" className="bg-[var(--gold)] text-[var(--navy-deep)] hover:bg-[var(--gold)]/90 gap-2 px-8 cursor-pointer font-bold shadow-lg shadow-[var(--gold)]/25">
                   Book NRI Consultation
                   <ArrowRight className="h-4 w-4" />
                 </Button>

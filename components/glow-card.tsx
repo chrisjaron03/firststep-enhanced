@@ -13,7 +13,7 @@ interface GlowCardProps {
 export function GlowCard({
   children,
   className,
-  glowColor = "linear-gradient(135deg, #D4AF37, #2563eb, #D4AF37)",
+  glowColor = "linear-gradient(135deg, #D4AF37, #DC2626, #1a2744)",
   glowIntensity = 1,
 }: GlowCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)

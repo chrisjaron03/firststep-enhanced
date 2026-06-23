@@ -50,16 +50,16 @@ function AnimatedGradientBg() {
       <motion.div
         animate={{
           background: [
-            "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(37,99,235,0.08) 0%, transparent 50%)",
-            "radial-gradient(ellipse 80% 50% at 80% 50%, rgba(26,39,68,0.06) 0%, transparent 50%)",
-            "radial-gradient(ellipse 80% 50% at 50% 80%, rgba(37,99,235,0.08) 0%, transparent 50%)",
-            "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(26,39,68,0.06) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(212,175,55,0.07) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 80% 50%, rgba(26,39,68,0.05) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 50% 80%, rgba(220,38,38,0.06) 0%, transparent 50%)",
+            "radial-gradient(ellipse 80% 50% at 20% 50%, rgba(212,175,55,0.07) 0%, transparent 50%)",
           ],
         }}
         transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
         className="absolute inset-0"
       />
-      <div className="absolute inset-0 bg-gradient-to-br from-[#eff6ff] via-[#e6f0ff] to-[#d4e6ff] opacity-95" />
+      <div className="absolute inset-0 bg-[var(--section-warm)] opacity-90" />
     </div>
   )
 }
@@ -71,13 +71,13 @@ function GlassMetricCard({ metric, index, isInView }: { metric: typeof metrics[0
     <motion.div
       variants={fadeInUp}
       whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-      className="relative flex flex-col items-center rounded-2xl border border-border/60 bg-white/[0.04] backdrop-blur-xl p-8 text-center shadow-lg transition-all duration-300 hover:shadow-xl hover:border-chart-1/30 overflow-hidden group"
+      className="relative flex flex-col items-center rounded-2xl border border-border/50 bg-white/80 backdrop-blur-xl p-8 text-center shadow-md transition-all duration-500 hover:shadow-xl hover:shadow-[var(--gold)]/10 hover:border-[var(--gold)]/30 overflow-hidden group"
     >
       {/* Animated border glow on hover */}
       <motion.div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: "linear-gradient(135deg, rgba(212,175,55,0.15) 0%, transparent 50%, rgba(37,99,235,0.1) 100%)",
+          background: "linear-gradient(135deg, rgba(212,175,55,0.12) 0%, transparent 50%, rgba(26,39,68,0.08) 100%)",
         }}
       />
       <div className="mb-4 inline-flex items-center justify-center rounded-full bg-accent/10 p-3">
@@ -86,7 +86,7 @@ function GlassMetricCard({ metric, index, isInView }: { metric: typeof metrics[0
       <p className="font-serif text-4xl font-bold text-foreground">
         <SpringCounter end={metric.value} suffix={metric.suffix} isInView={isInView} />
       </p>
-      <p className="mt-2 text-sm font-medium text-muted-foreground">
+      <p className="mt-2 text-sm font-medium text-primary/80">
         {metric.label}
       </p>
     </motion.div>
@@ -116,7 +116,7 @@ export function TrustSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
-    <section className="relative bg-gradient-to-br from-[#eff6ff] to-[#d4e6ff] py-24 lg:py-32 overflow-hidden" ref={ref}>
+    <section className="relative bg-[var(--section-warm)] py-24 lg:py-32 overflow-hidden" ref={ref}>
       <AnimatedGradientBg />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
