@@ -11,6 +11,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { FloatingCTA } from "@/components/floating-cta"
 import { SocialProofPopup } from "@/components/social-proof-popup"
 import { ExitIntentModal } from "@/components/exit-intent-modal"
+import { GuideDownloadPopup } from "@/components/guide-download-popup"
 
 export default function Home() {
   return (
@@ -30,6 +31,14 @@ export default function Home() {
       <FloatingCTA />
       <SocialProofPopup />
       <ExitIntentModal />
+      <GuideDownloadPopup
+        pdfPath="/financial-freedom-guide.pdf"
+        pdfFileName="7_Steps_to_Financial_Freedom.pdf"
+        guideTitle="7 Steps to Financial Freedom"
+        guideBenefits={["Proven wealth-building strategies", "Investment portfolio tips", "Financial independence roadmap"]}
+        source="home-page-guide"
+        storageKey="home_guide_popup_seen"
+      />
     </>
   )
 }

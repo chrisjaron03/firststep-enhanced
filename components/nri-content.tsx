@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import Link from "next/link"
 import { motion, useInView, useMotionValue, useTransform } from "framer-motion"
 import {
@@ -23,6 +23,8 @@ import {
   Languages,
   Quote,
   Star,
+  Download,
+  BookOpen,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -31,6 +33,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
 import { ParticleField } from "@/components/particle-field"
 import { fadeInUp, staggerContainer } from "@/lib/animations"
 
@@ -238,12 +247,280 @@ function TiltCard({ children, index, className }: { children: React.ReactNode; i
   )
 }
 
+function downloadGuide() {
+  const link = document.createElement("a")
+  link.href = "/invisible.pdf"
+  link.download = "Invisible_Wealth_Map_NRI_Guide.pdf"
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+function NriLeadPopup() {
+  const [open, setOpen] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      source: "nri-guide-popup",
+    }
+
+    try {
+      await fetch("https://backend-3-wydm.onrender.com/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+    } catch {
+      // silently fail
+    }
+
+    setLoading(false)
+    setSubmitted(true)
+    downloadGuide()
+  }
+
+  // trigger: show once after 12s or 60% scroll, whichever first
+  useState(() => {
+    if (typeof window === "undefined") return
+    if (sessionStorage.getItem("nri_guide_popup_seen")) return
+
+    let shown = false
+    const show = () => {
+      if (shown) return
+      shown = true
+      sessionStorage.setItem("nri_guide_popup_seen", "1")
+      setOpen(true)
+    }
+
+    const timer = setTimeout(show, 12000)
+
+    const onScroll = () => {
+      const scrolled = window.scrollY + window.innerHeight
+      const total = document.documentElement.scrollHeight
+      if (scrolled / total > 0.6) {
+        show()
+        clearTimeout(timer)
+        window.removeEventListener("scroll", onScroll)
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener("scroll", onScroll)
+    }
+  })
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden border-0">
+        <div className="relative bg-gradient-to-br from-[var(--navy-deep)] to-primary p-8 text-center">
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--gold)]/20">
+            <BookOpen className="h-7 w-7 text-[var(--gold)]" />
+          </div>
+          <DialogHeader className="items-center">
+            <DialogTitle className="font-serif text-2xl font-bold text-primary-foreground">
+              Free NRI Wealth Guide
+            </DialogTitle>
+            <DialogDescription className="text-primary-foreground/70 text-sm">
+              The Invisible Wealth Map — exclusive strategies for NRIs
+            </DialogDescription>
+          </DialogHeader>
+          <ul className="mt-4 space-y-2">
+            {["Tax optimization secrets", "Cross-border investments", "Repatriation checklist"].map((item) => (
+              <li key={item} className="flex items-center justify-center gap-2 text-xs text-primary-foreground/80">
+                <CheckCircle2 className="h-3.5 w-3.5 text-[var(--gold)]" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="p-8">
+          {submitted ? (
+            <div className="text-center">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
+                <CheckCircle2 className="h-7 w-7 text-green-600" />
+              </div>
+              <h3 className="font-serif text-xl font-bold text-card-foreground">Thank You!</h3>
+              <p className="mt-2 text-sm text-muted-foreground">Your guide is ready.</p>
+              <a
+                href="/invisible.pdf"
+                download
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--gold)] px-6 py-3 font-bold text-[var(--navy-deep)] shadow-lg shadow-[var(--gold)]/25 transition-all hover:bg-[var(--gold)]/90"
+              >
+                <Download className="h-5 w-5" />
+                Download Now
+              </a>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                name="name"
+                type="text"
+                required
+                placeholder="Full Name"
+                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
+              />
+              <input
+                name="email"
+                type="email"
+                required
+                placeholder="Email Address"
+                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
+              />
+              <input
+                name="phone"
+                type="tel"
+                placeholder="Phone (optional)"
+                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--gold)] px-6 py-3 font-bold text-[var(--navy-deep)] shadow-lg shadow-[var(--gold)]/25 transition-all hover:bg-[var(--gold)]/90 disabled:opacity-50"
+              >
+                {loading ? "Submitting..." : "Get Free Guide"}
+                {!loading && <Download className="h-4 w-4" />}
+              </button>
+              <p className="text-center text-[10px] text-muted-foreground">
+                No spam. We respect your privacy.
+              </p>
+            </form>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+function NriLeadForm() {
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      source: "nri-guide-download",
+    }
+
+    try {
+      await fetch("https://backend-3-wydm.onrender.com/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+    } catch {
+      // silently fail — still show download
+    }
+
+    setLoading(false)
+    setSubmitted(true)
+    downloadGuide()
+  }
+
+  if (submitted) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full rounded-2xl border border-[var(--gold)]/30 bg-white p-8 text-center shadow-xl md:w-[380px]"
+      >
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+          <CheckCircle2 className="h-8 w-8 text-green-600" />
+        </div>
+        <h3 className="font-serif text-xl font-bold text-card-foreground">
+          Thank You!
+        </h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Your free guide is ready to download.
+        </p>
+        <a
+          href="/invisible.pdf"
+          download
+          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[var(--gold)] px-6 py-3 font-bold text-[var(--navy-deep)] shadow-lg shadow-[var(--gold)]/25 transition-all hover:bg-[var(--gold)]/90"
+        >
+          <Download className="h-5 w-5" />
+          Download Guide
+        </a>
+      </motion.div>
+    )
+  }
+
+  return (
+    <motion.form
+      onSubmit={handleSubmit}
+      initial={{ opacity: 0, x: 20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.3 }}
+      className="w-full rounded-2xl border border-primary-foreground/10 bg-white p-8 shadow-xl md:w-[380px]"
+    >
+      <h3 className="font-serif text-xl font-bold text-card-foreground">
+        Get Your Free Guide
+      </h3>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Enter your details to download instantly
+      </p>
+      <div className="mt-6 space-y-4">
+        <input
+          name="name"
+          type="text"
+          required
+          placeholder="Full Name"
+          className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
+        />
+        <input
+          name="email"
+          type="email"
+          required
+          placeholder="Email Address"
+          className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
+        />
+        <input
+          name="phone"
+          type="tel"
+          placeholder="Phone (optional)"
+          className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={loading}
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--gold)] px-6 py-3 font-bold text-[var(--navy-deep)] shadow-lg shadow-[var(--gold)]/25 transition-all hover:bg-[var(--gold)]/90 disabled:opacity-50"
+      >
+        {loading ? "Submitting..." : "Download Free Guide"}
+        {!loading && <Download className="h-4 w-4" />}
+      </button>
+      <p className="mt-3 text-center text-[10px] text-muted-foreground">
+        No spam. We respect your privacy.
+      </p>
+    </motion.form>
+  )
+}
+
 export function NriContent() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
   return (
     <div ref={ref}>
+      <NriLeadPopup />
       {/* Global Reach Strip */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[var(--navy-deep)] to-primary py-16 lg:py-20">
         <div className="absolute inset-0 opacity-20">
@@ -405,6 +682,53 @@ export function NriContent() {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Free Guide Lead Magnet Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--navy-deep)] to-primary py-24 lg:py-32">
+        <div className="absolute inset-0 opacity-20">
+          <ParticleField particleCount={40} />
+        </div>
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7 }}
+              className="rounded-3xl border border-primary-foreground/10 bg-primary-foreground/5 p-8 backdrop-blur-sm md:p-12"
+            >
+              <div className="flex flex-col items-center gap-10 md:flex-row">
+                <div className="flex-1 text-center md:text-left">
+                  <div className="mb-4 inline-flex items-center justify-center rounded-full bg-[var(--gold)]/20 px-4 py-1.5">
+                    <BookOpen className="mr-2 h-4 w-4 text-[var(--gold)]" />
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[var(--gold)]">Free Guide</span>
+                  </div>
+                  <h2 className="font-serif text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
+                    The Invisible Wealth Map for NRIs
+                  </h2>
+                  <p className="mt-4 text-base leading-relaxed text-primary-foreground/70">
+                    Discover hidden opportunities, tax-saving strategies, and wealth-building secrets specifically designed for Non-Resident Indians. Your complete guide to growing wealth across borders.
+                  </p>
+                  <ul className="mt-6 space-y-3">
+                    {[
+                      "NRI-specific tax optimization strategies",
+                      "Cross-border investment opportunities",
+                      "Repatriation & compliance checklist",
+                      "FEMA & DTAA benefits explained",
+                    ].map((item) => (
+                      <li key={item} className="flex items-center gap-2 text-sm text-primary-foreground/80">
+                        <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--gold)]" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <NriLeadForm />
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

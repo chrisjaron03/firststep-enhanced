@@ -5,6 +5,7 @@ import { ServicesDetailGrid } from "@/components/services-detail-grid"
 import { CtaBanner } from "@/components/cta-banner"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
+import { GuideDownloadPopup } from "@/components/guide-download-popup"
 
 export const metadata: Metadata = {
   title: "Our Services | First Step Consultancy Services",
@@ -28,6 +29,14 @@ export default function ServicesPage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <GuideDownloadPopup
+        pdfPath="/financial-freedom-guide.pdf"
+        pdfFileName="7_Steps_to_Financial_Freedom.pdf"
+        guideTitle="7 Steps to Financial Freedom"
+        guideBenefits={["Investment strategies that work", "Debt management blueprint", "Wealth preservation tips"]}
+        source="services-page-guide"
+        storageKey="services_guide_popup_seen"
+      />
     </>
   )
 }
