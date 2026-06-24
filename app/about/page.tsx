@@ -12,7 +12,7 @@ import { GuideDownloadPopup } from "@/components/guide-download-popup"
 export const metadata: Metadata = {
   title: "About Us | First Step Consultancy Services",
   description:
-    "Learn about First Step Consultancy Services, led by Francis J., AMFI Registered Mutual Funds Consultant with 10+ years of wealth management excellence.",
+    "Learn about First Step Consultancy Services, led by Francis J., AMFI Registered Mutual Fund Distributor with 10+ years of wealth management excellence.",
 }
 
 export default function AboutPage() {
@@ -38,8 +38,8 @@ export default function AboutPage() {
         pdfFileName="7_Steps_to_Financial_Freedom.pdf"
         guideTitle="7 Steps to Financial Freedom"
         guideBenefits={["Proven wealth-building framework", "Financial independence roadmap", "Expert-backed strategies"]}
-        source="about-page-guide"
-        storageKey="about_guide_popup_seen"
+        source="general-guide"
+        storageKey="guide_popup_seen"
       />
     </>
   )

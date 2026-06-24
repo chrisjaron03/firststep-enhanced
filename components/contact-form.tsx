@@ -210,7 +210,7 @@ export function ContactForm() {
   }
 
   return (
-    <section className="relative bg-gradient-to-br from-[var(--section-navy-soft)] via-[var(--section-warm)] to-[var(--section-cool)] py-24 lg:py-32 overflow-hidden" ref={ref}>
+    <section id="schedule" className="relative bg-gradient-to-br from-[var(--section-navy-soft)] via-[var(--section-warm)] to-[var(--section-cool)] py-24 lg:py-32 overflow-hidden" ref={ref}>
       <AnimatedPattern />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
@@ -287,7 +287,7 @@ export function ContactForm() {
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">Office</p>
-                  <p className="mt-1 text-muted-foreground">Tamil Nadu, India</p>
+                  <p className="mt-1 text-muted-foreground">Coimbatore, Tamil Nadu, India</p>
                 </div>
               </motion.div>
 
@@ -316,13 +316,13 @@ export function ContactForm() {
               className="mt-10 rounded-xl border border-border bg-card p-6"
             >
               <p className="text-xs font-semibold uppercase tracking-widest text-primary/60">
-                AMFI Registered Mutual Funds Consultant
+                AMFI Registered Mutual Fund Distributor (ARN-335677)
               </p>
               <p className="mt-2 font-serif text-xl font-bold text-card-foreground">
                 Francis J.
               </p>
               <p className="mt-1 text-sm text-primary/80">
-                AMFI Registered Mutual Funds Consultant
+                AMFI Registered Mutual Fund Distributor (ARN-335677)
               </p>
               <div className="mt-4 rounded-lg bg-secondary p-3">
                 <p className="text-xs leading-relaxed text-primary/80">

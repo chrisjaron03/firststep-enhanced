@@ -138,7 +138,7 @@ export function HeroSection() {
 
           {/* CTAs - with magnetic button effect */}
           <motion.div variants={fadeInUp} className="mt-10 flex flex-col gap-4 sm:flex-row">
-            <Link href="/contact">
+            <Link href="/contact#schedule">
               <MagneticButton strength={0.3}>
                 <Button
                   size="lg"

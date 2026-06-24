@@ -34,8 +34,8 @@ export default function ProductsPage() {
         pdfFileName="7_Steps_to_Financial_Freedom.pdf"
         guideTitle="7 Steps to Financial Freedom"
         guideBenefits={["Smart investment picks", "Tax-saving strategies", "Portfolio diversification"]}
-        source="products-page-guide"
-        storageKey="products_guide_popup_seen"
+        source="general-guide"
+        storageKey="guide_popup_seen"
       />
     </>
   )

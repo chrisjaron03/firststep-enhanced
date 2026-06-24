@@ -30,7 +30,7 @@ const footerLinks = {
   ],
 }
 
-export function Footer() {
+export function Footer({ onDownloadClick }: { onDownloadClick?: () => void }) {
   return (
     <footer className="bg-gradient-to-b from-primary to-[var(--navy-deep)] text-primary-foreground">
       {/* Lead magnet strip */}
@@ -45,12 +45,21 @@ export function Footer() {
                 Discover top strategies for 2026 -- curated by our experts.
               </p>
             </div>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-all hover:bg-accent/90 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30"
-            >
-              Download Now
-            </Link>
+            {onDownloadClick ? (
+              <button
+                onClick={onDownloadClick}
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-all hover:bg-accent/90 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 cursor-pointer"
+              >
+                Download Now
+              </button>
+            ) : (
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-all hover:bg-accent/90 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30"
+              >
+                Download Now
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -91,7 +100,7 @@ export function Footer() {
               </a>
               <div className="flex items-center gap-2 text-sm text-primary-foreground/70">
                 <MapPin className="h-4 w-4" />
-                Tamil Nadu, India
+                Coimbatore, Tamil Nadu, India
               </div>
             </div>
           </div>
@@ -124,7 +133,7 @@ export function Footer() {
             {`© ${new Date().getFullYear()} First Step Consultancy Services. All rights reserved.`}
           </p>
           <p className="text-xs text-primary-foreground/50">
-            Francis J., AMFI Registered Mutual Funds Consultant
+            Francis J., AMFI Registered Mutual Fund Distributor (ARN-335677)
           </p>
         </div>
 

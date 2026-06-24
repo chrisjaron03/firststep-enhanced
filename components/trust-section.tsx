@@ -13,7 +13,7 @@ const metrics = [
 ]
 
 const reasons = [
-  "AMFI Registered Mutual Funds Consultancy Practices",
+  "AMFI Registered Mutual Fund Distributor",
   "Access to 60+ PMS & 60+ AIF Strategies",
   "Global Investment Access via LRS & GIFT City",
   "Comprehensive Insurance Solutions",

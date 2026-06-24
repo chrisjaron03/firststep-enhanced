@@ -69,7 +69,7 @@ export function FloatingCTA() {
 
               {/* Main CTA Button */}
               <Link
-                href="/contact"
+                href="/contact#schedule"
                 className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-accent to-[#B91C1C] hover:from-[#B91C1C] hover:to-accent text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-lg shadow-accent/25"
               >
                 <Phone className="w-4 h-4" />

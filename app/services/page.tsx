@@ -34,8 +34,8 @@ export default function ServicesPage() {
         pdfFileName="7_Steps_to_Financial_Freedom.pdf"
         guideTitle="7 Steps to Financial Freedom"
         guideBenefits={["Investment strategies that work", "Debt management blueprint", "Wealth preservation tips"]}
-        source="services-page-guide"
-        storageKey="services_guide_popup_seen"
+        source="general-guide"
+        storageKey="guide_popup_seen"
       />
     </>
   )

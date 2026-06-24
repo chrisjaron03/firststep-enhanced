@@ -13,6 +13,7 @@ interface GuideDownloadPopupProps {
   guideBenefits: string[]
   source: string
   storageKey: string
+  externalOpen?: boolean
 }
 
 function triggerDownload(pdfPath: string, pdfFileName: string) {
@@ -33,6 +34,7 @@ export function GuideDownloadPopup({
   guideBenefits,
   source,
   storageKey,
+  externalOpen,
 }: GuideDownloadPopupProps) {
   const [open, setOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -42,7 +44,13 @@ export function GuideDownloadPopup({
   const [phone, setPhone] = useState("")
 
   useEffect(() => {
-    if (typeof window === "undefined") return
+    if (externalOpen) {
+      setOpen(true)
+    }
+  }, [externalOpen])
+
+  useEffect(() => {
+    if (typeof window === "undefined" || externalOpen) return
     if (sessionStorage.getItem(storageKey)) return
 
     let shown = false

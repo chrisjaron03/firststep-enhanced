@@ -66,7 +66,7 @@ export function CtaBanner() {
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           {/* CTA button with pulse + shimmer */}
-          <Link href="/contact">
+          <Link href="/contact#schedule">
             <motion.div
               animate={{ scale: [1, 1.03, 1] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}

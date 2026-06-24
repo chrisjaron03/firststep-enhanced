@@ -117,7 +117,7 @@ export function Navigation() {
 
         {/* Desktop CTA - compact */}
         <div className="hidden items-center gap-3 lg:flex">
-          <Link href="/contact">
+          <Link href="/contact#schedule">
             <Button size="sm" className="bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground hover:from-[#B91C1C] hover:to-accent gap-1.5 cursor-pointer text-sm px-4 shadow-md shadow-accent/20">
               Introductory Call
               <ArrowRight className="h-3.5 w-3.5" />
@@ -168,7 +168,7 @@ export function Navigation() {
                 </motion.div>
               ))}
               <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
-                <Link href="/contact">
+                <Link href="/contact#schedule">
                   <Button className="bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground hover:from-[#B91C1C] hover:to-accent w-full gap-2 cursor-pointer shadow-md shadow-accent/20">
                     Introductory Call
                     <ArrowRight className="h-4 w-4" />

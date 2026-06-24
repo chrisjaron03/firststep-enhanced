@@ -17,7 +17,7 @@ const BADGES: TrustBadge[] = [
   },
   {
     id: 2,
-    label: "AMFI Registered Mutual Funds Consultant",
+    label: "AMFI Registered Mutual Fund Distributor (ARN-335677)",
     icon: <BadgeCheck className="w-4 h-4 lg:w-5 lg:h-5" />,
   },
   {

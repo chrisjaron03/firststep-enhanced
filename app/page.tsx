@@ -36,8 +36,8 @@ export default function Home() {
         pdfFileName="7_Steps_to_Financial_Freedom.pdf"
         guideTitle="7 Steps to Financial Freedom"
         guideBenefits={["Proven wealth-building strategies", "Investment portfolio tips", "Financial independence roadmap"]}
-        source="home-page-guide"
-        storageKey="home_guide_popup_seen"
+        source="general-guide"
+        storageKey="guide_popup_seen"
       />
     </>
   )

@@ -35,7 +35,7 @@ const values = [
 ]
 
 const checkpoints = [
-  "AMFI Registered Mutual Funds Consultancy Practices",
+  "AMFI Registered Mutual Fund Distributor (ARN-335677)",
   "Access to 60+ PMS Strategies",
   "Access to 60+ Alternative Investment Funds",
   "Comprehensive Insurance Solutions",

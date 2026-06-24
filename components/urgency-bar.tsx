@@ -18,7 +18,7 @@ const MESSAGES: UrgencyMessage[] = [
   },
   {
     id: 2,
-    text: "AMFI Registered Mutual Funds Consultant | 10+ Years of Excellence",
+    text: "AMFI Registered Mutual Fund Distributor (ARN-335677) | 10+ Years of Excellence",
     icon: <Award className="w-3.5 h-3.5" />,
   },
   {
