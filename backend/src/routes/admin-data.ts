@@ -2,7 +2,7 @@ import type { Env } from '../types'
 import { json, errorResponse } from '../lib/cors'
 import { authenticateRequest, logAudit } from '../lib/auth'
 import { hashIP } from '../lib/utils'
-import { checkRateLimit, getRateLimitKey, validateId, validatePagination, validateLeadStatus, validateContactStatus, safelyParseJSON, sanitizeString, securityHeaders } from '../lib/security'
+import { checkRateLimit, getRateLimitKey, validateId, validatePagination, validateLeadStatus, validateContactStatus, safelyParseJSON, sanitizeString } from '../lib/security'
 
 export async function handleAdminData(request: Request, env: Env, resource: string): Promise<Response> {
   const auth = await authenticateRequest(request, env)
@@ -14,10 +14,7 @@ export async function handleAdminData(request: Request, env: Env, resource: stri
   const rateLimitKey = getRateLimitKey(request, 'admin_api')
   const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 100, windowMs: 60 * 1000, lockoutMs: 5 * 60 * 1000 })
   if (!rateLimit.allowed) {
-    return new Response(
-      JSON.stringify({ error: 'Rate limit exceeded. Slow down.' }),
-      { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rateLimit.retryAfterSec), ...securityHeaders() } }
-    )
+    return json({ error: 'Rate limit exceeded. Slow down.' }, env, request, 429, { 'Retry-After': String(rateLimit.retryAfterSec) })
   }
 
   const { adminId } = auth

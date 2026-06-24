@@ -1,7 +1,7 @@
 import type { Env } from '../types'
 import { json, errorResponse } from '../lib/cors'
 import { hashIP, parseDevice, parseBrowser, getPath } from '../lib/utils'
-import { safelyParseJSON, sanitizeString, checkRateLimit, getRateLimitKey, securityHeaders } from '../lib/security'
+import { safelyParseJSON, sanitizeString, checkRateLimit, getRateLimitKey } from '../lib/security'
 
 const VALID_EVENT_TYPES = ['pageview', 'click', 'scroll', 'custom']
 
@@ -14,10 +14,7 @@ export async function handleAnalytics(request: Request, env: Env): Promise<Respo
   const rateLimitKey = getRateLimitKey(request, 'analytics')
   const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 200, windowMs: 60 * 1000, lockoutMs: 5 * 60 * 1000 })
   if (!rateLimit.allowed) {
-    return new Response(
-      JSON.stringify({ error: 'Rate limit exceeded' }),
-      { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rateLimit.retryAfterSec), ...securityHeaders() } }
-    )
+    return json({ error: 'Rate limit exceeded' }, env, request, 429, { 'Retry-After': String(rateLimit.retryAfterSec) })
   }
 
   const parsed = await safelyParseJSON(request)

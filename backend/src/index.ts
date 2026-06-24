@@ -17,7 +17,7 @@ export default {
     if (!env.JWT_SECRET || env.JWT_SECRET.length < MIN_JWT_SECRET_LENGTH) {
       return new Response(JSON.stringify({ error: 'Server misconfigured' }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json', ...securityHeaders() },
+        headers: { 'Content-Type': 'application/json', ...corsHeaders(env, request) },
       })
     }
 
@@ -32,7 +32,7 @@ export default {
     if (path.includes('..') || path.includes('//') || path.includes('\\')) {
       return new Response(JSON.stringify({ error: 'Invalid path' }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json', ...securityHeaders() },
+        headers: { 'Content-Type': 'application/json', ...corsHeaders(env, request) },
       })
     }
 
@@ -117,7 +117,7 @@ export default {
       console.error('Unhandled error:', err instanceof Error ? err.message : 'unknown error')
       return new Response(JSON.stringify({ error: 'Internal server error' }), {
         status: 500,
-        headers: { 'Content-Type': 'application/json', ...securityHeaders() },
+        headers: { 'Content-Type': 'application/json', ...corsHeaders(env, request) },
       })
     }
   },

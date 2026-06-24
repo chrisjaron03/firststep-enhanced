@@ -1,7 +1,7 @@
 import type { Env } from '../types'
 import { json, errorResponse } from '../lib/cors'
 import { hashIP } from '../lib/utils'
-import { safelyParseJSON, sanitizeString, validateEmail, validatePhone, checkRateLimit, getRateLimitKey, securityHeaders } from '../lib/security'
+import { safelyParseJSON, sanitizeString, validateEmail, validatePhone, checkRateLimit, getRateLimitKey } from '../lib/security'
 
 const VALID_SOURCES = ['lead_capture_modal', 'exit_intent_modal', 'sip_calculator', 'general-guide', 'contact-download', 'nri-guide-popup', 'nri-guide-download']
 
@@ -14,10 +14,7 @@ export async function handleLeads(request: Request, env: Env): Promise<Response>
   const rateLimitKey = getRateLimitKey(request, 'leads')
   const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 10, windowMs: 60 * 60 * 1000, lockoutMs: 60 * 60 * 1000 })
   if (!rateLimit.allowed) {
-    return new Response(
-      JSON.stringify({ error: 'Too many submissions. Please try again later.' }),
-      { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rateLimit.retryAfterSec), ...securityHeaders() } }
-    )
+    return json({ error: 'Too many submissions. Please try again later.' }, env, request, 429, { 'Retry-After': String(rateLimit.retryAfterSec) })
   }
 
   const parsed = await safelyParseJSON(request)

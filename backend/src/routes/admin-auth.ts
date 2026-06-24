@@ -2,7 +2,7 @@ import type { Env } from '../types'
 import { json, errorResponse } from '../lib/cors'
 import { hashPassword, verifyPassword, generateSalt, signJWT, verifyJWT, createSession, revokeSession, logAudit, dummyPasswordCheck } from '../lib/auth'
 import { hashIP } from '../lib/utils'
-import { checkRateLimit, clearRateLimit, getRateLimitKey, validateUsername, validatePassword, safelyParseJSON, sanitizeToken, sanitizeString, securityHeaders } from '../lib/security'
+import { checkRateLimit, clearRateLimit, getRateLimitKey, validateUsername, validatePassword, safelyParseJSON, sanitizeToken, sanitizeString } from '../lib/security'
 
 const MAX_FAILED_ATTEMPTS = 5
 const LOCKOUT_MINUTES = 15
@@ -21,10 +21,7 @@ async function handleLogin(request: Request, env: Env): Promise<Response> {
   const rateLimitKey = getRateLimitKey(request, 'login')
   const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 10, windowMs: 15 * 60 * 1000, lockoutMs: 30 * 60 * 1000 })
   if (!rateLimit.allowed) {
-    return new Response(
-      JSON.stringify({ error: `Too many login attempts from this IP. Try again in ${Math.ceil(rateLimit.retryAfterSec / 60)} minutes.` }),
-      { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rateLimit.retryAfterSec), ...securityHeaders() } }
-    )
+    return json({ error: `Too many login attempts from this IP. Try again in ${Math.ceil(rateLimit.retryAfterSec / 60)} minutes.` }, env, request, 429, { 'Retry-After': String(rateLimit.retryAfterSec) })
   }
 
   // Safe JSON parsing with size limit
