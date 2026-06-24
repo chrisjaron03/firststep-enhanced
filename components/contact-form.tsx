@@ -45,6 +45,7 @@ function FloatingInput({
       </motion.label>
       <Input
         id={id}
+        name={id}
         type={type}
         required={required}
         placeholder={isFloating ? placeholder : ""}
@@ -93,6 +94,7 @@ function FloatingSelect({
       </motion.label>
       <select
         id={id}
+        name={id}
         required={required}
         className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 pt-3 text-sm ring-offset-card file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors"
         onFocus={() => setFocused(true)}
@@ -138,6 +140,7 @@ function FloatingTextarea({
       </motion.label>
       <Textarea
         id={id}
+        name={id}
         placeholder={isFloating ? placeholder : ""}
         rows={4}
         className="bg-background pt-3 resize-none"
@@ -196,6 +199,12 @@ export function ContactForm() {
     setIsSubmitting(true)
     const form = e.currentTarget
     const formData = new FormData(form)
+    const honeypot = formData.get("website") as string
+    if (honeypot) {
+      setIsSubmitting(false)
+      setIsSubmitted(true)
+      return
+    }
     await api.submitContact({
       first_name: formData.get("firstName") as string,
       last_name: formData.get("lastName") as string,
@@ -315,9 +324,6 @@ export function ContactForm() {
               transition={{ delay: 0.8 }}
               className="mt-10 rounded-xl border border-border bg-card p-6"
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary/60">
-                AMFI Registered Mutual Fund Distributor (ARN-335677)
-              </p>
               <p className="mt-2 font-serif text-xl font-bold text-card-foreground">
                 Francis J.
               </p>
@@ -390,6 +396,7 @@ export function ContactForm() {
                   <UrgencyText />
 
                   <form onSubmit={handleSubmit} className="space-y-5">
+                    <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-px w-px opacity-0" />
                     <div className="grid gap-5 sm:grid-cols-2">
                       <FloatingInput
                         id="firstName"

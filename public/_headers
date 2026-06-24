@@ -1,0 +1,25 @@
+# Security headers for the entire static site
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://firststep-backend.chrisjaron99.workers.dev https://vitals.vercel-insights.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+# Disallow indexing of admin routes
+/admin
+  X-Robots-Tag: noindex, nofollow
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+
+# Long-cache static Next.js assets
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/__next/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/**/*.txt
+  Content-Type: text/x-component
+  Cache-Control: public, max-age=31536000, immutable

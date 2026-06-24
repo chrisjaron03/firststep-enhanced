@@ -9,7 +9,7 @@ import {
   TrendingUp, MousePointerClick, Eye, Globe, Smartphone,
   Shield, ChevronDown, RefreshCw,
 } from "lucide-react"
-import { adminApi, getAdminToken, getAdminUser, clearAdminSession, type AdminUser } from "@/lib/admin-api"
+import { adminApi, hasAdminSession, getAdminUser, clearAdminSession, type AdminUser } from "@/lib/admin-api"
 
 type Tab = "overview" | "leads" | "contacts" | "analytics" | "audit"
 
@@ -119,8 +119,7 @@ export default function AdminDashboardPage() {
   const [editNotes, setEditNotes] = useState("")
 
   useEffect(() => {
-    const token = getAdminToken()
-    if (!token) {
+    if (!hasAdminSession()) {
       router.push("/admin")
       return
     }

@@ -1,7 +1,7 @@
 import type { Env } from '../types'
 import { json, errorResponse } from '../lib/cors'
 import { hashIP } from '../lib/utils'
-import { safelyParseJSON, sanitizeString, validateEmail, checkRateLimit, getRateLimitKey, securityHeaders } from '../lib/security'
+import { safelyParseJSON, sanitizeString, validateEmail, validatePhone, checkRateLimit, getRateLimitKey, securityHeaders } from '../lib/security'
 
 const VALID_SERVICES = ['mf', 'pms', 'aif', 'unlisted', 'lrs', 'gift', 'demat', 'fd', 'bonds', 'insurance', 'nps', 'comprehensive']
 const VALID_RANGES = ['under5', '5to25', '25to50', '50to1cr', '1to5cr', 'above5cr']
@@ -13,7 +13,7 @@ export async function handleContacts(request: Request, env: Env): Promise<Respon
 
   // Rate limit: 5 contact submissions per IP per hour
   const rateLimitKey = getRateLimitKey(request, 'contacts')
-  const rateLimit = checkRateLimit(rateLimitKey, { maxAttempts: 5, windowMs: 60 * 60 * 1000, lockoutMs: 60 * 60 * 1000 })
+  const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 5, windowMs: 60 * 60 * 1000, lockoutMs: 60 * 60 * 1000 })
   if (!rateLimit.allowed) {
     return new Response(
       JSON.stringify({ error: 'Too many submissions. Please try again later.' }),
@@ -24,6 +24,12 @@ export async function handleContacts(request: Request, env: Env): Promise<Respon
   const parsed = await safelyParseJSON(request)
   if (!parsed.ok) return errorResponse(parsed.error, env, request, 400)
   const body = parsed.data as Record<string, unknown>
+
+  // Honeypot: if the hidden "website" field is filled, silently reject (bot trap)
+  const honeypot = sanitizeString(String(body.website || ''), 500)
+  if (honeypot) {
+    return json({ success: true, id: 0 }, env, request, 201)
+  }
 
   const firstName = sanitizeString(String(body.first_name || ''), 100)
   const lastName = sanitizeString(String(body.last_name || ''), 100)
@@ -36,6 +42,10 @@ export async function handleContacts(request: Request, env: Env): Promise<Respon
 
   if (!validateEmail(email)) {
     return errorResponse('Invalid email address', env, request, 400)
+  }
+
+  if (!validatePhone(phone)) {
+    return errorResponse('Invalid phone number', env, request, 400)
   }
 
   const investmentRange = body.investment_range ? sanitizeString(String(body.investment_range), 20) : null

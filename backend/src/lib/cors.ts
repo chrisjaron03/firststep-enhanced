@@ -16,17 +16,19 @@ export function corsHeaders(env: Env, request: Request): Record<string, string> 
 
   if (allowedOrigin) {
     headers['Access-Control-Allow-Origin'] = allowedOrigin
+    headers['Access-Control-Allow-Credentials'] = 'true'
   }
 
   return headers
 }
 
-export function json(data: unknown, env: Env, request: Request, status = 200): Response {
+export function json(data: unknown, env: Env, request: Request, status = 200, extraHeaders?: Record<string, string>): Response {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
       'Content-Type': 'application/json',
       ...corsHeaders(env, request),
+      ...extraHeaders,
     },
   })
 }

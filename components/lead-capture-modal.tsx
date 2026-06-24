@@ -55,6 +55,15 @@ export function LeadCaptureModal() {
     const name = (formData.get("name") as string) || ""
     const email = (formData.get("email") as string) || ""
     const phone = (formData.get("phone") as string) || ""
+    const honeypot = (formData.get("website") as string) || ""
+    if (honeypot) {
+      setIsSubmitted(true)
+      setTimeout(() => {
+        setIsOpen(false)
+        sessionStorage.setItem("fscs-lead-dismissed", "true")
+      }, 3000)
+      return
+    }
     await api.submitLead({ source: "lead_capture_modal", name, email, phone })
     setIsSubmitted(true)
     setTimeout(() => {
@@ -131,6 +140,7 @@ export function LeadCaptureModal() {
                     </p>
 
                     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                      <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-px w-px opacity-0" />
                       <Input
                         type="text"
                         name="name"

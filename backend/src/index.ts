@@ -7,9 +7,20 @@ import { handleInsights } from './routes/insights'
 import { handleAdminAuth } from './routes/admin-auth'
 import { handleAdminData } from './routes/admin-data'
 import { securityHeaders } from './lib/security'
+import { authenticateRequest } from './lib/auth'
+
+const MIN_JWT_SECRET_LENGTH = 32
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    // Guard: ensure JWT_SECRET is configured and strong enough
+    if (!env.JWT_SECRET || env.JWT_SECRET.length < MIN_JWT_SECRET_LENGTH) {
+      return new Response(JSON.stringify({ error: 'Server misconfigured' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json', ...securityHeaders() },
+      })
+    }
+
     if (request.method === 'OPTIONS') {
       return handleOptions(env, request)
     }
@@ -25,10 +36,22 @@ export default {
       })
     }
 
-    // Validate Origin for all API requests (CSRF protection)
+    // Validate Origin for all API requests (CSRF protection).
+    // For state-changing requests (POST/PUT/DELETE/PATCH) the Origin header
+    // MUST be present AND allowlisted. GET requests are allowed without an
+    // Origin header (browsers don't send Origin on same-origin GETs).
     const origin = request.headers.get('Origin')
-    const allowed = env.ALLOWED_ORIGINS.split(',').map((s) => s.trim())
-    if (origin && !allowed.includes(origin)) {
+    const allowed = env.ALLOWED_ORIGINS.split(',').map((s) => s.trim()).filter(Boolean)
+    const isMutation = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(request.method)
+
+    if (isMutation) {
+      if (!origin || !allowed.includes(origin)) {
+        return new Response(JSON.stringify({ error: 'Origin not allowed' }), {
+          status: 403,
+          headers: { 'Content-Type': 'application/json', ...securityHeaders() },
+        })
+      }
+    } else if (origin && !allowed.includes(origin)) {
       return new Response(JSON.stringify({ error: 'Origin not allowed' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json', ...securityHeaders() },
@@ -51,10 +74,6 @@ export default {
 
       if (path === '/api/analytics') {
         return await handleAnalytics(request, env)
-      }
-
-      if (path === '/api/insights') {
-        return await handleInsights(request, env)
       }
 
       // Admin auth routes
@@ -83,10 +102,19 @@ export default {
         return await handleAdminData(request, env, 'audit')
       }
 
+      // Insights — admin-only (business analytics must not be public)
+      if (path === '/api/insights') {
+        const auth = await authenticateRequest(request, env)
+        if ('error' in auth) {
+          return errorResponse(auth.error, env, request, auth.status)
+        }
+        return await handleInsights(request, env)
+      }
+
       return errorResponse('Not found', env, request, 404)
     } catch (err) {
-      // Never leak internal error details
-      console.error('Unhandled error:', err)
+      // Never leak internal error details — log a sanitized message only
+      console.error('Unhandled error:', err instanceof Error ? err.message : 'unknown error')
       return new Response(JSON.stringify({ error: 'Internal server error' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json', ...securityHeaders() },

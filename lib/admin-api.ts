@@ -1,35 +1,13 @@
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'https://firststep-backend.chrisjaron99.workers.dev'
 
-const TOKEN_KEY = 'fscs_admin_token'
 const ADMIN_KEY = 'fscs_admin_user'
-const EXPIRY_KEY = 'fscs_admin_expiry'
-const SESSION_TIMEOUT_MS = 8 * 60 * 60 * 1000 // 8 hours, matching JWT expiry
 
-export function getAdminToken(): string | null {
-  if (typeof window === 'undefined') return null
-  // Check if session has expired locally
-  const expiry = localStorage.getItem(EXPIRY_KEY)
-  if (expiry && Date.now() > parseInt(expiry, 10)) {
-    clearAdminSession()
-    return null
-  }
-  return localStorage.getItem(TOKEN_KEY)
-}
-
-export function setAdminSession(token: string, admin: AdminUser): void {
-  if (typeof window === 'undefined') return
-  const expiry = Date.now() + SESSION_TIMEOUT_MS
-  localStorage.setItem(TOKEN_KEY, token)
-  localStorage.setItem(ADMIN_KEY, JSON.stringify(admin))
-  localStorage.setItem(EXPIRY_KEY, String(expiry))
-}
-
-export function clearAdminSession(): void {
-  if (typeof window === 'undefined') return
-  localStorage.removeItem(TOKEN_KEY)
-  localStorage.removeItem(ADMIN_KEY)
-  localStorage.removeItem(EXPIRY_KEY)
+export interface AdminUser {
+  id: number
+  username: string
+  email: string
+  role: string
 }
 
 export function getAdminUser(): AdminUser | null {
@@ -43,27 +21,31 @@ export function getAdminUser(): AdminUser | null {
   }
 }
 
-export interface AdminUser {
-  id: number
-  username: string
-  email: string
-  role: string
+export function setAdminUser(admin: AdminUser): void {
+  if (typeof window === 'undefined') return
+  localStorage.setItem(ADMIN_KEY, JSON.stringify(admin))
+}
+
+export function clearAdminSession(): void {
+  if (typeof window === 'undefined') return
+  localStorage.removeItem(ADMIN_KEY)
+}
+
+export function hasAdminSession(): boolean {
+  return getAdminUser() !== null
 }
 
 async function adminFetch(path: string, options: RequestInit = {}): Promise<{ ok: boolean; data?: unknown; error?: string; status: number }> {
-  const token = getAdminToken()
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>),
-  }
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`
   }
 
   try {
     const res = await fetch(`${API_BASE_URL}${path}`, {
       ...options,
       headers,
+      credentials: 'include',
     })
     const data = await res.json().catch(() => null)
     if (!res.ok) {
@@ -85,8 +67,8 @@ export const adminApi = {
       body: JSON.stringify({ username, password }),
     })
     if (result.ok && result.data) {
-      const data = result.data as { token: string; admin: AdminUser }
-      setAdminSession(data.token, data.admin)
+      const data = result.data as { admin: AdminUser }
+      setAdminUser(data.admin)
       return { success: true, admin: data.admin }
     }
     return { success: false, error: result.error }
@@ -103,7 +85,7 @@ export const adminApi = {
     if (result.ok && result.data) {
       const data = result.data as { valid: boolean; admin: AdminUser }
       if (data.valid) {
-        setAdminSession(getAdminToken()!, data.admin)
+        setAdminUser(data.admin)
       }
       return data.valid
     }

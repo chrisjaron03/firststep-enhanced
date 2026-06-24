@@ -12,7 +12,7 @@ export async function handleAdminData(request: Request, env: Env, resource: stri
 
   // API rate limiting per IP for admin data endpoints
   const rateLimitKey = getRateLimitKey(request, 'admin_api')
-  const rateLimit = checkRateLimit(rateLimitKey, { maxAttempts: 100, windowMs: 60 * 1000, lockoutMs: 5 * 60 * 1000 })
+  const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 100, windowMs: 60 * 1000, lockoutMs: 5 * 60 * 1000 })
   if (!rateLimit.allowed) {
     return new Response(
       JSON.stringify({ error: 'Rate limit exceeded. Slow down.' }),

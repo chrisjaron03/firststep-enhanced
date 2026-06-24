@@ -1,9 +1,9 @@
 import type { Env } from '../types'
 import { json, errorResponse } from '../lib/cors'
 import { hashIP } from '../lib/utils'
-import { safelyParseJSON, sanitizeString, validateEmail, checkRateLimit, getRateLimitKey, securityHeaders } from '../lib/security'
+import { safelyParseJSON, sanitizeString, validateEmail, validatePhone, checkRateLimit, getRateLimitKey, securityHeaders } from '../lib/security'
 
-const VALID_SOURCES = ['lead_capture_modal', 'exit_intent_modal', 'sip_calculator']
+const VALID_SOURCES = ['lead_capture_modal', 'exit_intent_modal', 'sip_calculator', 'general-guide', 'contact-download', 'nri-guide-popup', 'nri-guide-download']
 
 export async function handleLeads(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') {
@@ -12,7 +12,7 @@ export async function handleLeads(request: Request, env: Env): Promise<Response>
 
   // Rate limit: 10 lead submissions per IP per hour
   const rateLimitKey = getRateLimitKey(request, 'leads')
-  const rateLimit = checkRateLimit(rateLimitKey, { maxAttempts: 10, windowMs: 60 * 60 * 1000, lockoutMs: 60 * 60 * 1000 })
+  const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 10, windowMs: 60 * 60 * 1000, lockoutMs: 60 * 60 * 1000 })
   if (!rateLimit.allowed) {
     return new Response(
       JSON.stringify({ error: 'Too many submissions. Please try again later.' }),
@@ -24,17 +24,27 @@ export async function handleLeads(request: Request, env: Env): Promise<Response>
   if (!parsed.ok) return errorResponse(parsed.error, env, request, 400)
   const body = parsed.data as Record<string, unknown>
 
+  // Honeypot: if the hidden "website" field is filled, silently reject (bot trap)
+  const honeypot = sanitizeString(String(body.website || ''), 500)
+  if (honeypot) {
+    return json({ success: true, id: 0 }, env, request, 201)
+  }
+
   const name = sanitizeString(String(body.name || ''), 100)
   const email = sanitizeString(String(body.email || ''), 254)
-  const phone = sanitizeString(String(body.phone || ''), 20)
+  const phone = sanitizeString(String(body.phone || ''), 20) || null
   const source = sanitizeString(String(body.source || ''), 30)
 
-  if (!name || !email || !phone || !source) {
-    return errorResponse('Missing required fields: name, email, phone, source', env, request, 400)
+  if (!name || !email || !source) {
+    return errorResponse('Missing required fields: name, email, source', env, request, 400)
   }
 
   if (!validateEmail(email)) {
     return errorResponse('Invalid email address', env, request, 400)
+  }
+
+  if (phone && !validatePhone(phone)) {
+    return errorResponse('Invalid phone number', env, request, 400)
   }
 
   if (!VALID_SOURCES.includes(source)) {

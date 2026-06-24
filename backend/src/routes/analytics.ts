@@ -12,7 +12,7 @@ export async function handleAnalytics(request: Request, env: Env): Promise<Respo
 
   // Rate limit: 200 analytics events per IP per minute
   const rateLimitKey = getRateLimitKey(request, 'analytics')
-  const rateLimit = checkRateLimit(rateLimitKey, { maxAttempts: 200, windowMs: 60 * 1000, lockoutMs: 5 * 60 * 1000 })
+  const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 200, windowMs: 60 * 1000, lockoutMs: 5 * 60 * 1000 })
   if (!rateLimit.allowed) {
     return new Response(
       JSON.stringify({ error: 'Rate limit exceeded' }),
@@ -36,6 +36,12 @@ export async function handleAnalytics(request: Request, env: Env): Promise<Respo
     return errorResponse('Invalid event type', env, request, 400)
   }
 
+  // Reject analytics for admin routes — admin traffic must not be tracked
+  const pagePath = body.page_path ? sanitizeString(String(body.page_path), 500) : getPath(pageUrl)
+  if (pagePath.startsWith('/admin')) {
+    return json({ success: true, ignored: true }, env, request, 201)
+  }
+
   const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown'
   const ipHash = await hashIP(ip)
   const userAgent = sanitizeString(request.headers.get('User-Agent') || '', 500)
@@ -43,7 +49,6 @@ export async function handleAnalytics(request: Request, env: Env): Promise<Respo
   const city = request.headers.get('CF-IPCity') || null
   const device = parseDevice(userAgent)
   const browser = parseBrowser(userAgent)
-  const pagePath = body.page_path ? sanitizeString(String(body.page_path), 500) : getPath(pageUrl)
 
   const scrollDepth = typeof body.scroll_depth === 'number' && body.scroll_depth >= 0 && body.scroll_depth <= 100 ? body.scroll_depth : null
 

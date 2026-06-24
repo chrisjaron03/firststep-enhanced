@@ -30,10 +30,11 @@ async function postJSON(path: string, data: Record<string, unknown>): Promise<bo
 }
 
 export interface LeadPayload {
-  source: 'lead_capture_modal' | 'exit_intent_modal' | 'sip_calculator'
+  source: 'lead_capture_modal' | 'exit_intent_modal' | 'sip_calculator' | 'general-guide' | 'contact-download' | 'nri-guide-popup' | 'nri-guide-download'
   name: string
   email: string
   phone: string
+  website?: string
   monthly_investment?: number
   expected_return?: number
   tenure_years?: number
@@ -47,6 +48,7 @@ export interface ContactPayload {
   last_name: string
   email: string
   phone: string
+  website?: string
   investment_range?: string
   service?: string
   message?: string

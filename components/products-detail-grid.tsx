@@ -15,6 +15,8 @@ import {
   Briefcase,
   PiggyBank,
   FileText,
+  Home,
+  HeartPulse,
   ArrowRight,
   type LucideIcon,
 } from "lucide-react"
@@ -210,6 +212,42 @@ const products: ProductItem[] = [
     highlights: ["Tax Benefits", "Retirement Security", "Flexible Options", "Professional Management"],
     providers: ["All NPS fund managers available", "Tier I & Tier II accounts"],
     tag: "Retirement",
+  },
+  {
+    id: "loans",
+    icon: Home,
+    title: "Loans & Credit Facilities",
+    description:
+      "Comprehensive loan solutions tailored to your needs — whether you are buying a home, expanding your business, or managing personal expenses. We partner with leading banks and NBFCs to secure the best interest rates and terms for you.",
+    highlights: ["Home Loan", "Loan Against Property", "Personal Loan", "Business Loan", "MSME Loan", "Car Loan", "Mortgage Loan"],
+    providers: [
+      "Home Loan — competitive rates, up to 30-year tenure",
+      "Loan Against Property (LAP) — unlock your property's value",
+      "Personal Loan — quick approval, minimal documentation",
+      "Business Loan — working capital & expansion funding",
+      "MSME Loan — government-backed schemes available",
+      "Car Loan — new & pre-owned vehicles",
+      "Mortgage Loan — flexible repayment options",
+    ],
+    tag: "Financing",
+  },
+  {
+    id: "health-insurance",
+    icon: HeartPulse,
+    title: "Health Insurance",
+    description:
+      "Protect yourself and your family against rising medical costs with comprehensive health insurance plans. We help you choose the right coverage from individual policies to family floaters, critical illness riders, and super top-up plans — ensuring cashless treatment at 10,000+ network hospitals across India.",
+    highlights: ["Family Floater Plans", "Cashless Treatment", "Critical Illness Cover", "Tax Benefit (80D)", "Pre & Post Hospitalization", "Super Top-Up Plans"],
+    providers: [
+      "Individual & Family Floater Health Insurance",
+      "Critical Illness Insurance",
+      "Super Top-Up & Top-Up Plans",
+      "Group Health Insurance for Employees",
+      "Personal Accident Cover",
+      "Senior Citizen Health Plans",
+      "Maternity & Newborn Baby Cover",
+    ],
+    tag: "Essential",
   },
 ]
 

@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS leads (
   source        TEXT    NOT NULL,          -- 'lead_capture_modal' | 'exit_intent_modal' | 'sip_calculator'
   name          TEXT    NOT NULL,
   email         TEXT    NOT NULL,
-  phone         TEXT    NOT NULL,
+  phone         TEXT,
   -- SIP-specific fields (nullable for other sources)
   monthly_investment INTEGER,
   expected_return    REAL,
@@ -165,10 +165,18 @@ CREATE INDEX IF NOT EXISTS idx_audit_admin   ON admin_audit_log(admin_id);
 CREATE INDEX IF NOT EXISTS idx_audit_action  ON admin_audit_log(action);
 CREATE INDEX IF NOT EXISTS idx_audit_created ON admin_audit_log(created_at);
 
+-- ─── Rate Limits (D1-backed, durable across Worker isolates) ───
+CREATE TABLE IF NOT EXISTS rate_limits (
+  key           TEXT PRIMARY KEY,
+  count         INTEGER NOT NULL DEFAULT 0,
+  window_start  INTEGER NOT NULL,
+  locked_until  INTEGER
+);
+
 -- ─── Default admin user ───
--- Username: admin | Password: ChangeMe@2026
+-- Username: admin | Password: <set via seed script — do NOT hardcode>
 -- (password_hash and salt are PBKDF2-SHA256, 100000 iterations)
--- Run `npm run db:seed-admin` to create the admin user with a custom password.
+-- Run `npm run db:seed-admin <password>` to create the admin user with a custom password.
 INSERT OR IGNORE INTO admin_users (username, email, password_hash, password_salt, role)
 VALUES (
   'admin',

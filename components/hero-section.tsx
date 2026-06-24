@@ -19,20 +19,31 @@ const stats = [
   { label: "Years of Trust", value: 10, suffix: "+" },
 ]
 
-/* ─── Text shimmer component for the word "Investing" ─── */
-function TextShimmer({ children, className }: { children: React.ReactNode; className?: string }) {
+/* ─── Animated gradient text for the word "Investing" ─── */
+function GradientText({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <span className={`relative inline-block overflow-hidden ${className}`}>
-      <span className="relative z-10">{children}</span>
+    <span
+      className={`relative inline-block bg-clip-text text-transparent ${className}`}
+      style={{
+        backgroundImage:
+          "linear-gradient(90deg, #D4AF37 0%, #F5D67B 25%, #DC2626 50%, #F5D67B 75%, #D4AF37 100%)",
+        backgroundSize: "200% auto",
+      }}
+    >
       <motion.span
-        className="absolute inset-0 z-20 pointer-events-none"
+        className="inline-block bg-clip-text text-transparent"
         style={{
-          background: "linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.4) 50%, transparent 100%)",
-          mixBlendMode: "overlay",
+          backgroundImage:
+            "linear-gradient(90deg, #D4AF37 0%, #F5D67B 25%, #DC2626 50%, #F5D67B 75%, #D4AF37 100%)",
+          backgroundSize: "200% auto",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
         }}
-        animate={{ x: ["-100%", "200%"] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", repeatDelay: 2 }}
-      />
+        animate={{ backgroundPosition: ["0% center", "200% center"] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+      >
+        {children}
+      </motion.span>
     </span>
   )
 }
@@ -111,7 +122,7 @@ export function HeroSection() {
           animate="visible"
           className="max-w-3xl"
         >
-          {/* Headline with TextShimmer on "Investing" */}
+          {/* Headline with GradientText on "Investing" */}
           <motion.h1
             variants={fadeInUp}
             className="font-serif text-4xl font-bold leading-[1.35] tracking-tight text-card sm:text-5xl lg:text-7xl"
@@ -119,11 +130,9 @@ export function HeroSection() {
             Unlock the Full{" "}
             <br className="hidden sm:block" />
             Power of{" "}
-            <span className="inline-block align-baseline translate-y-[20px] pb-2">
-              <TextShimmer className="italic text-chart-1">
-                Investing
-              </TextShimmer>
-            </span>
+            <GradientText className="italic font-bold">
+              Investing
+            </GradientText>
           </motion.h1>
 
           {/* Subtitle */}

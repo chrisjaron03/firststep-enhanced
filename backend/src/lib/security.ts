@@ -1,42 +1,52 @@
 import type { Env } from '../types'
 
-// ─── Rate Limiting ───
+// ─── Rate Limiting (D1-backed for durability across Worker isolates) ───
 
-interface RateLimitEntry {
-  count: number
-  firstAttempt: number
-  lockedUntil: number
+interface RateLimitConfig {
+  maxAttempts: number
+  windowMs: number
+  lockoutMs: number
 }
 
-const rateLimitStore = new Map<string, RateLimitEntry>()
-
-const LOGIN_RATE_LIMIT = { maxAttempts: 10, windowMs: 15 * 60 * 1000, lockoutMs: 30 * 60 * 1000 }
-const API_RATE_LIMIT = { maxAttempts: 100, windowMs: 60 * 1000, lockoutMs: 5 * 60 * 1000 }
-
-export function checkRateLimit(key: string, config: typeof LOGIN_RATE_LIMIT): { allowed: boolean; retryAfterSec: number } {
+export async function checkRateLimit(env: Env, key: string, config: RateLimitConfig): Promise<{ allowed: boolean; retryAfterSec: number }> {
   const now = Date.now()
-  const entry = rateLimitStore.get(key)
 
-  if (entry && entry.lockedUntil > now) {
-    return { allowed: false, retryAfterSec: Math.ceil((entry.lockedUntil - now) / 1000) }
+  const row = await env.DB.prepare(
+    'SELECT count, window_start, locked_until FROM rate_limits WHERE key = ?'
+  ).bind(key).first<{ count: number; window_start: number; locked_until: number | null }>()
+
+  // Still within lockout period
+  if (row?.locked_until && now < row.locked_until) {
+    return { allowed: false, retryAfterSec: Math.ceil((row.locked_until - now) / 1000) }
   }
 
-  if (!entry || entry.firstAttempt + config.windowMs < now) {
-    rateLimitStore.set(key, { count: 1, firstAttempt: now, lockedUntil: 0 })
+  // Window expired or first request → start fresh window
+  if (!row || row.window_start + config.windowMs < now) {
+    await env.DB.prepare(
+      `INSERT INTO rate_limits (key, count, window_start, locked_until) VALUES (?, 1, ?, NULL)
+       ON CONFLICT(key) DO UPDATE SET count = 1, window_start = ?, locked_until = NULL`
+    ).bind(key, now, now).run()
     return { allowed: true, retryAfterSec: 0 }
   }
 
-  entry.count++
-  if (entry.count >= config.maxAttempts) {
-    entry.lockedUntil = now + config.lockoutMs
+  // Within window — increment
+  const newCount = row.count + 1
+  if (newCount >= config.maxAttempts) {
+    const lockoutUntil = now + config.lockoutMs
+    await env.DB.prepare(
+      'UPDATE rate_limits SET count = ?, locked_until = ? WHERE key = ?'
+    ).bind(newCount, lockoutUntil, key).run()
     return { allowed: false, retryAfterSec: Math.ceil(config.lockoutMs / 1000) }
   }
 
+  await env.DB.prepare(
+    'UPDATE rate_limits SET count = ? WHERE key = ?'
+  ).bind(newCount, key).run()
   return { allowed: true, retryAfterSec: 0 }
 }
 
-export function clearRateLimit(key: string): void {
-  rateLimitStore.delete(key)
+export async function clearRateLimit(env: Env, key: string): Promise<void> {
+  await env.DB.prepare('DELETE FROM rate_limits WHERE key = ?').bind(key).run()
 }
 
 export function getRateLimitKey(request: Request, prefix: string): string {
@@ -62,6 +72,12 @@ export function validateEmail(email: string): boolean {
   if (!email || typeof email !== 'string') return false
   if (email.length > 254) return false
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+export function validatePhone(phone: string): boolean {
+  if (!phone || typeof phone !== 'string') return false
+  if (phone.length < 7 || phone.length > 20) return false
+  return /^\+?[0-9\s\-()]{6,19}$/.test(phone)
 }
 
 export function sanitizeString(input: string, maxLength: number): string {
@@ -128,9 +144,11 @@ export function securityHeaders(): Record<string, string> {
   return {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
+    'X-XSS-Protection': '0',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=()',
+    'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'",
     'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
     'Pragma': 'no-cache',
     'Expires': '0',

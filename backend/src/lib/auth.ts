@@ -156,14 +156,25 @@ export async function logAudit(env: Env, adminId: number | null, action: string,
 }
 
 export async function authenticateRequest(request: Request, env: Env): Promise<{ payload: JWTPayload; adminId: number } | { error: string; status: number }> {
-  const authHeader = request.headers.get('Authorization')
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return { error: 'Missing or invalid Authorization header', status: 401 }
+  let token: string | null = null
+
+  // Preferred: read token from HttpOnly cookie (not accessible to XSS)
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const cookieMatch = cookieHeader.match(/(?:^|;\s*)fscs_admin_token=([^;]+)/)
+  if (cookieMatch) {
+    token = sanitizeToken(cookieMatch[1])
   }
 
-  const token = sanitizeToken(authHeader.substring(7))
+  // Fallback: Authorization Bearer header (for API clients / backward compat)
   if (!token) {
-    return { error: 'Invalid token format', status: 401 }
+    const authHeader = request.headers.get('Authorization')
+    if (authHeader?.startsWith('Bearer ')) {
+      token = sanitizeToken(authHeader.substring(7))
+    }
+  }
+
+  if (!token) {
+    return { error: 'Missing or invalid authentication', status: 401 }
   }
 
   const payload = await verifyJWT(token, env.JWT_SECRET)

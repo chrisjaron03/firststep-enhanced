@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Lock, User, Eye, EyeOff, Shield, ArrowRight, AlertCircle, Loader2 } from "lucide-react"
-import { adminApi, getAdminToken } from "@/lib/admin-api"
+import { adminApi, hasAdminSession } from "@/lib/admin-api"
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -16,8 +16,7 @@ export default function AdminLoginPage() {
   const [checkingAuth, setCheckingAuth] = useState(true)
 
   useEffect(() => {
-    const token = getAdminToken()
-    if (token) {
+    if (hasAdminSession()) {
       adminApi.verify().then((valid) => {
         if (valid) {
           router.push("/admin/dashboard")

@@ -136,27 +136,23 @@ const roadmap = [
 const faqs = [
   {
     question: "Can NRIs invest in Indian Mutual Funds?",
-    answer: "Yes, NRIs can invest in Indian mutual funds through an NRE/NRO bank account after completing KYC. We handle the entire setup including KYC, account opening, and fund selection.",
+    answer: "Yes. NRIs can invest in Indian mutual funds through NRE or NRO accounts, subject to applicable KYC and regulatory requirements. We provide end-to-end assistance with onboarding, compliance, and investment selection tailored to your financial objectives.",
   },
   {
     question: "What investment options are available for NRIs?",
-    answer: "NRIs can invest in mutual funds, PMS, AIFs, bonds, fixed deposits, NPS, direct equity, and real estate. We tailor the mix based on your goals, risk appetite, and tax residency.",
+    answer: "NRIs can invest in a variety of Indian assets, including mutual funds, bonds, fixed deposits, equities, NPS, PMS, AIFs, and real estate, subject to regulatory requirements. We help build a portfolio aligned with your goals, risk appetite, and tax situation.",
   },
   {
     question: "Are NRI investments taxed in India?",
-    answer: "Yes, capital gains and certain incomes are taxed in India. However, DTAA benefits and tax-efficient structures can significantly reduce your tax burden. We provide end-to-end tax guidance.",
+    answer: "Certain income earned by NRIs from investments in India may be taxable under Indian tax laws. We provide end-to-end guidance on taxation, DTAA benefits, and investment structuring to help you make informed financial decisions.",
   },
   {
-    question: "Can I repatriate my India investment gains?",
-    answer: "Absolutely. Gains from NRE account investments are fully repatriable. NRO account investments have repatriation limits subject to RBI norms, which we help you navigate.",
-  },
-  {
-    question: "Do you support clients in the Gulf, US, UK, and Singapore?",
-    answer: "Yes, we work with NRIs across the Middle East, North America, Europe, and Asia Pacific. We offer virtual consultations and secure online access to your portfolio from anywhere.",
+    question: "Can I repatriate my investment gains from India?",
+    answer: "Yes. NRE account investments are generally fully repatriable, while repatriation from NRO accounts is subject to RBI regulations and documentation requirements. We provide guidance to help ensure a seamless repatriation process.",
   },
   {
     question: "I live abroad — can I complete the entire process remotely?",
-    answer: "Yes. Our entire onboarding process is digital. From KYC verification to NRE/NRO account opening, PIS registration, and demat setup — everything is handled online through secure portals. You never need to visit India to start investing. We also conduct all consultations via video call or WhatsApp.",
+    answer: "Yes, in most cases the entire investment setup process can be completed online. From account opening and KYC documentation to investment onboarding, we guide you every step of the way through secure digital platforms, video calls, and WhatsApp support.",
   },
 ]
 
@@ -189,24 +185,17 @@ const whyFirstStep = [
 
 const nriTestimonials = [
   {
-    name: "Meera & Karthik Raman",
+    name: "Mr. Samuel Ratnam",
     location: "Dubai, UAE",
     quote:
-      "Managing India investments from Dubai was always a hassle — paperwork, compliance, finding someone trustworthy. First Step handled everything remotely. KYC, NRE accounts, mutual fund SIPs, all digital. Francis Sir personally reviews our portfolio every quarter.",
+      "I have been investing through Mr. Francis for the past 9 months. He is a very professional and knowledgeable mutual fund advisor. He always motivates and guides me with patience, helping me understand investment decisions clearly. His positive attitude, excellent communication, and genuine concern for his clients make him stand out. I appreciate his support and dedication, and I am happy with the service he provides. I would highly recommend Mr. Francis to anyone looking for a trustworthy and encouraging financial advisor.",
     rating: 5,
   },
   {
-    name: "Suresh Subramanian",
-    location: "Singapore",
+    name: "Valanarasu",
+    location: "Singapore — ISS M&E PTE LTD",
     quote:
-      "I was looking for someone who understands both Indian markets and the NRI tax landscape. The DTAA optimization alone saved me significantly. What I value most is the direct access — I can WhatsApp Francis Sir anytime.",
-    rating: 5,
-  },
-  {
-    name: "Anand Krishnan",
-    location: "London, UK",
-    quote:
-      "Tamil-speaking consultant who actually understands cross-border complexities. They set up my GIFT City investments and helped plan repatriation efficiently. Startup-level personal attention that big firms just can't match.",
+      "Fantastic experience with Mr. Francis J. As an NRI, I was worried about managing Indian investments and navigating taxes. He and his team handled all the documentation smoothly and consistently delivered excellent portfolio growth. Highly professional, ethical, and always available to answer questions. I would definitely recommend FSCS to my colleagues. Keep up the good work, Francis.",
     rating: 5,
   },
 ]
@@ -270,22 +259,33 @@ function NriLeadPopup() {
       name: formData.get("name"),
       email: formData.get("email"),
       phone: formData.get("phone"),
+      website: formData.get("website"),
       source: "nri-guide-popup",
     }
 
+    if (data.website) {
+      setLoading(false)
+      setSubmitted(true)
+      return
+    }
+
+    let submitOk = false
     try {
-      await fetch("https://backend-3-wydm.onrender.com/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      const { api } = await import("@/lib/api")
+      await api.submitLead({
+        source: "nri-guide-popup" as "lead_capture_modal",
+        name: data.name as string,
+        email: data.email as string,
+        phone: data.phone as string,
       })
+      submitOk = true
     } catch {
-      // silently fail
+      submitOk = false
     }
 
     setLoading(false)
     setSubmitted(true)
-    downloadGuide()
+    if (submitOk) downloadGuide()
   }
 
   // trigger: show once after 12s or 60% scroll, whichever first
@@ -364,6 +364,7 @@ function NriLeadPopup() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-px w-px opacity-0" />
               <input
                 name="name"
                 type="text"
@@ -416,22 +417,33 @@ function NriLeadForm() {
       name: formData.get("name"),
       email: formData.get("email"),
       phone: formData.get("phone"),
+      website: formData.get("website"),
       source: "nri-guide-download",
     }
 
+    if (data.website) {
+      setLoading(false)
+      setSubmitted(true)
+      return
+    }
+
+    let submitOk = false
     try {
-      await fetch("https://backend-3-wydm.onrender.com/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      const { api } = await import("@/lib/api")
+      await api.submitLead({
+        source: "nri-guide-download" as "lead_capture_modal",
+        name: data.name as string,
+        email: data.email as string,
+        phone: data.phone as string,
       })
+      submitOk = true
     } catch {
-      // silently fail — still show download
+      submitOk = false
     }
 
     setLoading(false)
     setSubmitted(true)
-    downloadGuide()
+    if (submitOk) downloadGuide()
   }
 
   if (submitted) {
@@ -478,6 +490,7 @@ function NriLeadForm() {
         Enter your details to download instantly
       </p>
       <div className="mt-6 space-y-4">
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-px w-px opacity-0" />
         <input
           name="name"
           type="text"
@@ -874,7 +887,7 @@ export function NriContent() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
-            className="mt-16 grid gap-6 md:grid-cols-3"
+            className="mt-16 grid gap-6 md:grid-cols-2 md:max-w-3xl md:mx-auto"
           >
             {nriTestimonials.map((testimonial, i) => (
               <motion.div

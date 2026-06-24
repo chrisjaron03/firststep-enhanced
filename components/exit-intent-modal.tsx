@@ -9,6 +9,7 @@ interface FormData {
   name: string;
   email: string;
   phone: string;
+  website: string;
 }
 
 export function ExitIntentModal() {
@@ -19,6 +20,7 @@ export function ExitIntentModal() {
     name: "",
     email: "",
     phone: "",
+    website: "",
   });
 
   // Detect exit intent: mouse moving toward top of browser
@@ -52,7 +54,13 @@ export function ExitIntentModal() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await api.submitLead({ source: "exit_intent_modal", ...formData });
+    if (formData.website) {
+      setIsSubmitted(true);
+      setTimeout(() => { setIsVisible(false); }, 3000);
+      return;
+    }
+    const { website, ...leadData } = formData;
+    await api.submitLead({ source: "exit_intent_modal", ...leadData });
     setIsSubmitted(true);
     setTimeout(() => {
       setIsVisible(false);
@@ -137,6 +145,7 @@ export function ExitIntentModal() {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-3">
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" onChange={handleInputChange} className="absolute left-[-9999px] h-px w-px opacity-0" />
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary/35" />
                     <input

@@ -19,7 +19,7 @@ async function handleLogin(request: Request, env: Env): Promise<Response> {
 
   // IP-based rate limiting (prevents brute force from single IP across multiple usernames)
   const rateLimitKey = getRateLimitKey(request, 'login')
-  const rateLimit = checkRateLimit(rateLimitKey, { maxAttempts: 10, windowMs: 15 * 60 * 1000, lockoutMs: 30 * 60 * 1000 })
+  const rateLimit = await checkRateLimit(env, rateLimitKey, { maxAttempts: 10, windowMs: 15 * 60 * 1000, lockoutMs: 30 * 60 * 1000 })
   if (!rateLimit.allowed) {
     return new Response(
       JSON.stringify({ error: `Too many login attempts from this IP. Try again in ${Math.ceil(rateLimit.retryAfterSec / 60)} minutes.` }),
@@ -102,7 +102,7 @@ async function handleLogin(request: Request, env: Env): Promise<Response> {
   await env.DB.prepare(
     'UPDATE admin_users SET failed_attempts = 0, locked_until = NULL, last_login = datetime(\'now\'), updated_at = datetime(\'now\') WHERE id = ?'
   ).bind(admin.id).run()
-  clearRateLimit(rateLimitKey)
+  await clearRateLimit(env, rateLimitKey)
 
   // Create JWT with short lifetime (8 hours)
   const { token, jti, exp } = await signJWT(
@@ -114,9 +114,9 @@ async function handleLogin(request: Request, env: Env): Promise<Response> {
   await createSession(env, jti, admin.id, ipHash, userAgent, exp)
   await logAudit(env, admin.id, 'login_success', ipHash)
 
+  const cookieFlags = 'HttpOnly; Secure; SameSite=None; Path=/; Max-Age=28800'
   return json({
     success: true,
-    token,
     admin: {
       id: admin.id,
       username: admin.username,
@@ -124,37 +124,63 @@ async function handleLogin(request: Request, env: Env): Promise<Response> {
       role: admin.role,
     },
     expires_at: new Date(exp * 1000).toISOString(),
-  }, env, request)
+  }, env, request, 200, {
+    'Set-Cookie': `fscs_admin_token=${token}; ${cookieFlags}`,
+  })
 }
 
 async function handleLogout(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') return errorResponse('Method not allowed', env, request, 405)
 
-  const authHeader = request.headers.get('Authorization')
-  if (!authHeader?.startsWith('Bearer ')) {
-    return errorResponse('No token provided', env, request, 401)
+  // Read token from cookie (preferred) or Authorization header
+  let token: string | null = null
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const cookieMatch = cookieHeader.match(/(?:^|;\s*)fscs_admin_token=([^;]+)/)
+  if (cookieMatch) {
+    token = sanitizeToken(cookieMatch[1])
+  }
+  if (!token) {
+    const authHeader = request.headers.get('Authorization')
+    if (authHeader?.startsWith('Bearer ')) {
+      token = sanitizeToken(authHeader.substring(7))
+    }
   }
 
-  const token = sanitizeToken(authHeader.substring(7))
-  const payload = await verifyJWT(token, env.JWT_SECRET)
-  if (payload) {
-    await revokeSession(env, payload.jti)
-    const ip = request.headers.get('CF-Connecting-IP') || 'unknown'
-    await logAudit(env, payload.sub, 'logout', await hashIP(ip))
+  if (token) {
+    const payload = await verifyJWT(token, env.JWT_SECRET)
+    if (payload) {
+      await revokeSession(env, payload.jti)
+      const ip = request.headers.get('CF-Connecting-IP') || 'unknown'
+      await logAudit(env, payload.sub, 'logout', await hashIP(ip))
+    }
   }
 
-  return json({ success: true }, env, request)
+  return json({ success: true }, env, request, 200, {
+    'Set-Cookie': 'fscs_admin_token=; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=0',
+  })
 }
 
 async function handleVerify(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'GET') return errorResponse('Method not allowed', env, request, 405)
 
-  const authHeader = request.headers.get('Authorization')
-  if (!authHeader?.startsWith('Bearer ')) {
+  // Read token from cookie (preferred) or Authorization header
+  let token: string | null = null
+  const cookieHeader = request.headers.get('Cookie') || ''
+  const cookieMatch = cookieHeader.match(/(?:^|;\s*)fscs_admin_token=([^;]+)/)
+  if (cookieMatch) {
+    token = sanitizeToken(cookieMatch[1])
+  }
+  if (!token) {
+    const authHeader = request.headers.get('Authorization')
+    if (authHeader?.startsWith('Bearer ')) {
+      token = sanitizeToken(authHeader.substring(7))
+    }
+  }
+
+  if (!token) {
     return errorResponse('No token provided', env, request, 401)
   }
 
-  const token = sanitizeToken(authHeader.substring(7))
   const payload = await verifyJWT(token, env.JWT_SECRET)
   if (!payload) {
     return errorResponse('Invalid or expired token', env, request, 401)

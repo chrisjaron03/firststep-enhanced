@@ -18,6 +18,7 @@ export function SipCalculator() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+  const [honeypot, setHoneypot] = useState("")
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
@@ -37,6 +38,14 @@ export function SipCalculator() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (honeypot) {
+      setIsSubmitted(true)
+      setTimeout(() => {
+        setShowForm(false)
+        setShowResults(true)
+      }, 800)
+      return
+    }
     await api.submitLead({
       source: "sip_calculator",
       name,
@@ -86,6 +95,7 @@ export function SipCalculator() {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute left-[-9999px] h-px w-px opacity-0" />
                   <h3 className="font-serif text-xl font-bold text-card-foreground text-center">
                     Enter Your Details to See Results
                   </h3>

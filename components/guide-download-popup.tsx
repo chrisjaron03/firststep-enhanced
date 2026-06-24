@@ -42,6 +42,7 @@ export function GuideDownloadPopup({
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+  const [honeypot, setHoneypot] = useState("")
 
   useEffect(() => {
     if (externalOpen) {
@@ -82,21 +83,36 @@ export function GuideDownloadPopup({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (honeypot) {
+      setLoading(false)
+      setSubmitted(true)
+      triggerDownload(pdfPath, pdfFileName)
+      return
+    }
     setLoading(true)
 
+    let submitOk = false
     try {
-      await fetch("https://backend-3-wydm.onrender.com/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, source }),
+      const { api } = await import("@/lib/api")
+      await api.submitLead({
+        source: source as "lead_capture_modal" | "exit_intent_modal" | "sip_calculator",
+        name,
+        email,
+        phone,
       })
+      submitOk = true
     } catch {
-      // silently fail
+      submitOk = false
     }
 
     setLoading(false)
-    setSubmitted(true)
-    triggerDownload(pdfPath, pdfFileName)
+
+    if (submitOk) {
+      setSubmitted(true)
+      triggerDownload(pdfPath, pdfFileName)
+    } else {
+      setSubmitted(true)
+    }
   }
 
   return (
@@ -174,6 +190,7 @@ export function GuideDownloadPopup({
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
+                  <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} className="absolute left-[-9999px] h-px w-px opacity-0" />
                   <input
                     type="text"
                     placeholder="Full Name"
