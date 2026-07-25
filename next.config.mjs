@@ -1,3 +1,4 @@
+// Next.js configuration for Cloudflare static export
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
