@@ -21,8 +21,6 @@ import {
   UserCheck,
   Monitor,
   Languages,
-  Quote,
-  Star,
   Download,
   BookOpen,
 } from "lucide-react"
@@ -42,6 +40,7 @@ import {
 } from "@/components/ui/dialog"
 import { ParticleField } from "@/components/particle-field"
 import { fadeInUp, staggerContainer } from "@/lib/animations"
+import { NriTestimonialsSection } from "@/components/nri-testimonials-section"
 
 const globalRegions = [
   {
@@ -180,23 +179,6 @@ const whyFirstStep = [
     title: "AMFI Registered & Compliant",
     description:
       "Fully AMFI-registered consultancy with FEMA-compliant transactions, transparent fee structures, and regulatory adherence on every single investment.",
-  },
-]
-
-const nriTestimonials = [
-  {
-    name: "Mr. Samuel Ratnam",
-    location: "Dubai, UAE",
-    quote:
-      "I have been investing through Mr. Francis for the past 9 months. He is a very professional and knowledgeable mutual fund advisor. He always motivates and guides me with patience, helping me understand investment decisions clearly. His positive attitude, excellent communication, and genuine concern for his clients make him stand out. I appreciate his support and dedication, and I am happy with the service he provides. I would highly recommend Mr. Francis to anyone looking for a trustworthy and encouraging financial advisor.",
-    rating: 5,
-  },
-  {
-    name: "Valanarasu",
-    location: "Singapore — ISS M&E PTE LTD",
-    quote:
-      "Fantastic experience with Mr. Francis J. As an NRI, I was worried about managing Indian investments and navigating taxes. He and his team handled all the documentation smoothly and consistently delivered excellent portfolio growth. Highly professional, ethical, and always available to answer questions. I would definitely recommend FSCS to my colleagues. Keep up the good work, Francis.",
-    rating: 5,
   },
 ]
 
@@ -859,61 +841,7 @@ export function NriContent() {
       </section>
 
       {/* NRI Testimonials Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f1a30] to-[#1a2744] py-24 lg:py-32">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-          }} />
-        </div>
-        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            className="text-center"
-          >
-            <motion.p variants={fadeInUp} className="text-sm font-semibold uppercase tracking-widest text-chart-1">
-              NRI Client Voices
-            </motion.p>
-            <motion.h2 variants={fadeInUp} className="mt-3 font-serif text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl text-balance">
-              What Our Global Clients Say
-            </motion.h2>
-          </motion.div>
-
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            className="mt-16 grid gap-6 md:grid-cols-2 md:max-w-3xl md:mx-auto"
-          >
-            {nriTestimonials.map((testimonial, i) => (
-              <motion.div
-                key={testimonial.name}
-                variants={fadeInUp}
-                transition={{ delay: i * 0.1 }}
-                className="flex flex-col rounded-2xl border border-primary-foreground/10 bg-primary-foreground/5 p-8 backdrop-blur-sm transition-all duration-500 hover:border-[var(--gold)]/25 hover:bg-primary-foreground/8"
-              >
-                <Quote className="h-8 w-8 text-chart-1/40" />
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-primary-foreground/80">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </p>
-                <div className="mt-6 flex gap-1">
-                  {Array.from({ length: testimonial.rating }).map((_, j) => (
-                    <Star key={j} className="h-4 w-4 fill-chart-1 text-chart-1" />
-                  ))}
-                </div>
-                <div className="mt-4">
-                  <p className="font-semibold text-primary-foreground">{testimonial.name}</p>
-                  <p className="text-xs text-primary-foreground/60">{testimonial.location}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      <NriTestimonialsSection />
 
       {/* FAQ Section */}
       <section className="bg-[var(--section-cool)] py-24 lg:py-32">

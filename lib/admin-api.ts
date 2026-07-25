@@ -129,9 +129,31 @@ export const adminApi = {
   deleteContact: (id: number) =>
     adminFetch(`/api/admin/contacts?id=${id}`, { method: 'DELETE' }),
 
-  getInsights: (range = '7d') =>
-    adminFetch(`/api/insights?range=${range}`),
+  getInsights: (range = '7d', startDate?: string, endDate?: string) => {
+    const qs = new URLSearchParams()
+    qs.set('range', range)
+    if (startDate) qs.set('start_date', startDate)
+    if (endDate) qs.set('end_date', endDate)
+    return adminFetch(`/api/insights?${qs.toString()}`)
+  },
 
   getAuditLog: (page = 1, limit = 50) =>
     adminFetch(`/api/admin/audit?page=${page}&limit=${limit}`),
+
+  // Bookings
+  getBookings: (params?: { status?: string; date?: string }) => {
+    const qs = new URLSearchParams()
+    if (params?.status) qs.set('status', params.status)
+    if (params?.date) qs.set('date', params.date)
+    return adminFetch(`/api/admin/bookings?${qs.toString()}`)
+  },
+
+  updateBooking: (id: number, data: { status: string; notes?: string }) =>
+    adminFetch(`/api/admin/bookings`, {
+      method: 'PUT',
+      body: JSON.stringify({ id, ...data }),
+    }),
+
+  deleteBooking: (id: number) =>
+    adminFetch(`/api/admin/bookings?id=${id}`, { method: 'DELETE' }),
 }

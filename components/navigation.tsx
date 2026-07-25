@@ -13,7 +13,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
   { label: "Products", href: "/products" },
-  { label: "SIP Calculator", href: "/sip-calculator" },
+  { label: "Calculators", href: "/calculators" },
   { label: "NRI", href: "/nri" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },

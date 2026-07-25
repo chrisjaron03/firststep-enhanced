@@ -165,6 +165,56 @@ CREATE INDEX IF NOT EXISTS idx_audit_admin   ON admin_audit_log(admin_id);
 CREATE INDEX IF NOT EXISTS idx_audit_action  ON admin_audit_log(action);
 CREATE INDEX IF NOT EXISTS idx_audit_created ON admin_audit_log(created_at);
 
+-- ─── Bookings / Appointments ─────────────────
+CREATE TABLE IF NOT EXISTS appointments (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  client_name     TEXT    NOT NULL,
+  client_email    TEXT    NOT NULL,
+  client_phone    TEXT,
+  date            TEXT    NOT NULL,
+  start_time      TEXT    NOT NULL,
+  end_time        TEXT    NOT NULL,
+  timezone        TEXT    NOT NULL DEFAULT 'Asia/Kolkata',
+  meet_link       TEXT,
+  calendar_event_id TEXT,
+  status          TEXT    NOT NULL DEFAULT 'confirmed',
+  notes           TEXT,
+  reminder_sent   INTEGER NOT NULL DEFAULT 0,
+  created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
+  updated_at      TEXT    NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_appointments_date   ON appointments(date);
+CREATE INDEX IF NOT EXISTS idx_appointments_email  ON appointments(client_email);
+CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments(status);
+
+-- ─── Consultant Availability ───────────────────
+CREATE TABLE IF NOT EXISTS availability (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  day_of_week INTEGER NOT NULL,       -- 0=Sun, 1=Mon ... 6=Sat
+  start_time  TEXT    NOT NULL,        -- e.g. '09:00'
+  end_time    TEXT    NOT NULL,        -- e.g. '17:00'
+  slot_duration INTEGER NOT NULL DEFAULT 30,
+  is_active   INTEGER NOT NULL DEFAULT 1
+);
+
+-- ─── Blocked Dates ────────────────────────────
+CREATE TABLE IF NOT EXISTS blocked_dates (
+  id      INTEGER PRIMARY KEY AUTOINCREMENT,
+  date    TEXT NOT NULL,
+  reason  TEXT,
+  UNIQUE(date)
+);
+
+-- ─── Google Calendar OAuth Tokens ─────────────
+CREATE TABLE IF NOT EXISTS calendar_tokens (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  access_token  TEXT,
+  refresh_token TEXT NOT NULL,
+  token_expiry  TEXT,
+  calendar_id   TEXT,
+  updated_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- ─── Rate Limits (D1-backed, durable across Worker isolates) ───
 CREATE TABLE IF NOT EXISTS rate_limits (
   key           TEXT PRIMARY KEY,

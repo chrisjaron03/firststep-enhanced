@@ -225,7 +225,7 @@ export function GuideDownloadPopup({
                   <button
                     type="button"
                     onClick={() => setOpen(false)}
-                    className="w-full py-2 text-center text-sm text-primary/40 transition-colors hover:text-primary/70"
+                    className="w-full rounded-xl bg-red-600 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-red-700"
                   >
                     No thanks
                   </button>

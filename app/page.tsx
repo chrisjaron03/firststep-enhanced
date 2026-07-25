@@ -6,12 +6,9 @@ import { TrustSection } from "@/components/trust-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { CtaBanner } from "@/components/cta-banner"
 import { Footer } from "@/components/footer"
-import { LeadCaptureModal } from "@/components/lead-capture-modal"
 import { WhatsAppButton } from "@/components/whatsapp-button"
-import { FloatingCTA } from "@/components/floating-cta"
-import { SocialProofPopup } from "@/components/social-proof-popup"
-import { ExitIntentModal } from "@/components/exit-intent-modal"
 import { GuideDownloadPopup } from "@/components/guide-download-popup"
+import { SocialProofPopup } from "@/components/social-proof-popup"
 
 export default function Home() {
   return (
@@ -26,11 +23,7 @@ export default function Home() {
         <CtaBanner />
       </main>
       <Footer />
-      <LeadCaptureModal />
       <WhatsAppButton />
-      <FloatingCTA />
-      <SocialProofPopup />
-      <ExitIntentModal />
       <GuideDownloadPopup
         pdfPath="/financial-freedom-guide.pdf"
         pdfFileName="7_Steps_to_Financial_Freedom.pdf"
@@ -39,6 +32,7 @@ export default function Home() {
         source="general-guide"
         storageKey="guide_popup_seen"
       />
+      <SocialProofPopup />
     </>
   )
 }

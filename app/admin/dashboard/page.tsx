@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   LayoutDashboard, Users, Mail, BarChart3, ScrollText,
-  LogOut, Search, Trash2, Edit2, Check, X, Loader2,
-  TrendingUp, MousePointerClick, Eye, Globe, Smartphone,
-  Shield, ChevronDown, RefreshCw,
+  LogOut, Trash2, Edit2, Check, X, Loader2,
+  TrendingUp, MousePointerClick, Eye,
+  Shield, RefreshCw, Calendar, Video, ExternalLink,
 } from "lucide-react"
 import { adminApi, hasAdminSession, getAdminUser, clearAdminSession, type AdminUser } from "@/lib/admin-api"
 
-type Tab = "overview" | "leads" | "contacts" | "analytics" | "audit"
+type Tab = "overview" | "leads" | "contacts" | "analytics" | "audit" | "bookings"
 
 interface Lead {
   id: number
@@ -107,7 +107,11 @@ export default function AdminDashboardPage() {
   const [contactsTotal, setContactsTotal] = useState(0)
   const [insights, setInsights] = useState<Insights | null>(null)
   const [auditLog, setAuditLog] = useState<AuditEntry[]>([])
+  const [bookings, setBookings] = useState<any[]>([])
+  const [bookingsFilter, setBookingsFilter] = useState("")
   const [insightsRange, setInsightsRange] = useState("7d")
+  const [customStartDate, setCustomStartDate] = useState("")
+  const [customEndDate, setCustomEndDate] = useState("")
 
   // Filters
   const [leadFilter, setLeadFilter] = useState("")
@@ -162,12 +166,12 @@ export default function AdminDashboardPage() {
 
   const fetchInsights = useCallback(async () => {
     setLoading(true)
-    const res = await adminApi.getInsights(insightsRange)
+    const res = await adminApi.getInsights(insightsRange, customStartDate || undefined, customEndDate || undefined)
     if (res.ok && res.data) {
       setInsights(res.data as Insights)
     }
     setLoading(false)
-  }, [insightsRange])
+  }, [insightsRange, customStartDate, customEndDate])
 
   const fetchAudit = useCallback(async () => {
     setLoading(true)
@@ -179,6 +183,16 @@ export default function AdminDashboardPage() {
     setLoading(false)
   }, [])
 
+  const fetchBookings = useCallback(async () => {
+    setLoading(true)
+    const res = await adminApi.getBookings({ status: bookingsFilter || undefined })
+    if (res.ok && res.data) {
+      const d = res.data as { data: any[] }
+      setBookings(d.data)
+    }
+    setLoading(false)
+  }, [bookingsFilter])
+
   useEffect(() => {
     if (!authChecked) return
     if (tab === "leads") fetchLeads()
@@ -186,7 +200,24 @@ export default function AdminDashboardPage() {
     if (tab === "analytics") fetchInsights()
     if (tab === "audit") fetchAudit()
     if (tab === "overview") fetchInsights()
-  }, [tab, authChecked, fetchLeads, fetchContacts, fetchInsights, fetchAudit])
+    if (tab === "bookings") fetchBookings()
+  }, [tab, authChecked, fetchLeads, fetchContacts, fetchInsights, fetchAudit, fetchBookings])
+
+  const handleUpdateBooking = async (id: number, status: string) => {
+    await adminApi.updateBooking(id, { status })
+    fetchBookings()
+  }
+
+  const handleDeleteBooking = async (id: number) => {
+    if (!confirm("Delete this booking?")) return
+    await adminApi.deleteBooking(id)
+    fetchBookings()
+  }
+
+  const handleCalendarAuth = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://firststep-backend.chrisjaron99.workers.dev"
+    window.open(`${apiUrl}/api/admin/calendar/auth`, "_blank", "width=600,height=700")
+  }
 
   const handleLogout = async () => {
     await adminApi.logout()
@@ -230,6 +261,7 @@ export default function AdminDashboardPage() {
     { id: "overview", label: "Overview", icon: LayoutDashboard },
     { id: "leads", label: "Leads", icon: Users },
     { id: "contacts", label: "Contacts", icon: Mail },
+    { id: "bookings", label: "Bookings", icon: Calendar },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
     { id: "audit", label: "Audit Log", icon: ScrollText },
   ]
@@ -308,57 +340,43 @@ export default function AdminDashboardPage() {
               {/* Overview Tab */}
               {tab === "overview" && insights && (
                 <div className="space-y-6">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between flex-wrap gap-3">
                     <h2 className="text-xl font-bold">Overview</h2>
-                    <select
-                      value={insightsRange}
-                      onChange={(e) => setInsightsRange(e.target.value)}
-                      className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none"
-                    >
-                      <option value="7d" className="bg-[#0a0f1c]">Last 7 days</option>
-                      <option value="30d" className="bg-[#0a0f1c]">Last 30 days</option>
-                      <option value="90d" className="bg-[#0a0f1c]">Last 90 days</option>
-                    </select>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="date"
+                        value={customStartDate}
+                        onChange={(e) => { setCustomStartDate(e.target.value); setInsightsRange("") }}
+                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none [color-scheme:dark]"
+                      />
+                      <span className="text-white/30">—</span>
+                      <input
+                        type="date"
+                        value={customEndDate}
+                        onChange={(e) => { setCustomEndDate(e.target.value); setInsightsRange("") }}
+                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none [color-scheme:dark]"
+                      />
+                      <select
+                        value={insightsRange}
+                        onChange={(e) => { setInsightsRange(e.target.value); setCustomStartDate(""); setCustomEndDate("") }}
+                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none"
+                      >
+                        <option value="today" className="bg-[#0a0f1c]">Today</option>
+                        <option value="7d" className="bg-[#0a0f1c]">Last 7 days</option>
+                        <option value="30d" className="bg-[#0a0f1c]">Last 30 days</option>
+                        <option value="90d" className="bg-[#0a0f1c]">Last 90 days</option>
+                      </select>
+                    </div>
                   </div>
 
-                  {/* Stat cards */}
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-                    <StatCard icon={Eye} label="Page Views" value={insights.summary.pageviews} color="red" />
-                    <StatCard icon={MousePointerClick} label="Clicks" value={insights.summary.clicks} color="cyan" />
-                    <StatCard icon={Users} label="Sessions" value={insights.summary.sessions} color="purple" />
+                  {/* Stat cards — unique to overview: business metrics */}
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
                     <StatCard icon={TrendingUp} label="Leads" value={insights.summary.leads} color="green" />
                     <StatCard icon={Mail} label="Contacts" value={insights.summary.contacts} color="orange" />
                   </div>
 
-                  {/* Two column layout */}
+                  {/* Leads by source + Contacts by service */}
                   <div className="grid gap-6 lg:grid-cols-2">
-                    {/* Top pages */}
-                    <Card title="Top Pages">
-                      <div className="space-y-3">
-                        {insights.top_pages.length === 0 && <EmptyState />}
-                        {insights.top_pages.map((p, i) => (
-                          <div key={i} className="flex items-center justify-between text-sm">
-                            <span className="text-white/70">{p.page_path}</span>
-                            <span className="font-semibold text-red-400">{p.views}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </Card>
-
-                    {/* Top clicks */}
-                    <Card title="Most Clicked Elements">
-                      <div className="space-y-3">
-                        {insights.top_clicks.length === 0 && <EmptyState />}
-                        {insights.top_clicks.map((c, i) => (
-                          <div key={i} className="flex items-center justify-between text-sm">
-                            <span className="text-white/70">{c.element_text || c.element_id || "Unknown"}</span>
-                            <span className="font-semibold text-red-400">{c.clicks}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </Card>
-
-                    {/* Leads by source */}
                     <Card title="Leads by Source">
                       <div className="space-y-3">
                         {insights.leads_by_source.length === 0 && <EmptyState />}
@@ -371,7 +389,6 @@ export default function AdminDashboardPage() {
                       </div>
                     </Card>
 
-                    {/* Contacts by service */}
                     <Card title="Contacts by Service">
                       <div className="space-y-3">
                         {insights.contacts_by_service.length === 0 && <EmptyState />}
@@ -379,36 +396,6 @@ export default function AdminDashboardPage() {
                           <div key={i} className="flex items-center justify-between text-sm">
                             <span className="text-white/70">{SERVICE_LABELS[s.service] || s.service}</span>
                             <span className="font-semibold text-white/80">{s.count}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </Card>
-                  </div>
-
-                  {/* Device + Country */}
-                  <div className="grid gap-6 lg:grid-cols-2">
-                    <Card title="Devices">
-                      <div className="flex gap-4">
-                        {insights.by_device.map((d, i) => {
-                          const Icon = d.device === "mobile" ? Smartphone : Globe
-                          return (
-                            <div key={i} className="flex flex-1 flex-col items-center rounded-lg border border-white/10 bg-white/5 p-4">
-                              <Icon className="mb-2 h-5 w-5 text-white/40" />
-                              <span className="text-xs capitalize text-white/60">{d.device}</span>
-                              <span className="text-lg font-bold">{d.count}</span>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </Card>
-
-                    <Card title="Top Countries">
-                      <div className="space-y-3">
-                        {insights.by_country.length === 0 && <EmptyState />}
-                        {insights.by_country.slice(0, 5).map((c, i) => (
-                          <div key={i} className="flex items-center justify-between text-sm">
-                            <span className="text-white/70">{c.country}</span>
-                            <span className="font-semibold text-purple-400">{c.count}</span>
                           </div>
                         ))}
                       </div>
@@ -653,20 +640,150 @@ export default function AdminDashboardPage() {
                 </div>
               )}
 
+              {/* Bookings Tab */}
+              {tab === "bookings" && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-bold">Bookings <span className="text-sm font-normal text-white/40">({bookings.length})</span></h2>
+                    <div className="flex items-center gap-3">
+                      <select
+                        value={bookingsFilter}
+                        onChange={(e) => setBookingsFilter(e.target.value)}
+                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none"
+                      >
+                        <option value="" className="bg-[#0a0f1c]">All statuses</option>
+                        <option value="confirmed" className="bg-[#0a0f1c]">Confirmed</option>
+                        <option value="completed" className="bg-[#0a0f1c]">Completed</option>
+                        <option value="cancelled" className="bg-[#0a0f1c]">Cancelled</option>
+                      </select>
+                      <button
+                        onClick={handleCalendarAuth}
+                        className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs text-white/60 hover:bg-white/5"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                        Link Google Calendar
+                      </button>
+                      <button
+                        onClick={fetchBookings}
+                        className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm text-white/60 hover:bg-white/5"
+                      >
+                        <RefreshCw className="h-3.5 w-3.5" />
+                        Refresh
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto rounded-xl border border-white/10">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-white/10 bg-white/5 text-left text-xs uppercase tracking-wider text-white/40">
+                          <th className="px-4 py-3">Client</th>
+                          <th className="px-4 py-3">Date / Time</th>
+                          <th className="px-4 py-3">Meet Link</th>
+                          <th className="px-4 py-3">Status</th>
+                          <th className="px-4 py-3">Created</th>
+                          <th className="px-4 py-3">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bookings.length === 0 && (
+                          <tr><td colSpan={6} className="px-4 py-12 text-center text-white/30">No bookings found</td></tr>
+                        )}
+                        {bookings.map((b: any) => (
+                          <tr key={b.id} className="border-b border-white/5 hover:bg-white/5">
+                            <td className="px-4 py-3">
+                              <div className="font-medium text-white">{b.client_name}</div>
+                              <div className="text-xs text-white/50">{b.client_email}</div>
+                              {b.client_phone && <div className="text-xs text-white/40">{b.client_phone}</div>}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="text-white/80">
+                                {new Date(b.date + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                              </div>
+                              <div className="text-xs text-white/50">{b.start_time} — {b.end_time}</div>
+                            </td>
+                            <td className="px-4 py-3">
+                              {b.meet_link ? (
+                                <a href={b.meet_link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-300">
+                                  <Video className="h-3.5 w-3.5" />
+                                  Join
+                                </a>
+                              ) : (
+                                <span className="text-xs text-white/30">—</span>
+                              )}
+                            </td>
+                            <td className="px-4 py-3">
+                              <span className={`rounded-md border px-2 py-1 text-xs ${STATUS_COLORS[b.status] || STATUS_COLORS.new}`}>
+                                {b.status}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-xs text-white/40">
+                              {new Date(b.created_at + "Z").toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+                            </td>
+                            <td className="px-4 py-3">
+                              <div className="flex gap-2">
+                                {b.status === "confirmed" && (
+                                  <button
+                                    onClick={() => handleUpdateBooking(b.id, "completed")}
+                                    className="rounded-md bg-green-500/10 px-2 py-1 text-xs text-green-400 hover:bg-green-500/20"
+                                  >
+                                    Complete
+                                  </button>
+                                )}
+                                {b.status !== "cancelled" && (
+                                  <button
+                                    onClick={() => handleUpdateBooking(b.id, "cancelled")}
+                                    className="rounded-md bg-red-500/10 px-2 py-1 text-xs text-red-400 hover:bg-red-500/20"
+                                  >
+                                    Cancel
+                                  </button>
+                                )}
+                                <button
+                                  onClick={() => handleDeleteBooking(b.id)}
+                                  className="text-white/30 hover:text-red-400"
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
               {/* Analytics Tab */}
               {tab === "analytics" && insights && (
                 <div className="space-y-6">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between flex-wrap gap-3">
                     <h2 className="text-xl font-bold">Analytics</h2>
-                    <select
-                      value={insightsRange}
-                      onChange={(e) => setInsightsRange(e.target.value)}
-                      className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none"
-                    >
-                      <option value="7d" className="bg-[#0a0f1c]">Last 7 days</option>
-                      <option value="30d" className="bg-[#0a0f1c]">Last 30 days</option>
-                      <option value="90d" className="bg-[#0a0f1c]">Last 90 days</option>
-                    </select>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="date"
+                        value={customStartDate}
+                        onChange={(e) => { setCustomStartDate(e.target.value); setInsightsRange("") }}
+                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none [color-scheme:dark]"
+                      />
+                      <span className="text-white/30">—</span>
+                      <input
+                        type="date"
+                        value={customEndDate}
+                        onChange={(e) => { setCustomEndDate(e.target.value); setInsightsRange("") }}
+                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none [color-scheme:dark]"
+                      />
+                      <select
+                        value={insightsRange}
+                        onChange={(e) => { setInsightsRange(e.target.value); setCustomStartDate(""); setCustomEndDate("") }}
+                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none"
+                      >
+                        <option value="today" className="bg-[#0a0f1c]">Today</option>
+                        <option value="7d" className="bg-[#0a0f1c]">Last 7 days</option>
+                        <option value="30d" className="bg-[#0a0f1c]">Last 30 days</option>
+                        <option value="90d" className="bg-[#0a0f1c]">Last 90 days</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-3">

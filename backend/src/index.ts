@@ -6,6 +6,9 @@ import { handleAnalytics } from './routes/analytics'
 import { handleInsights } from './routes/insights'
 import { handleAdminAuth } from './routes/admin-auth'
 import { handleAdminData } from './routes/admin-data'
+import { handleBooking } from './routes/bookings'
+import { handleAdminBooking } from './routes/admin-bookings'
+import { handleCalendar } from './routes/calendar'
 import { securityHeaders } from './lib/security'
 import { authenticateRequest } from './lib/auth'
 
@@ -76,6 +79,11 @@ export default {
         return await handleAnalytics(request, env)
       }
 
+      // Public booking routes
+      if (path === '/api/bookings' || path === '/api/bookings/slots') {
+        return await handleBooking(request, env)
+      }
+
       // Admin auth routes
       if (path === '/api/admin/login') {
         return await handleAdminAuth(request, env, 'login')
@@ -100,6 +108,16 @@ export default {
 
       if (path === '/api/admin/audit') {
         return await handleAdminData(request, env, 'audit')
+      }
+
+      // Admin booking routes
+      if (path === '/api/admin/bookings') {
+        return await handleAdminBooking(request, env)
+      }
+
+      // Calendar OAuth routes
+      if (path === '/api/admin/calendar/auth' || path === '/api/admin/calendar/callback') {
+        return await handleCalendar(request, env)
       }
 
       // Insights — admin-only (business analytics must not be public)

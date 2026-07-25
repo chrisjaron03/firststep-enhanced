@@ -2,6 +2,8 @@ export interface Env {
   DB: D1Database
   ALLOWED_ORIGINS: string
   JWT_SECRET: string
+  GOOGLE_CLIENT_ID?: string
+  GOOGLE_CLIENT_SECRET?: string
 }
 
 export interface LeadRecord {
@@ -33,6 +35,23 @@ export interface ContactRecord {
   user_agent?: string
   ip_hash?: string
   session_id?: string
+}
+
+export interface AppointmentRecord {
+  client_name: string
+  client_email: string
+  client_phone?: string
+  date: string
+  start_time: string
+  end_time: string
+  timezone?: string
+}
+
+export interface AvailabilitySlot {
+  day_of_week: number
+  start_time: string
+  end_time: string
+  slot_duration: number
 }
 
 export interface AnalyticsEvent {
