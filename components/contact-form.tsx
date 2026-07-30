@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react"
 import { motion, useInView } from "framer-motion"
-import { Mail, MapPin, Clock, CheckCircle2, MessageCircle, ArrowRight } from "lucide-react"
+import { Mail, MapPin, Clock, CheckCircle2, MessageCircle, ArrowRight, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -240,6 +240,27 @@ export function ContactForm() {
             </p>
 
             <div className="mt-8 space-y-6">
+              {/* Phone */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: 0.35 }}
+                className="flex gap-4"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+                  <Phone className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Phone</p>
+                  <a
+                    href="tel:+919894163796"
+                    className="mt-1 block text-muted-foreground transition-colors hover:text-accent font-medium"
+                  >
+                    +91 98941 63796
+                  </a>
+                </div>
+              </motion.div>
+
               {/* WhatsApp */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -247,7 +268,7 @@ export function ContactForm() {
                 transition={{ delay: 0.4 }}
                 className="flex gap-4"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#25D366] text-accent-foreground">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#25D366] text-white">
                   <MessageCircle className="h-5 w-5" />
                 </div>
                 <div>
@@ -256,9 +277,9 @@ export function ContactForm() {
                     href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1 text-muted-foreground transition-colors hover:text-accent"
+                    className="mt-1 block text-muted-foreground transition-colors hover:text-accent font-medium"
                   >
-                    Chat with us instantly
+                    +91 98941 63796 (Chat instantly)
                   </a>
                 </div>
               </motion.div>

@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Mail, MapPin } from "lucide-react"
+import { Mail, MapPin, Phone, MessageCircle } from "lucide-react"
 
 const footerLinks = {
   Products: [
@@ -91,6 +91,22 @@ export function Footer({ onDownloadClick }: { onDownloadClick?: () => void }) {
               investments and beyond.
             </p>
             <div className="mt-6 space-y-3">
+              <a
+                href="tel:+919894163796"
+                className="flex items-center gap-2 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+              >
+                <Phone className="h-4 w-4" />
+                +91 98941 63796
+              </a>
+              <a
+                href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
+              >
+                <MessageCircle className="h-4 w-4 text-[#25D366]" />
+                +91 98941 63796 (WhatsApp)
+              </a>
               <a
                 href="mailto:francis@firststepcs.com"
                 className="flex items-center gap-2 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"

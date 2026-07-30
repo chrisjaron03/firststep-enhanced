@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
-    "pages:build": "next-on-pages",
+    "pages:deploy": "npm run build && npx wrangler pages deploy out --project-name=firststep-enhanced",
+    "deploy": "npm run pages:deploy",
     "start": "next start",
     "lint": "eslint ."
   },
