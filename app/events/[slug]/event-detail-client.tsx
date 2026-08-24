@@ -247,6 +247,8 @@ export default function EventDetailPage() {
   const totalLessons = curriculum.reduce((n, m) => n + (m.lessons?.length || 0), 0)
   const meetingLink = (event as unknown as { meeting_link?: string | null }).meeting_link || "https://meet.google.com/firststep-blueprint"
   const waLink = (event as unknown as { whatsapp_community_link?: string | null }).whatsapp_community_link || "https://chat.whatsapp.com/FIRSTSTEP_MONEY_BLUEPRINT"
+  const headings = (event as unknown as { section_headings?: Record<string, string> }).section_headings || {}
+  const H = (k: string, fallback: string) => (headings[k]?.trim() ? headings[k] : fallback)
   const ctaHref = isSoldOut ? "/contact" : (event.cta_url || "#register")
   const ctaLabel = isSoldOut ? "Join Waitlist" : event.cta_label
   const pillDate = event.event_date ? formatDateShort(event.event_date) + (formatTimeIST(event.event_date, event.timezone) ? " • " + formatTimeIST(event.event_date, event.timezone) : "") : "TBA"
@@ -454,8 +456,8 @@ export default function EventDetailPage() {
           <div className="grid gap-10 lg:grid-cols-[1.65fr_0.85fr] lg:gap-12">
             <div className="space-y-10">
               <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 shadow-sm">
-                <p className="text-xs font-bold tracking-widest text-accent uppercase">The Real Problem</p>
-                <h2 className="mt-1 font-serif text-2xl font-bold leading-tight flex items-center gap-2"><Lightbulb className="h-6 w-6 text-[var(--gold)]" /> You earn money. But do you have a <span className="text-accent">money system</span>?</h2>
+                <p className="text-xs font-bold tracking-widest text-accent uppercase">{H("problem_kicker","The Real Problem")}</p>
+                <h2 className="mt-1 font-serif text-2xl font-bold leading-tight flex items-center gap-2"><Lightbulb className="h-6 w-6 text-[var(--gold)]" /> {H("problem_title","You earn money. But do you have a money system?")}</h2>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">Salary comes in. Bills go out. Some into FD, some into insurance, some into SIPs, some stays in bank. But is everything <span className="font-semibold text-foreground">working together</span>? Most families earn well yet drift without a coordinated system.</p>
                 <div className="mt-5 grid gap-3 sm:grid-cols-3 text-sm">
                   {["Money scattered across FD, insurance, SIPs, bank — no single view","Protection confused with investment (endowment / ULIP traps)","Inflation silently eroding what you save"].map((t)=>(
@@ -471,9 +473,9 @@ export default function EventDetailPage() {
 
               {learnItems.length > 0 && (
                 <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 lg:p-10 shadow-sm">
-                  <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase">In 90 Minutes, You’ll Learn</p>
-                  <h2 className="mt-2 font-serif text-2xl font-bold lg:text-[1.75rem]">What You’ll Learn — The 4 Money Pillars</h2>
-                  <p className="mt-2 text-sm text-muted-foreground max-w-2xl">Four pillars, one system — each pillar is editable from Admin → Events → 4 Money Pillars.</p>
+                  <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase">{H("pillars_kicker","In 90 Minutes, You’ll Learn")}</p>
+                  <h2 className="mt-2 font-serif text-2xl font-bold lg:text-[1.75rem]">{H("pillars_title","What You’ll Learn — The 4 Money Pillars")}</h2>
+                  <p className="mt-2 text-sm text-muted-foreground max-w-2xl">{H("pillars_desc","Four pillars, one system — each pillar is editable from Admin → Events → 4 Money Pillars.")}</p>
                   <div className="mt-8 grid gap-6 sm:grid-cols-2">
                     {learnItems.map((raw, i) => {
                       const icons = [PiggyBank, Shield, TrendingUp, Wallet]
@@ -509,7 +511,7 @@ export default function EventDetailPage() {
               {curriculum.length > 0 && (
                 <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 shadow-sm">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h2 className="font-serif text-2xl font-bold flex items-center gap-2"><BookOpen className="h-5 w-5 text-[var(--gold)]" /> Inside the Webinar — {curriculum.length} Modules • {totalLessons} Lessons</h2>
+                    <h2 className="font-serif text-2xl font-bold flex items-center gap-2"><BookOpen className="h-5 w-5 text-[var(--gold)]" /> {H("curriculum_heading","Inside the Webinar")} — {curriculum.length} Modules • {totalLessons} Lessons</h2>
                     <span className="rounded-full bg-secondary border border-border px-3 py-1 text-xs">Earn → Protect → Time → Invest → Goals → Wealth → Action</span>
                   </div>
                   <Accordion type="single" collapsible className="mt-5 w-full">
@@ -545,7 +547,7 @@ export default function EventDetailPage() {
 
               {outcomes.length > 0 && (
                 <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 shadow-sm">
-                  <h2 className="font-serif text-2xl font-bold flex items-center gap-2"><Target className="h-5 w-5 text-[var(--gold)]" /> Walk away with</h2>
+                  <h2 className="font-serif text-2xl font-bold flex items-center gap-2"><Target className="h-5 w-5 text-[var(--gold)]" /> {H("outcomes_heading","Walk away with")}</h2>
                   <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                     {outcomes.map((o, i) => (
                       <li key={i} className="flex gap-3 rounded-2xl border border-emerald-500/10 bg-emerald-500/5 p-4 text-sm"><Check className="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" /><span>{o}</span></li>
@@ -558,7 +560,7 @@ export default function EventDetailPage() {
                 <div className="grid gap-4 md:grid-cols-2">
                   {forYou.length > 0 && (
                     <div className="rounded-3xl border border-emerald-500/20 bg-emerald-500/5 p-6">
-                      <h3 className="font-bold text-emerald-700 flex items-center gap-2"><CheckCircle2 className="h-5 w-5" /> This webinar is for you if…</h3>
+                      <h3 className="font-bold text-emerald-700 flex items-center gap-2"><CheckCircle2 className="h-5 w-5" /> {H("for_you_heading","This webinar is for you if…")}</h3>
                       <ul className="mt-3 space-y-2 text-sm">
                         {forYou.map((t, i) => <li key={i} className="flex gap-2"><Check className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" /><span>{t}</span></li>)}
                       </ul>
@@ -566,7 +568,7 @@ export default function EventDetailPage() {
                   )}
                   {notForYou.length > 0 && (
                     <div className="rounded-3xl border border-accent/15 bg-accent/5 p-6">
-                      <h3 className="font-bold text-accent flex items-center gap-2"><XCircle className="h-5 w-5" /> This is NOT for you if…</h3>
+                      <h3 className="font-bold text-accent flex items-center gap-2"><XCircle className="h-5 w-5" /> {H("not_for_heading","This is NOT for you if…")}</h3>
                       <ul className="mt-3 space-y-2 text-sm">
                         {notForYou.map((t, i) => <li key={i} className="flex gap-2"><XCircle className="h-4 w-4 text-accent mt-0.5 shrink-0" /><span>{t}</span></li>)}
                       </ul>
@@ -576,8 +578,8 @@ export default function EventDetailPage() {
               )}
 
               <div className="rounded-3xl border border-[var(--gold)]/20 bg-[var(--gold)]/5 p-6 sm:p-8">
-                <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase">Your Guide</p>
-                <h3 className="font-serif text-xl font-bold flex items-center gap-2 mt-1"><Award className="h-5 w-5 text-[var(--gold)]" /> Led by Francis J. — Your Money Guide</h3>
+                <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase">{H("instructor_kicker","Your Guide")}</p>
+                <h3 className="font-serif text-xl font-bold flex items-center gap-2 mt-1"><Award className="h-5 w-5 text-[var(--gold)]" /> {H("instructor_title","Led by Francis J. — Your Money Guide")}</h3>
                 <div className="mt-4 flex gap-4">
                   <Image src="/images/francis-j.jpeg" alt="Francis J." width={80} height={80} className="h-20 w-20 shrink-0 rounded-2xl border border-[var(--gold)]/20 object-cover" />
                   <div className="text-sm">
@@ -600,8 +602,8 @@ export default function EventDetailPage() {
               </div>
 
               <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 shadow-sm">
-                <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase">Loved by families</p>
-                <h2 className="mt-1 font-serif text-2xl font-bold flex items-center gap-2"><Quote className="h-5 w-5 text-[var(--gold)]" /> What attendees say</h2>
+                <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase">{H("testimonials_kicker","Loved by families")}</p>
+                <h2 className="mt-1 font-serif text-2xl font-bold flex items-center gap-2"><Quote className="h-5 w-5 text-[var(--gold)]" /> {H("testimonials_title","What attendees say")}</h2>
                 <div className="mt-5 grid gap-4 md:grid-cols-3">
                   {TESTIMONIALS.map((t,i)=>(
                     <div key={i} className="rounded-2xl border border-border bg-secondary/30 p-5">
@@ -615,7 +617,7 @@ export default function EventDetailPage() {
               </div>
 
               <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 shadow-sm">
-                <h2 className="font-serif text-2xl font-bold flex items-center gap-2"><HelpCircle className="h-5 w-5 text-[var(--gold)]" /> FAQ</h2>
+                <h2 className="font-serif text-2xl font-bold flex items-center gap-2"><HelpCircle className="h-5 w-5 text-[var(--gold)]" /> {H("faq_heading","FAQ")}</h2>
                 <Accordion type="single" collapsible className="mt-4">
                   {FAQS.map((f,i)=>(
                     <AccordionItem key={i} value={`faq-${i}`}>
@@ -629,8 +631,8 @@ export default function EventDetailPage() {
               <div className="rounded-3xl bg-[var(--navy-deep)] p-6 sm:p-8 text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[var(--gold)]/15 via-transparent to-transparent" />
                 <div className="relative">
-                  <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase flex items-center gap-2"><Sparkles className="h-4 w-4" /> Final Call</p>
-                  <h3 className="mt-2 font-serif text-2xl font-bold leading-tight">Stop earning & saving. Start managing money with a system.</h3>
+                  <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase flex items-center gap-2"><Sparkles className="h-4 w-4" /> {H("final_kicker","Final Call")}</p>
+                  <h3 className="mt-2 font-serif text-2xl font-bold leading-tight">{H("final_title","Stop earning & saving. Start managing money with a system.")}</h3>
                   <p className="mt-2 text-sm text-white/70">90 mins live. 8 modules. Worth ₹{event.value_anchor_price||1999} — free for this batch only. {remaining} seats left.</p>
                   <div className="mt-5 flex flex-wrap gap-3">
                     <button onClick={scrollToRegister} className="rounded-xl bg-emerald-500 px-7 py-3 font-bold text-white hover:bg-emerald-600 inline-flex items-center gap-2">Reserve My Free Seat — 20 sec <ArrowRight className="h-4 w-4" /></button>

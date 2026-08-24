@@ -212,6 +212,25 @@ function emptyForm() {
     instructor_note: MONEY_BLUEPRINT_TEMPLATE.instructor_note,
     meeting_link: MONEY_BLUEPRINT_TEMPLATE.meeting_link,
     whatsapp_community_link: MONEY_BLUEPRINT_TEMPLATE.whatsapp_community_link,
+    section_headings: {
+      pillars_kicker: "In 90 Minutes, You’ll Learn",
+      pillars_title: "What You’ll Learn — The 4 Money Pillars",
+      pillars_desc: "Four pillars, one system — each pillar is editable from Admin → Events → 4 Money Pillars.",
+      outcomes_heading: "Walk away with",
+      for_you_heading: "This webinar is for you if…",
+      not_for_heading: "This is NOT for you if…",
+      flow_heading: "What’s inside the 90 mins?",
+      curriculum_heading: "Inside the Webinar",
+      problem_kicker: "The Real Problem",
+      problem_title: "You earn money. But do you have a money system?",
+      instructor_kicker: "Your Guide",
+      instructor_title: "Led by Francis J. — Your Money Guide",
+      testimonials_kicker: "Loved by families",
+      testimonials_title: "What attendees say",
+      faq_heading: "FAQ",
+      final_kicker: "Final Call",
+      final_title: "Stop earning & saving. Start managing money with a system.",
+    } as Record<string, string>,
     featured: true,
     max_seats: 100 as string | number,
   }
@@ -330,6 +349,13 @@ export function EventsManager() {
       instructor_note: ev.instructor_note || MONEY_BLUEPRINT_TEMPLATE.instructor_note,
       meeting_link: (ev as unknown as { meeting_link?: string | null }).meeting_link || MONEY_BLUEPRINT_TEMPLATE.meeting_link,
       whatsapp_community_link: (ev as unknown as { whatsapp_community_link?: string | null }).whatsapp_community_link || MONEY_BLUEPRINT_TEMPLATE.whatsapp_community_link,
+      section_headings: (() => {
+        try {
+          const raw = JSON.parse((ev as unknown as { section_headings?: string }).section_headings || "{}")
+          if (raw && typeof raw === "object" && !Array.isArray(raw)) return { ...(emptyForm().section_headings as Record<string,string>), ...(raw as Record<string,string>) }
+        } catch {}
+        return { ...(emptyForm().section_headings as Record<string,string>) }
+      })(),
       featured: Boolean(ev.featured),
       max_seats: ev.max_seats ?? 100,
     })
@@ -381,6 +407,7 @@ export function EventsManager() {
       cta_url: form.cta_url.trim() || null,
       meeting_link: (form as unknown as { meeting_link: string }).meeting_link?.trim() || null,
       whatsapp_community_link: (form as unknown as { whatsapp_community_link: string }).whatsapp_community_link?.trim() || null,
+      section_headings: (form as unknown as { section_headings: Record<string,string> }).section_headings,
       status: form.status,
       delivery_mode: form.delivery_mode,
       duration_mins: form.duration_mins === "" ? null : Number(form.duration_mins),
@@ -431,6 +458,7 @@ export function EventsManager() {
   const addPillar = () => setForm((f) => ({ ...f, learn_items: [...(f.learn_items as unknown as Pillar[]), { title: "", desc: "" }] } as never))
   const removePillar = (i: number) => setForm((f) => ({ ...f, learn_items: (f.learn_items as unknown as Pillar[]).filter((_, idx) => idx !== i) } as never))
   const updatePillar = (i: number, field: "title" | "desc", v: string) => setForm((f) => ({ ...f, learn_items: (f.learn_items as unknown as Pillar[]).map((p, idx) => idx === i ? { ...p, [field]: v } : p) } as never))
+  const updateHeading = (key: string, v: string) => setForm((f) => ({ ...f, section_headings: { ...(f as unknown as { section_headings: Record<string, string> }).section_headings, [key]: v } } as never))
 
   const addGalleryItem = () => {
     if (!galleryUrl.trim()) return
@@ -683,6 +711,43 @@ export function EventsManager() {
                   <h4 className="text-sm font-semibold text-white/80">Inside the Webinar — 7 Steps Flow</h4>
                   <div className="space-y-2">{form.inside_flow.map((v, i) => (<div key={i} className="flex gap-2"><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--gold)] text-xs font-bold text-[var(--navy-deep)]">{i + 1}</span><input value={v} onChange={(e) => updateList("inside_flow", i, e.target.value)} placeholder="Money structure → …" className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs outline-none focus:border-[var(--gold)]" /><button type="button" onClick={() => removeFromList("inside_flow", i)} className="p-1 text-white/40 hover:text-red-400"><Trash2 className="h-4 w-4" /></button></div>))}</div>
                   <button type="button" onClick={() => addToList("inside_flow")} className="text-xs text-[var(--gold)] hover:underline">+ Add Step</button>
+                </div>
+
+                {/* All Headings — editable */}
+                <div className="rounded-2xl border border-[var(--gold)]/20 bg-[var(--gold)]/[0.04] p-5 space-y-4">
+                  <h4 className="text-sm font-bold text-[var(--gold)] flex items-center gap-2">✏️ All Headings — Editable</h4>
+                  <p className="text-xs text-white/40">Every heading on the landing page is editable here. Leave blank to use defaults. The “4 Money Pillars” title you highlighted is <span className="text-white font-semibold">pillars_title</span>.</p>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {[
+                      ["pillars_kicker", "Pillars kicker (small label)"],
+                      ["pillars_title", "4 Money Pillars — What You’ll Learn *"],
+                      ["pillars_desc", "Pillars description"],
+                      ["outcomes_heading", "Walk away with"],
+                      ["for_you_heading", "This webinar is for you if…"],
+                      ["not_for_heading", "This is NOT for you if…"],
+                      ["flow_heading", "What’s inside the 90 mins?"],
+                      ["curriculum_heading", "Inside the Webinar heading"],
+                      ["problem_kicker", "The Real Problem kicker"],
+                      ["problem_title", "You earn money. But do you have a money system?"],
+                      ["instructor_kicker", "Your Guide kicker"],
+                      ["instructor_title", "Led by Francis J. — Your Money Guide"],
+                      ["testimonials_kicker", "Loved by families kicker"],
+                      ["testimonials_title", "What attendees say"],
+                      ["faq_heading", "FAQ heading"],
+                      ["final_kicker", "Final Call kicker"],
+                      ["final_title", "Final CTA title"],
+                    ].map(([key, label]) => (
+                      <div key={key}>
+                        <label className="block text-[11px] text-white/50 mb-1">{label}</label>
+                        <input
+                          value={(form as unknown as { section_headings: Record<string, string> }).section_headings?.[key] || ""}
+                          onChange={(e) => updateHeading(key, e.target.value)}
+                          placeholder={label}
+                          className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs outline-none focus:border-[var(--gold)] placeholder:text-white/20"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 space-y-3">

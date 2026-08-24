@@ -43,6 +43,7 @@ export interface PublicEvent {
   instructor_note: string | null
   meeting_link: string | null
   whatsapp_community_link: string | null
+  section_headings: Record<string, string>
   created_at: string
   updated_at: string
 }
@@ -149,6 +150,25 @@ const MOCK_BLUEPRINT: PublicEvent = {
   instructor_note: "Why FREE? This is education-first. We teach the system free — no stock tips, no guaranteed returns, no single-product pitch. If you want us to implement it for you (Mutual Funds / PMS / AIF / GIFT City), you can book a 1:1 Money Clarity Session after — no obligation, education first. Led by Francis J., AMFI-Registered MFD (ARN-335677), 10+ years guiding 100+ families.",
   meeting_link: "https://meet.google.com/firststep-blueprint",
   whatsapp_community_link: "https://chat.whatsapp.com/FIRSTSTEP_MONEY_BLUEPRINT",
+  section_headings: {
+    pillars_kicker: "In 90 Minutes, You’ll Learn",
+    pillars_title: "What You’ll Learn — The 4 Money Pillars",
+    pillars_desc: "Four pillars, one system — each pillar is editable from Admin → Events → 4 Money Pillars.",
+    outcomes_heading: "Walk away with",
+    for_you_heading: "This webinar is for you if…",
+    not_for_heading: "This is NOT for you if…",
+    flow_heading: "What’s inside the 90 mins?",
+    curriculum_heading: "Inside the Webinar",
+    problem_kicker: "The Real Problem",
+    problem_title: "You earn money. But do you have a money system?",
+    instructor_kicker: "Your Guide",
+    instructor_title: "Led by Francis J. — Your Money Guide",
+    testimonials_kicker: "Loved by families",
+    testimonials_title: "What attendees say",
+    faq_heading: "FAQ",
+    final_kicker: "Final Call",
+    final_title: "Stop earning & saving. Start managing money with a system.",
+  },
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
 }

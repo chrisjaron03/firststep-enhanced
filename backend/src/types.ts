@@ -43,6 +43,7 @@ export interface EventRecord {
   instructor_note: string | null
   meeting_link: string | null
   whatsapp_community_link: string | null
+  section_headings: string
   created_by: number | null
   created_at: string
   updated_at: string

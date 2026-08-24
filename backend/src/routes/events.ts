@@ -41,6 +41,7 @@ async function ensureEventsTable(env: Env) {
         instructor_note TEXT,
         meeting_link    TEXT,
         whatsapp_community_link TEXT,
+        section_headings TEXT NOT NULL DEFAULT '{}',
         created_by      INTEGER REFERENCES admin_users(id),
         created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
         updated_at      TEXT    NOT NULL DEFAULT (datetime('now'))
@@ -76,6 +77,7 @@ async function ensureEventsTable(env: Env) {
       `ALTER TABLE events ADD COLUMN instructor_note TEXT`,
       `ALTER TABLE events ADD COLUMN meeting_link TEXT`,
       `ALTER TABLE events ADD COLUMN whatsapp_community_link TEXT`,
+      `ALTER TABLE events ADD COLUMN section_headings TEXT NOT NULL DEFAULT '{}'`,
     ]
     for (const sql of adds) {
       try { await env.DB.exec(sql) } catch { /* column exists */ }
@@ -93,6 +95,14 @@ function parseJsonArray(value: string | null): unknown[] {
   } catch {
     return []
   }
+}
+function parseHeadings(value: string | null): Record<string, string> {
+  if (!value) return {}
+  try {
+    const parsed = JSON.parse(value)
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed as Record<string, string>
+    return {}
+  } catch { return {} }
 }
 
 function toPublicEvent(row: Record<string, unknown>) {
@@ -133,6 +143,7 @@ function toPublicEvent(row: Record<string, unknown>) {
     instructor_note: row.instructor_note ?? null,
     meeting_link: row.meeting_link ?? null,
     whatsapp_community_link: row.whatsapp_community_link ?? null,
+    section_headings: parseHeadings(row.section_headings as string | null),
     created_at: row.created_at,
     updated_at: row.updated_at,
   }
