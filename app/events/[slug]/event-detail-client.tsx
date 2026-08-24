@@ -247,7 +247,7 @@ export default function EventDetailPage() {
       <Navigation />
       <main className="pb-24">
         {/* URGENCY BAR */}
-        <div className="sticky top-[64px] z-30 border-b border-[var(--gold)]/20 bg-[var(--navy-deep)] text-white">
+        <div className="sticky top-[64px] z-30 border-b border-white/10 bg-[var(--navy-deep)] text-white shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-6 py-2.5 lg:px-8 text-xs">
             <div className="flex items-center gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-2.5 py-1 font-bold text-white shadow"><Zap className="h-3 w-3" /> LIVE</span>
@@ -261,8 +261,11 @@ export default function EventDetailPage() {
           </div>
         </div>
 
+        {/* spacer between LIVE bar and hero */}
+        <div className="h-3 bg-[#0d1528] lg:h-4" aria-hidden />
+
         {/* HERO — split landing */}
-        <section className="relative overflow-hidden bg-[var(--navy-deep)]">
+        <section className="relative overflow-hidden bg-[var(--navy-deep)] border-t border-white/[0.04]">
           <div className="absolute inset-0">
             {event.cover_image ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -274,7 +277,7 @@ export default function EventDetailPage() {
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[var(--gold)]/[0.12] via-transparent to-transparent" />
           </div>
 
-          <div className="relative mx-auto max-w-7xl px-6 pt-8 pb-10 lg:px-8 lg:pt-12 lg:pb-12">
+          <div className="relative mx-auto max-w-7xl px-6 pt-10 pb-10 lg:px-8 lg:pt-14 lg:pb-12">
             <div className="grid gap-8 lg:grid-cols-[1.35fr_0.85fr] items-start">
               {/* LEFT */}
               <div className="pt-6">
