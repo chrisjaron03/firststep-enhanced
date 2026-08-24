@@ -9,7 +9,7 @@ import {
   Calendar, MapPin, Clock, Users, Check, ShieldCheck,
   ArrowRight, Loader2, AlertCircle, Play, Image as ImageIcon, Star,
   Timer, Award, MessageCircle, PiggyBank, Shield, TrendingUp, Wallet,
-  Target, BookOpen, GraduationCap, XCircle, ChevronRight, Download, Lightbulb,
+  Target, BookOpen, GraduationCap, XCircle, ChevronRight, Download, Lightbulb, Lock,
   Video, Sparkles, Quote, HelpCircle, ExternalLink, Copy, CheckCircle2, Gift, Zap, Eye
 } from "lucide-react"
 import { Navigation } from "@/components/navigation"
@@ -142,6 +142,8 @@ export default function EventDetailPage() {
   const [formError, setFormError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [showSticky, setShowSticky] = useState(false)
+  const [viewed, setViewed] = useState(0)
+  const [unlocked, setUnlocked] = useState(false)
   const registerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -162,6 +164,14 @@ export default function EventDetailPage() {
     window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+  useEffect(() => {
+    if (!event) return
+    try { if (typeof window !== "undefined" && localStorage.getItem(`fscs_unlocked_${event.slug}`)) setUnlocked(true) } catch {}
+    const base = event.seats_sold + 38 + Math.floor(Math.random() * 9)
+    setViewed(base)
+    const id = setInterval(() => setViewed((v) => v + (Math.random() > 0.6 ? 2 : 1)), 6500)
+    return () => clearInterval(id)
+  }, [event?.seats_sold])
 
   const scrollToRegister = () => registerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
 
@@ -262,7 +272,7 @@ export default function EventDetailPage() {
         </div>
 
         {/* spacer between LIVE bar and hero */}
-        <div className="h-3 bg-[#0d1528] lg:h-4" aria-hidden />
+        <div className="h-4 bg-[#0d1528] lg:h-5" aria-hidden />
 
         {/* HERO — split landing */}
         <section className="relative overflow-hidden bg-[var(--navy-deep)] border-t border-white/[0.04]">
@@ -277,11 +287,11 @@ export default function EventDetailPage() {
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[var(--gold)]/[0.12] via-transparent to-transparent" />
           </div>
 
-          <div className="relative mx-auto max-w-7xl px-6 pt-10 pb-10 lg:px-8 lg:pt-14 lg:pb-12">
+          <div className="relative mx-auto max-w-7xl px-6 pt-12 pb-12 lg:px-8 lg:pt-16 lg:pb-16">
             <div className="grid gap-8 lg:grid-cols-[1.35fr_0.85fr] items-start">
               {/* LEFT */}
-              <div className="pt-6">
-                <div className="flex flex-wrap items-center gap-2">
+              <div className="pt-8">
+                <div className="flex flex-wrap items-center gap-2.5">
                   <span className="rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow">{heroBadge}</span>
                   {event.featured && <span className="rounded-full bg-[var(--gold)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--navy-deep)]">Featured</span>}
                   <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold text-white backdrop-blur">Worth ₹{(event.value_anchor_price || 1999).toLocaleString("en-IN")} — FREE Today</span>
@@ -290,10 +300,10 @@ export default function EventDetailPage() {
 
                 <p className="mt-3 text-sm font-semibold tracking-[0.18em] text-[var(--gold)] uppercase">{event.tagline || "Earn. Protect. Grow. Build."}</p>
                 <h1 className="mt-2 font-serif text-[2rem] font-extrabold leading-[1.05] text-white sm:text-4xl lg:text-[3rem] text-balance">{event.title}</h1>
-                {event.subtitle && <p className="mt-3 text-lg font-semibold text-white sm:text-xl lg:text-2xl leading-snug">{event.subtitle}</p>}
-                <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/85">In 90 mins, understand the <span className="text-white font-semibold">5 money decisions</span> that move you from earning & saving to managing money with purpose — live, practical, no jargon.</p>
+                {event.subtitle && <p className="mt-4 text-lg font-semibold text-white sm:text-xl lg:text-2xl leading-snug">{event.subtitle}</p>}
+                <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-white/85">In 90 mins, understand the <span className="text-white font-semibold">5 money decisions</span> that move you from earning & saving to managing money with purpose — live, practical, no jargon.</p>
 
-                <div className="mt-5 flex flex-wrap gap-2">
+                <div className="mt-6 flex flex-wrap gap-2.5">
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 backdrop-blur border border-white/15 text-sm text-white/90"><Calendar className="h-4 w-4 text-[var(--gold)]" />{event.event_date ? formatDateLong(event.event_date) + " • " + (formatTimeIST(event.event_date, event.timezone) || "7 PM IST") : "Date TBA"}</span>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 backdrop-blur border border-white/15 text-sm text-white/90"><Clock className="h-4 w-4 text-[var(--gold)]" />{event.duration_mins || 90} Mins • {event.language || "English"} • Live Q&A</span>
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 backdrop-blur border border-white/15 text-sm text-white/90"><Video className="h-4 w-4 text-emerald-400" />{meetingLink.includes("zoom") ? "Zoom" : meetingLink.includes("meet.google") ? "Google Meet" : "Live Online"} • Link after registration</span>
@@ -337,7 +347,7 @@ export default function EventDetailPage() {
               </div>
 
               {/* RIGHT — sticky registration */}
-              <div ref={registerRef} id="register" className="lg:sticky lg:top-28 h-fit">
+              <div ref={registerRef} id="register" className="lg:sticky lg:top-32 h-fit">
                 <div className="overflow-hidden rounded-3xl border border-white/10 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
                   <div className="bg-gradient-to-r from-[var(--navy-deep)] to-[#1a2744] px-6 py-4 text-white">
                     <p className="text-xs font-semibold tracking-widest text-[var(--gold)] uppercase">Secure Your Live Seat • Free</p>
@@ -357,16 +367,35 @@ export default function EventDetailPage() {
                           <p className="mt-1 text-xs text-emerald-700">We’ve also queued your link on WhatsApp/email. Add to calendar so you don’t miss it.</p>
                         </div>
 
-                        <a href={waLink} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-2xl bg-[#25D366] px-5 py-4 text-white shadow-lg hover:bg-[#1fbc58]">
-                          <span className="flex items-center gap-3"><MessageCircle className="h-6 w-6" /><span className="text-left leading-tight"><span className="block font-extrabold">1. Join WhatsApp Community</span><span className="text-xs opacity-90">Reminders + slides + bonus + replay link</span></span></span>
+                        <a
+                          href={waLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={() => {
+                            setUnlocked(true)
+                            try { localStorage.setItem(`fscs_unlocked_${event.slug}`, "1") } catch {}
+                          }}
+                          className="flex items-center justify-between rounded-2xl bg-[#25D366] px-5 py-4 text-white shadow-lg hover:bg-[#1fbc58] ring-2 ring-white/20"
+                        >
+                          <span className="flex items-center gap-3"><MessageCircle className="h-6 w-6" /><span className="text-left leading-tight"><span className="block font-extrabold">1. Join WhatsApp Community — Unlock Meeting Link</span><span className="text-xs opacity-90">Tap to join • Meeting link appears after</span></span></span>
                           <ArrowRight className="h-5 w-5 shrink-0" />
                         </a>
 
-                        <a href={meetingLink} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-2xl border-2 border-[var(--navy-deep)] bg-white px-5 py-4 shadow hover:bg-secondary">
-                          <span className="flex items-center gap-3 text-[var(--navy-deep)]"><Video className="h-6 w-6" /><span className="text-left leading-tight"><span className="block font-extrabold">{getMeetingLabel(meetingLink)}</span><span className="text-xs text-muted-foreground">Save this — opens in Zoom / Google Meet</span></span></span>
-                          <ExternalLink className="h-5 w-5 shrink-0 text-[var(--navy-deep)]" />
-                        </a>
-                        <button onClick={()=>copyLink(meetingLink)} className="w-full flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary/50 px-4 py-2 text-xs hover:bg-secondary">{copied ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />} {copied ? "Copied!" : "Copy meeting link"} • Keep handy</button>
+                        {unlocked ? (
+                          <>
+                            <a href={meetingLink} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-2xl border-2 border-emerald-500 bg-emerald-50 px-5 py-4 shadow hover:bg-emerald-100">
+                              <span className="flex items-center gap-3 text-emerald-800"><Video className="h-6 w-6" /><span className="text-left leading-tight"><span className="block font-extrabold">{getMeetingLabel(meetingLink)} — Ready to Join</span><span className="text-xs text-emerald-700">Unlocked after WhatsApp • Opens in Zoom / Google Meet</span></span></span>
+                              <ExternalLink className="h-5 w-5 shrink-0 text-emerald-700" />
+                            </a>
+                            <button onClick={()=>copyLink(meetingLink)} className="w-full flex items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs hover:bg-emerald-500/15 text-emerald-700">{copied ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />} {copied ? "Copied!" : "Copy meeting link"} • Keep handy</button>
+                          </>
+                        ) : (
+                          <div className="rounded-2xl border-2 border-dashed border-muted-foreground/20 bg-muted/30 px-5 py-5 text-center">
+                            <p className="text-sm font-bold flex items-center justify-center gap-2 text-muted-foreground"><Lock className="h-4 w-4" /> Meeting link locked</p>
+                            <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">Join the WhatsApp community above to unlock your personal meeting link. This is how we ensure you get reminders, slides & last-minute updates.</p>
+                            <p className="mt-2 text-[11px] font-semibold text-emerald-600">👆 Tap “Join WhatsApp Community” — link unlocks instantly</p>
+                          </div>
+                        )}
 
                         <div className="grid grid-cols-2 gap-2">
                           <Button onClick={() => event && downloadIcs(event)} variant="outline" className="w-full gap-2"><Download className="h-4 w-4" /> Add to Calendar</Button>
@@ -393,7 +422,7 @@ export default function EventDetailPage() {
                     )}
                   </div>
                   <div className="border-t border-border bg-secondary/30 px-6 py-3 flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground flex items-center gap-1.5"><Eye className="h-3.5 w-3.5" /> {event.seats_sold + 12} people viewed this today</span>
+                    <span className="text-muted-foreground flex items-center gap-1.5"><Eye className="h-3.5 w-3.5" /> {viewed || event.seats_sold + 38} people viewed this today</span>
                     <span className="font-semibold text-[var(--navy-deep)] flex items-center gap-1"><Star className="h-3.5 w-3.5 fill-[var(--gold)] text-[var(--gold)]" /> 4.9/5 (187 reviews)</span>
                   </div>
                 </div>
@@ -412,7 +441,7 @@ export default function EventDetailPage() {
         </section>
 
         <div className="border-y border-border bg-white">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-3 px-6 py-3 text-xs lg:px-8">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-4 px-6 py-4 text-xs lg:px-8">
             <span className="inline-flex items-center gap-1.5 text-muted-foreground"><Award className="h-4 w-4 text-[var(--gold)]" /> AMFI ARN-335677 • 10+ Years • 100+ Families</span>
             <span className="hidden sm:inline text-border">•</span>
             <span className="inline-flex items-center gap-1.5 text-muted-foreground"><Star className="h-4 w-4 text-[var(--gold)] fill-[var(--gold)]" /> 4.9/5 trust</span>
@@ -421,9 +450,9 @@ export default function EventDetailPage() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1.65fr_0.85fr]">
-            <div className="space-y-8">
+        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
+          <div className="grid gap-10 lg:grid-cols-[1.65fr_0.85fr] lg:gap-12">
+            <div className="space-y-10">
               <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 shadow-sm">
                 <p className="text-xs font-bold tracking-widest text-accent uppercase">The Real Problem</p>
                 <h2 className="mt-1 font-serif text-2xl font-bold leading-tight flex items-center gap-2"><Lightbulb className="h-6 w-6 text-[var(--gold)]" /> You earn money. But do you have a <span className="text-accent">money system</span>?</h2>
@@ -441,22 +470,35 @@ export default function EventDetailPage() {
               </div>
 
               {learnItems.length > 0 && (
-                <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 shadow-sm">
+                <div className="rounded-3xl border border-border bg-white p-6 sm:p-8 lg:p-10 shadow-sm">
                   <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase">In 90 Minutes, You’ll Learn</p>
-                  <h2 className="mt-1 font-serif text-2xl font-bold">What You’ll Learn — The 4 Money Pillars</h2>
-                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                    {learnItems.map((item, i) => {
+                  <h2 className="mt-2 font-serif text-2xl font-bold lg:text-[1.75rem]">What You’ll Learn — The 4 Money Pillars</h2>
+                  <p className="mt-2 text-sm text-muted-foreground max-w-2xl">Four pillars, one system — each pillar is editable from Admin → Events → 4 Money Pillars.</p>
+                  <div className="mt-8 grid gap-6 sm:grid-cols-2">
+                    {learnItems.map((raw, i) => {
                       const icons = [PiggyBank, Shield, TrendingUp, Wallet]
                       const Icon = icons[i % icons.length]
-                      const desc = ["Income, savings, needs vs wants, how much emergency fund you really need.","Term + health insurance — how much cover is enough, protection gap scan.","Inflation’s bite, compounding’s magic, cost of waiting 5 years.","FD vs gold vs real estate vs mutual funds — SIP vs lumpsum, demystified."]
+                      const fallbackDesc = ["Income, savings, needs vs wants, how much emergency fund you really need.","Term + health insurance — how much cover is enough, protection gap scan.","Inflation’s bite, compounding’s magic, cost of waiting 5 years.","FD vs gold vs real estate vs mutual funds — SIP vs lumpsum, demystified."]
+                      const parsed = typeof raw === "object" && raw !== null && "title" in (raw as Record<string, unknown>)
+                        ? { title: String((raw as Record<string, unknown>).title || ""), desc: String((raw as Record<string, unknown>).desc || "") }
+                        : (() => {
+                            const s = String(raw)
+                            const stripped = s.replace(/^[0-9]+\s*[—\-–]+\s*/, "")
+                            const sep = stripped.search(/\s[—\-–]\s/)
+                            if (sep > 0) return { title: stripped.slice(0, sep).trim(), desc: stripped.slice(sep + 1).replace(/^[—\-–]\s*/, "").trim() }
+                            const parts = stripped.split("—")
+                            if (parts.length >= 2) return { title: parts[0].trim(), desc: parts.slice(1).join("—").trim() }
+                            return { title: stripped, desc: fallbackDesc[i] || "" }
+                          })()
                       return (
-                        <div key={i} className="rounded-2xl border border-border bg-secondary/30 p-5">
+                        <div key={i} className="rounded-2xl border border-border bg-secondary/30 p-6 flex flex-col">
                           <div className="flex items-center gap-3">
-                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--navy-deep)] text-white"><Icon className="h-5 w-5" /></span>
-                            <span className="rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/20 px-2 py-0.5 text-xs font-bold text-[var(--gold)]">0{i + 1}</span>
+                            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--navy-deep)] text-white shrink-0"><Icon className="h-5 w-5" /></span>
+                            <span className="rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/20 px-2.5 py-1 text-xs font-bold text-[var(--gold)]">0{i + 1}</span>
+                            <span className="ml-auto hidden sm:inline text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">Pillar 0{i + 1}</span>
                           </div>
-                          <p className="mt-3 text-sm font-bold leading-snug">{item.replace(/^[0-9]+[—\-–]+\s*/, "")}</p>
-                          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{desc[i] || ""}</p>
+                          <h3 className="mt-4 text-[15px] font-bold leading-snug">{parsed.title || `Pillar ${i+1}`}</h3>
+                          <p className="mt-2 text-sm leading-relaxed text-muted-foreground flex-1">{parsed.desc || fallbackDesc[i] || ""}</p>
                         </div>
                       )
                     })}
@@ -598,7 +640,7 @@ export default function EventDetailPage() {
               </div>
             </div>
 
-            <div className="hidden lg:block space-y-6 h-fit lg:sticky lg:top-28">
+            <div className="hidden lg:block space-y-8 h-fit lg:sticky lg:top-32">
               <div className="rounded-3xl border border-[#25D366]/20 bg-[#25D366]/5 p-5">
                 <h4 className="font-bold flex items-center gap-2 text-[#1f8a4d]"><MessageCircle className="h-5 w-5" /> Never miss the link</h4>
                 <p className="mt-1 text-sm leading-relaxed text-muted-foreground">The <span className="font-semibold text-foreground">WhatsApp community</span> is where the link, reminders & replay are shared.</p>
@@ -613,7 +655,11 @@ export default function EventDetailPage() {
                   <div className="flex justify-between"><dt className="text-muted-foreground">Mode</dt><dd className="font-medium capitalize">{event.delivery_mode} • {meetingLink.includes("zoom")?"Zoom": meetingLink.includes("meet.google")?"Google Meet":"Live"}</dd></div>
                 </dl>
                 <Button variant="outline" className="mt-4 w-full gap-2" onClick={() => event && downloadIcs(event)}><Calendar className="h-4 w-4" /> Add to Calendar</Button>
-                <a href={meetingLink} target="_blank" rel="noreferrer" className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-white px-4 py-2.5 text-sm font-semibold hover:bg-secondary"><Video className="h-4 w-4" /> {getMeetingLabel(meetingLink)}</a>
+                {unlocked ? (
+                  <a href={meetingLink} target="_blank" rel="noreferrer" className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-emerald-500 bg-emerald-50 px-4 py-2.5 text-sm font-bold text-emerald-700 hover:bg-emerald-100"><Video className="h-4 w-4" /> {getMeetingLabel(meetingLink)}</a>
+                ) : (
+                  <div className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-muted-foreground/20 bg-muted/30 px-4 py-3 text-xs font-semibold text-muted-foreground"><Lock className="h-3.5 w-3.5" /> Join WhatsApp to unlock</div>
+                )}
               </div>
             </div>
           </div>

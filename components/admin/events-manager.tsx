@@ -52,6 +52,7 @@ interface AdminEvent {
 
 type GalleryItem = { type: "image" | "video"; url: string; alt?: string }
 type CurriculumModule = { title: string; lessons: string[] }
+type Pillar = { title: string; desc: string }
 
 function parseJsonArray(raw: string | null): string[] {
   try { const v = JSON.parse(raw || "[]"); return Array.isArray(v) ? v : [] } catch { return [] }
@@ -75,6 +76,30 @@ function parseGallery(raw: string): GalleryItem[] {
 }
 function parseAgenda(raw: string): string[] {
   try { const v = JSON.parse(raw); return Array.isArray(v) ? v : [] } catch { return [] }
+}
+function pillarsFromStrings(raw: string[]): Pillar[] {
+  return raw.map((s) => {
+    const stripped = s.replace(/^[0-9]+\s*[—\-–]+\s*/, "").trim()
+    // split on first — or - with spaces
+    const sepIdx = stripped.search(/\s[—\-–]\s/)
+    if (sepIdx > 0) {
+      const title = stripped.slice(0, sepIdx).trim()
+      const desc = stripped.slice(sepIdx + 1).replace(/^[—\-–]\s*/, "").trim()
+      return { title, desc }
+    }
+    // try split by — without spaces or fallback
+    const parts = stripped.split("—")
+    if (parts.length >= 2) return { title: parts[0].trim(), desc: parts.slice(1).join("—").trim() }
+    return { title: stripped, desc: "" }
+  })
+}
+function pillarsToStrings(pillars: Pillar[]): string[] {
+  return pillars.map((p) => {
+    const t = p.title.trim()
+    const d = p.desc.trim()
+    if (!t) return ""
+    return d ? `${t} — ${d}` : t
+  }).filter(Boolean)
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -162,7 +187,7 @@ function emptyForm() {
     description: "",
     agenda: [""] as string[],
     curriculum: [] as CurriculumModule[],
-    learn_items: [""] as string[],
+    learn_items: [{ title: "", desc: "" }] as Pillar[],
     outcomes: [""] as string[],
     for_you: [""] as string[],
     not_for_you: [""] as string[],
@@ -229,7 +254,7 @@ export function EventsManager() {
       tagline: t.tagline,
       description: t.description,
       curriculum: t.curriculum,
-      learn_items: t.learn_items,
+      learn_items: pillarsFromStrings(t.learn_items),
       outcomes: t.outcomes,
       for_you: t.for_you,
       not_for_you: t.not_for_you,
@@ -271,7 +296,16 @@ export function EventsManager() {
       description: ev.description || "",
       agenda: agenda.length ? agenda : [""],
       curriculum: curriculum.length ? curriculum : [],
-      learn_items: parseJsonArray(ev.learn_items).length ? parseJsonArray(ev.learn_items) : [""],
+      learn_items: (() => {
+        try {
+          const raw = JSON.parse(ev.learn_items || "[]")
+          if (!Array.isArray(raw) || raw.length === 0) return [{ title: "", desc: "" }]
+          if (typeof raw[0] === "object" && raw[0] !== null && "title" in (raw[0] as Record<string, unknown>)) {
+            return (raw as Array<Record<string, unknown>>).map((p) => ({ title: String((p as Record<string, unknown>).title || ""), desc: String((p as Record<string, unknown>).desc || "") }))
+          }
+          return pillarsFromStrings(raw as string[])
+        } catch { return [{ title: "", desc: "" }] }
+      })(),
       outcomes: parseJsonArray(ev.outcomes).length ? parseJsonArray(ev.outcomes) : [""],
       for_you: parseJsonArray(ev.for_you).length ? parseJsonArray(ev.for_you) : [""],
       not_for_you: parseJsonArray(ev.not_for_you).length ? parseJsonArray(ev.not_for_you) : [""],
@@ -328,7 +362,7 @@ export function EventsManager() {
       description: form.description.trim() || null,
       agenda: form.agenda.map((a) => a.trim()).filter(Boolean),
       curriculum: form.curriculum.filter((m) => m.title.trim()).map((m) => ({ title: m.title.trim(), lessons: m.lessons.map((l) => l.trim()).filter(Boolean) })),
-      learn_items: form.learn_items.map((a) => a.trim()).filter(Boolean),
+      learn_items: pillarsToStrings(form.learn_items as unknown as Pillar[]),
       outcomes: form.outcomes.map((a) => a.trim()).filter(Boolean),
       for_you: form.for_you.map((a) => a.trim()).filter(Boolean),
       not_for_you: form.not_for_you.map((a) => a.trim()).filter(Boolean),
@@ -391,9 +425,12 @@ export function EventsManager() {
   const removeLesson = (mi: number, li: number) => setForm((f) => ({ ...f, curriculum: f.curriculum.map((m, idx) => idx === mi ? { ...m, lessons: m.lessons.filter((_, j) => j !== li) } : m) }))
   const updateLesson = (mi: number, li: number, v: string) => setForm((f) => ({ ...f, curriculum: f.curriculum.map((m, idx) => idx === mi ? { ...m, lessons: m.lessons.map((l, j) => j === li ? v : l) } : m) }))
 
-  const addToList = (key: "learn_items" | "outcomes" | "for_you" | "not_for_you" | "inside_flow") => setForm((f) => ({ ...f, [key]: [...(f[key] as string[]), ""] } as never))
-  const removeFromList = (key: "learn_items" | "outcomes" | "for_you" | "not_for_you" | "inside_flow", i: number) => setForm((f) => ({ ...f, [key]: (f[key] as string[]).filter((_, idx) => idx !== i) } as never))
-  const updateList = (key: "learn_items" | "outcomes" | "for_you" | "not_for_you" | "inside_flow", i: number, v: string) => setForm((f) => ({ ...f, [key]: (f[key] as string[]).map((a, idx) => idx === i ? v : a) } as never))
+  const addToList = (key: "outcomes" | "for_you" | "not_for_you" | "inside_flow") => setForm((f) => ({ ...f, [key]: [...(f[key] as string[]), ""] } as never))
+  const removeFromList = (key: "outcomes" | "for_you" | "not_for_you" | "inside_flow", i: number) => setForm((f) => ({ ...f, [key]: (f[key] as string[]).filter((_, idx) => idx !== i) } as never))
+  const updateList = (key: "outcomes" | "for_you" | "not_for_you" | "inside_flow", i: number, v: string) => setForm((f) => ({ ...f, [key]: (f[key] as string[]).map((a, idx) => idx === i ? v : a) } as never))
+  const addPillar = () => setForm((f) => ({ ...f, learn_items: [...(f.learn_items as unknown as Pillar[]), { title: "", desc: "" }] } as never))
+  const removePillar = (i: number) => setForm((f) => ({ ...f, learn_items: (f.learn_items as unknown as Pillar[]).filter((_, idx) => idx !== i) } as never))
+  const updatePillar = (i: number, field: "title" | "desc", v: string) => setForm((f) => ({ ...f, learn_items: (f.learn_items as unknown as Pillar[]).map((p, idx) => idx === i ? { ...p, [field]: v } : p) } as never))
 
   const addGalleryItem = () => {
     if (!galleryUrl.trim()) return
@@ -599,22 +636,34 @@ export function EventsManager() {
                   </div>
                 </div>
 
-                {/* Learn / Outcomes / Fit */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {([
-                    ["learn_items", "What You'll Learn — 01-04", "01 — Master Your Money …", Target] as const,
-                    ["outcomes", "Outcomes — 6 Checks", "A simple framework …", BookOpen] as const,
-                  ]).map(([key, label, placeholder, Icon]) => (
-                    <div key={key} className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 space-y-3">
-                      <h4 className="text-sm font-semibold text-white/80 flex items-center gap-2"><Icon className="h-4 w-4 text-[var(--gold)]" />{label}</h4>
-                      <div className="space-y-2">
-                        {(form[key] as string[]).map((v, i) => (
-                          <div key={i} className="flex gap-2"><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs">{i + 1}</span><input value={v} onChange={(e) => updateList(key, i, e.target.value)} placeholder={placeholder} className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs outline-none focus:border-[var(--gold)]" />{(form[key] as string[]).length > 1 && <button type="button" onClick={() => removeFromList(key, i)} className="p-1 text-white/40 hover:text-red-400"><Trash2 className="h-4 w-4" /></button>}</div>
-                        ))}
+                {/* 4 Money Pillars — structured */}
+                <div className="rounded-2xl border border-[var(--gold)]/20 bg-[var(--gold)]/[0.04] p-5 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-[var(--gold)] flex items-center gap-2"><Target className="h-4 w-4" /> 4 Money Pillars — What You&apos;ll Learn</h4>
+                    <button type="button" onClick={addPillar} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs hover:bg-white/10"><Plus className="h-3 w-3 inline mr-1" />Add Pillar</button>
+                  </div>
+                  <p className="text-xs text-white/40">Each pillar has a Title + short description. They render as the 4 cards (“Master Your Money” etc.) on the landing page. Numbering 01–04 is automatic.</p>
+                  <div className="space-y-3">
+                    {(form.learn_items as unknown as Pillar[]).map((p, i) => (
+                      <div key={i} className="rounded-xl border border-white/10 bg-white/5 p-3 space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--gold)] text-xs font-bold text-[var(--navy-deep)]">0{i + 1}</span>
+                          <input value={p.title} onChange={(e) => updatePillar(i, "title", e.target.value)} placeholder={`Pillar ${i + 1} Title — e.g. Master Your Money`} className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm outline-none focus:border-[var(--gold)]" />
+                          {(form.learn_items as unknown as Pillar[]).length > 1 && <button type="button" onClick={() => removePillar(i)} className="p-2 text-white/40 hover:text-red-400"><Trash2 className="h-4 w-4" /></button>}
+                        </div>
+                        <input value={p.desc} onChange={(e) => updatePillar(i, "desc", e.target.value)} placeholder="Short description — e.g. Income, savings, needs/wants, emergency fund" className="ml-10 w-[calc(100%-2.5rem)] rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs outline-none focus:border-[var(--gold)]" />
                       </div>
-                      <button type="button" onClick={() => addToList(key)} className="text-xs text-[var(--gold)] hover:underline">+ Add</button>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5 space-y-3">
+                  <h4 className="text-sm font-semibold text-white/80 flex items-center gap-2"><BookOpen className="h-4 w-4 text-[var(--gold)]" />Outcomes — 6 Checks</h4>
+                  <div className="space-y-2">
+                    {(form.outcomes as string[]).map((v, i) => (
+                      <div key={i} className="flex gap-2"><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10 text-xs">{i + 1}</span><input value={v} onChange={(e) => updateList("outcomes", i, e.target.value)} placeholder="A simple framework …" className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs outline-none focus:border-[var(--gold)]" />{(form.outcomes as string[]).length > 1 && <button type="button" onClick={() => removeFromList("outcomes", i)} className="p-1 text-white/40 hover:text-red-400"><Trash2 className="h-4 w-4" /></button>}</div>
+                    ))}
+                  </div>
+                  <button type="button" onClick={() => addToList("outcomes")} className="text-xs text-[var(--gold)] hover:underline">+ Add</button>
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-4">
