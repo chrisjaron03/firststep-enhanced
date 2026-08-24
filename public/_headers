@@ -13,6 +13,10 @@
 /admin/*
   X-Robots-Tag: noindex, nofollow
 
+# HTML pages revalidation to prevent stale chunk errors after deployment
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
 # Long-cache static Next.js assets
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
@@ -23,3 +27,4 @@
 /**/*.txt
   Content-Type: text/x-component
   Cache-Control: public, max-age=31536000, immutable
+

@@ -253,10 +253,10 @@ export function ContactForm() {
                 <div>
                   <p className="font-semibold text-foreground">Phone</p>
                   <a
-                    href="tel:+919894163796"
+                    href="tel:+917200743010"
                     className="mt-1 block text-muted-foreground transition-colors hover:text-accent font-medium"
                   >
-                    +91 98941 63796
+                    +91 72007 43010
                   </a>
                 </div>
               </motion.div>
@@ -274,12 +274,12 @@ export function ContactForm() {
                 <div>
                   <p className="font-semibold text-foreground">WhatsApp</p>
                   <a
-                    href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
+                    href="https://wa.me/917200743010?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-1 block text-muted-foreground transition-colors hover:text-accent font-medium"
                   >
-                    +91 98941 63796 (Chat instantly)
+                    +91 72007 43010 (Chat instantly)
                   </a>
                 </div>
               </motion.div>
@@ -393,7 +393,7 @@ export function ContactForm() {
                     get back to you within 24 hours.
                   </p>
                   <a
-                    href="https://wa.me/919894163796?text=Hi%2C%20I%20just%20submitted%20a%20form%20on%20your%20website."
+                    href="https://wa.me/917200743010?text=Hi%2C%20I%20just%20submitted%20a%20form%20on%20your%20website."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-6 py-3 text-sm font-semibold text-accent-foreground transition-colors hover:bg-[#20bd5a]"
@@ -511,7 +511,7 @@ export function ContactForm() {
                     </div>
 
                     <a
-                      href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
+                      href="https://wa.me/917200743010?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Phone, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
-const WHATSAPP_NUMBER = "919894163796";
+const WHATSAPP_NUMBER = "917200743010";
 
 export function FloatingCTA() {
   const [isVisible, setIsVisible] = useState(false);

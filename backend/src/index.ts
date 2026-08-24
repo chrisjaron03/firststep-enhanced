@@ -9,6 +9,9 @@ import { handleAdminData } from './routes/admin-data'
 import { handleBooking } from './routes/bookings'
 import { handleAdminBooking } from './routes/admin-bookings'
 import { handleCalendar } from './routes/calendar'
+import { handleAdminAvailability } from './routes/admin-availability'
+import { handleEvents } from './routes/events'
+import { handleAdminEvents } from './routes/admin-events'
 import { securityHeaders } from './lib/security'
 import { authenticateRequest } from './lib/auth'
 
@@ -84,6 +87,10 @@ export default {
         return await handleBooking(request, env)
       }
 
+      if (path === '/api/availability/public') {
+        return await handleAdminAvailability(request, env)
+      }
+
       // Admin auth routes
       if (path === '/api/admin/login') {
         return await handleAdminAuth(request, env, 'login')
@@ -115,9 +122,24 @@ export default {
         return await handleAdminBooking(request, env)
       }
 
+      // Admin availability routes
+      if (path === '/api/admin/availability' || path === '/api/admin/blocked-dates') {
+        return await handleAdminAvailability(request, env)
+      }
+
       // Calendar OAuth routes
       if (path === '/api/admin/calendar/auth' || path === '/api/admin/calendar/callback') {
         return await handleCalendar(request, env)
+      }
+
+      // Public events — list, detail, register
+      if (path === '/api/events' || path.startsWith('/api/events/')) {
+        return await handleEvents(request, env)
+      }
+
+      // Admin events CRUD
+      if (path === '/api/admin/events') {
+        return await handleAdminEvents(request, env)
       }
 
       // Insights — admin-only (business analytics must not be public)

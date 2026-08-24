@@ -913,7 +913,7 @@ export function NriContent() {
                 </Button>
               </Link>
               <a
-                href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20an%20NRI%20interested%20in%20India%20investment%20consultancy."
+                href="https://wa.me/917200743010?text=Hi%2C%20I%27m%20an%20NRI%20interested%20in%20India%20investment%20consultancy."
                 target="_blank"
                 rel="noopener noreferrer"
               >

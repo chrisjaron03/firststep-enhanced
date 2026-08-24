@@ -6,6 +6,46 @@ export interface Env {
   GOOGLE_CLIENT_SECRET?: string
 }
 
+export interface EventRecord {
+  id: number
+  slug: string
+  title: string
+  subtitle: string | null
+  description: string | null
+  agenda: string
+  venue: string | null
+  event_date: string | null
+  price: number
+  original_price: number | null
+  currency: string
+  cover_image: string | null
+  gallery: string
+  video_url: string | null
+  cta_label: string
+  cta_url: string | null
+  status: string
+  featured: number
+  max_seats: number | null
+  seats_sold: number
+  is_free: number
+  delivery_mode: string
+  duration_mins: number | null
+  language: string
+  timezone: string
+  curriculum: string
+  learn_items: string
+  outcomes: string
+  for_you: string
+  not_for_you: string
+  inside_flow: string
+  tagline: string | null
+  value_anchor_price: number | null
+  instructor_note: string | null
+  created_by: number | null
+  created_at: string
+  updated_at: string
+}
+
 export interface LeadRecord {
   source: string
   name: string

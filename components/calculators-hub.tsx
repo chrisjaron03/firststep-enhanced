@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { TrendingUp, PiggyBank, Target, Calculator, ChevronRight } from "lucide-react"
+import { TrendingUp, PiggyBank, Target, Calculator, ArrowDownToLine, ChevronRight } from "lucide-react"
 import { SipStepUpLiveCalculator } from "@/components/calculators/sip-stepup-live"
 import { LumpsumLiveCalculator } from "@/components/calculators/lumpsum-live"
 import { RetirementLiveCalculator } from "@/components/calculators/retirement-live"
+import { SwpLiveCalculator } from "@/components/calculators/swp-live"
 
-type CalcId = "sip" | "lumpsum" | "retirement"
+type CalcId = "sip" | "lumpsum" | "retirement" | "swp"
 
 interface CalcItem {
   id: CalcId
@@ -40,6 +41,13 @@ const CALCULATORS: CalcItem[] = [
     badge: "Target",
     icon: Target,
   },
+  {
+    id: "swp",
+    title: "SWP (Withdrawal)",
+    subtitle: "Systematic monthly income & longevity",
+    badge: "Income",
+    icon: ArrowDownToLine,
+  },
 ]
 
 export function CalculatorsHub() {
@@ -64,27 +72,27 @@ export function CalculatorsHub() {
   }
 
   return (
-    <section className="bg-[var(--section-warm)] pt-4 pb-8 lg:pt-6 lg:pb-8">
+    <section className="bg-[var(--section-warm)] pt-4 pb-8 lg:pt-6 lg:pb-8" aria-label="Financial Calculators Hub">
       <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
         
         {/* COMPACT TOP BAR */}
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-3">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Calculator className="h-4 w-4" />
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Calculator className="h-5 w-5" aria-hidden="true" />
             </div>
             <div>
               <h1 className="font-sans text-lg sm:text-xl font-bold tracking-tight text-foreground leading-tight">
                 Financial Calculators
               </h1>
-              <p className="text-[11px] sm:text-xs text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Tweak investment inputs live with real-time projections
               </p>
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-muted-foreground bg-card border border-border/60 px-3 py-1 rounded-full">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Live Calculations
+          <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-muted-foreground bg-card border border-border/60 px-3.5 py-1.5 rounded-full shadow-xs">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" /> Live Projections
           </div>
         </div>
 
@@ -92,9 +100,9 @@ export function CalculatorsHub() {
         <div className="grid gap-4 lg:grid-cols-12 items-start">
           
           {/* DESKTOP & MOBILE SIDEBAR (3 Cols on lg screen) */}
-          <aside className="lg:col-span-4 xl:col-span-3">
-            <div className="bg-card rounded-xl border border-border p-2.5 sm:p-3 shadow-sm">
-              <div className="grid grid-cols-3 lg:grid-cols-1 gap-1.5 sm:gap-2">
+          <aside className="lg:col-span-4 xl:col-span-3" aria-label="Calculator Selection">
+            <div className="bg-card rounded-xl border border-border p-2 sm:p-3 shadow-sm">
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-1.5 sm:gap-2">
                 {CALCULATORS.map((item) => {
                   const Icon = item.icon
                   const isActive = activeCalc === item.id
@@ -103,9 +111,10 @@ export function CalculatorsHub() {
                     <button
                       key={item.id}
                       onClick={() => selectCalc(item.id)}
+                      aria-pressed={isActive}
                       className={`w-full text-left p-2.5 rounded-lg border transition-all duration-200 cursor-pointer flex items-center gap-2.5 relative group ${
                         isActive
-                          ? "border-primary bg-primary/5 shadow-sm text-foreground"
+                          ? "border-primary bg-primary/5 shadow-xs text-foreground ring-1 ring-primary/20"
                           : "border-border/60 bg-background/50 hover:bg-secondary/60 text-muted-foreground hover:text-foreground"
                       }`}
                     >
@@ -117,26 +126,26 @@ export function CalculatorsHub() {
                         />
                       )}
 
-                      <div className={`p-1.5 sm:p-2 rounded-md shrink-0 ${
+                      <div className={`p-2 rounded-md shrink-0 transition-colors ${
                         isActive ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground group-hover:text-foreground"
                       }`}>
-                        <Icon className="h-4 w-4" />
+                        <Icon className="h-4 w-4" aria-hidden="true" />
                       </div>
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-1">
-                          <span className={`font-semibold text-xs truncate ${isActive ? "text-primary" : "text-foreground"}`}>
+                          <span className={`font-semibold text-xs sm:text-sm truncate ${isActive ? "text-primary font-bold" : "text-foreground"}`}>
                             {item.title}
                           </span>
                         </div>
-                        <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1 hidden lg:block">
+                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1 hidden lg:block">
                           {item.subtitle}
                         </p>
                       </div>
 
-                      <ChevronRight className={`h-3.5 w-3.5 shrink-0 transition-transform hidden lg:block ${
+                      <ChevronRight className={`h-4 w-4 shrink-0 transition-transform hidden lg:block ${
                         isActive ? "text-primary translate-x-0.5" : "text-muted-foreground/30 group-hover:text-muted-foreground"
-                      }`} />
+                      }`} aria-hidden="true" />
                     </button>
                   )
                 })}
@@ -149,14 +158,15 @@ export function CalculatorsHub() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeCalc}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+                exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.15 }}
               >
                 {activeCalc === "sip" && <SipStepUpLiveCalculator />}
                 {activeCalc === "lumpsum" && <LumpsumLiveCalculator />}
                 {activeCalc === "retirement" && <RetirementLiveCalculator />}
+                {activeCalc === "swp" && <SwpLiveCalculator />}
               </motion.div>
             </AnimatePresence>
           </main>
@@ -166,3 +176,4 @@ export function CalculatorsHub() {
     </section>
   )
 }
+

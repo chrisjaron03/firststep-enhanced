@@ -190,12 +190,23 @@ CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments(status);
 -- ─── Consultant Availability ───────────────────
 CREATE TABLE IF NOT EXISTS availability (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,
-  day_of_week INTEGER NOT NULL,       -- 0=Sun, 1=Mon ... 6=Sat
-  start_time  TEXT    NOT NULL,        -- e.g. '09:00'
-  end_time    TEXT    NOT NULL,        -- e.g. '17:00'
+  day_of_week INTEGER NOT NULL UNIQUE,       -- 0=Sun, 1=Mon ... 6=Sat
+  start_time  TEXT    NOT NULL,        -- e.g. '09:30'
+  end_time    TEXT    NOT NULL,        -- e.g. '18:00'
   slot_duration INTEGER NOT NULL DEFAULT 30,
   is_active   INTEGER NOT NULL DEFAULT 1
 );
+
+-- Default availability schedule: Mon-Fri 09:30-18:00, Sat 10:00-14:00, Sun Closed
+INSERT OR IGNORE INTO availability (day_of_week, start_time, end_time, slot_duration, is_active)
+VALUES
+  (1, '09:30', '18:00', 30, 1),
+  (2, '09:30', '18:00', 30, 1),
+  (3, '09:30', '18:00', 30, 1),
+  (4, '09:30', '18:00', 30, 1),
+  (5, '09:30', '18:00', 30, 1),
+  (6, '10:00', '14:00', 30, 1),
+  (0, '10:00', '14:00', 30, 0);
 
 -- ─── Blocked Dates ────────────────────────────
 CREATE TABLE IF NOT EXISTS blocked_dates (
@@ -222,6 +233,63 @@ CREATE TABLE IF NOT EXISTS rate_limits (
   window_start  INTEGER NOT NULL,
   locked_until  INTEGER
 );
+
+-- ─── Events ───
+-- Admin-managed landing pages, each becomes /events/:slug
+-- Extended for THE MONEY BLUEPRINT webinar: free toggle, webinar delivery, structured curriculum
+CREATE TABLE IF NOT EXISTS events (
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  slug            TEXT    NOT NULL UNIQUE,
+  title           TEXT    NOT NULL,
+  subtitle        TEXT,
+  description     TEXT,
+  agenda          TEXT    NOT NULL DEFAULT '[]',
+  venue           TEXT,
+  event_date      TEXT,
+  price           INTEGER NOT NULL DEFAULT 0,
+  original_price  INTEGER,
+  currency        TEXT    NOT NULL DEFAULT 'INR',
+  cover_image     TEXT,
+  gallery         TEXT    NOT NULL DEFAULT '[]',
+  video_url       TEXT,
+  cta_label       TEXT    NOT NULL DEFAULT 'Reserve Your Spot',
+  cta_url         TEXT,
+  status          TEXT    NOT NULL DEFAULT 'published',
+  featured        INTEGER NOT NULL DEFAULT 0,
+  max_seats       INTEGER,
+  seats_sold      INTEGER NOT NULL DEFAULT 0,
+  is_free         INTEGER NOT NULL DEFAULT 0,
+  delivery_mode   TEXT    NOT NULL DEFAULT 'online',
+  duration_mins   INTEGER,
+  language        TEXT    NOT NULL DEFAULT 'English',
+  timezone        TEXT    NOT NULL DEFAULT 'Asia/Kolkata',
+  curriculum      TEXT    NOT NULL DEFAULT '[]',
+  learn_items     TEXT    NOT NULL DEFAULT '[]',
+  outcomes        TEXT    NOT NULL DEFAULT '[]',
+  for_you         TEXT    NOT NULL DEFAULT '[]',
+  not_for_you     TEXT    NOT NULL DEFAULT '[]',
+  inside_flow     TEXT    NOT NULL DEFAULT '[]',
+  tagline         TEXT,
+  value_anchor_price INTEGER,
+  instructor_note TEXT,
+  created_by      INTEGER REFERENCES admin_users(id),
+  created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
+  updated_at      TEXT    NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_events_slug   ON events(slug);
+CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
+CREATE INDEX IF NOT EXISTS idx_events_date   ON events(event_date);
+
+CREATE TABLE IF NOT EXISTS event_registrations (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  event_id    INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+  name        TEXT    NOT NULL,
+  email       TEXT    NOT NULL,
+  phone       TEXT,
+  status      TEXT    NOT NULL DEFAULT 'registered',
+  created_at  TEXT    NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_event_regs_event ON event_registrations(event_id);
 
 -- ─── Default admin user ───
 -- Username: admin | Password: <set via seed script — do NOT hardcode>

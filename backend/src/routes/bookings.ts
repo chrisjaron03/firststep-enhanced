@@ -6,6 +6,54 @@ import { createCalendarEvent } from '../lib/calendar'
 const SLOT_DURATION = 30
 const MAX_SLOTS_DAYS_AHEAD = 30
 
+async function ensureBookingTables(env: Env) {
+  try {
+    await env.DB.exec(`
+      CREATE TABLE IF NOT EXISTS appointments (
+        id              INTEGER PRIMARY KEY AUTOINCREMENT,
+        client_name     TEXT    NOT NULL,
+        client_email    TEXT    NOT NULL,
+        client_phone    TEXT,
+        date            TEXT    NOT NULL,
+        start_time      TEXT    NOT NULL,
+        end_time        TEXT    NOT NULL,
+        timezone        TEXT    NOT NULL DEFAULT 'Asia/Kolkata',
+        meet_link       TEXT,
+        calendar_event_id TEXT,
+        status          TEXT    NOT NULL DEFAULT 'confirmed',
+        notes           TEXT,
+        reminder_sent   INTEGER NOT NULL DEFAULT 0,
+        created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
+        updated_at      TEXT    NOT NULL DEFAULT (datetime('now'))
+      );
+      CREATE TABLE IF NOT EXISTS availability (
+        id          INTEGER PRIMARY KEY AUTOINCREMENT,
+        day_of_week INTEGER NOT NULL UNIQUE,
+        start_time  TEXT    NOT NULL,
+        end_time    TEXT    NOT NULL,
+        slot_duration INTEGER NOT NULL DEFAULT 30,
+        is_active   INTEGER NOT NULL DEFAULT 1
+      );
+      CREATE TABLE IF NOT EXISTS blocked_dates (
+        id      INTEGER PRIMARY KEY AUTOINCREMENT,
+        date    TEXT NOT NULL UNIQUE,
+        reason  TEXT
+      );
+      INSERT OR IGNORE INTO availability (day_of_week, start_time, end_time, slot_duration, is_active)
+      VALUES
+        (1, '09:30', '18:00', 30, 1),
+        (2, '09:30', '18:00', 30, 1),
+        (3, '09:30', '18:00', 30, 1),
+        (4, '09:30', '18:00', 30, 1),
+        (5, '09:30', '18:00', 30, 1),
+        (6, '10:00', '14:00', 30, 1),
+        (0, '10:00', '14:00', 30, 0);
+    `)
+  } catch {
+    // ignore
+  }
+}
+
 function generateTimeSlots(start: string, end: string, duration: number): string[] {
   const slots: string[] = []
   const [sh, sm] = start.split(':').map(Number)
@@ -22,6 +70,7 @@ function generateTimeSlots(start: string, end: string, duration: number): string
 }
 
 export async function handleBooking(request: Request, env: Env): Promise<Response> {
+  await ensureBookingTables(env)
   const url = new URL(request.url)
 
   // GET /api/bookings/slots?date=YYYY-MM-DD
@@ -54,12 +103,32 @@ export async function handleBooking(request: Request, env: Env): Promise<Respons
       ).bind(date).first<{ id: number }>(),
     ])
 
-    if (!availRow || blockedRow) {
+    if (blockedRow) {
       return json({ slots: [], date }, env, request)
     }
 
-    const duration = availRow.slot_duration || SLOT_DURATION
-    const allSlots = generateTimeSlots(availRow.start_time, availRow.end_time, duration)
+    // Default availability fallback: Mon-Fri 09:30-18:00, Sat 10:00-14:00, Sun Closed
+    let effectiveStart = availRow?.start_time
+    let effectiveEnd = availRow?.end_time
+    let duration = availRow?.slot_duration || SLOT_DURATION
+
+    if (!availRow) {
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+        effectiveStart = '09:30'
+        effectiveEnd = '18:00'
+      } else if (dayOfWeek === 6) {
+        effectiveStart = '10:00'
+        effectiveEnd = '14:00'
+      } else {
+        return json({ slots: [], date }, env, request)
+      }
+    }
+
+    if (!effectiveStart || !effectiveEnd) {
+      return json({ slots: [], date }, env, request)
+    }
+
+    const allSlots = generateTimeSlots(effectiveStart, effectiveEnd, duration)
     const bookedTimes = new Set(bookedRows.results?.map((r) => r.start_time) || [])
 
     // For today, filter out past slots
@@ -103,17 +172,41 @@ export async function handleBooking(request: Request, env: Env): Promise<Respons
       return errorResponse('Invalid time format', env, request, 400)
     }
 
+    // Check blocked date
+    const blocked = await env.DB.prepare(
+      `SELECT id FROM blocked_dates WHERE date = ?`
+    ).bind(date).first<{ id: number }>()
+
+    if (blocked) {
+      return errorResponse('Consultant is unavailable on this date', env, request, 400)
+    }
+
     // Get slot duration and compute end time
     const dayOfWeek = new Date(date + 'T00:00:00').getDay()
     const availRow = await env.DB.prepare(
       `SELECT start_time, end_time, slot_duration FROM availability WHERE day_of_week = ? AND is_active = 1 LIMIT 1`
     ).bind(dayOfWeek).first<{ start_time: string; end_time: string; slot_duration: number }>()
 
+    let effectiveStart = availRow?.start_time
+    let effectiveEnd = availRow?.end_time
+    let duration = availRow?.slot_duration || SLOT_DURATION
+
     if (!availRow) {
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+        effectiveStart = '09:30'
+        effectiveEnd = '18:00'
+      } else if (dayOfWeek === 6) {
+        effectiveStart = '10:00'
+        effectiveEnd = '14:00'
+      } else {
+        return errorResponse('No availability on this date', env, request, 400)
+      }
+    }
+
+    if (!effectiveStart || !effectiveEnd) {
       return errorResponse('No availability on this date', env, request, 400)
     }
 
-    const duration = availRow.slot_duration || SLOT_DURATION
     const [sh, sm] = startTime.split(':').map(Number)
     const startMins = sh * 60 + sm
     const endMins = startMins + duration
@@ -122,7 +215,7 @@ export async function handleBooking(request: Request, env: Env): Promise<Respons
     const endTime = `${endHour}:${endMin}`
 
     // Check slot is valid within availability
-    const allSlots = generateTimeSlots(availRow.start_time, availRow.end_time, duration)
+    const allSlots = generateTimeSlots(effectiveStart, effectiveEnd, duration)
     if (!allSlots.includes(startTime)) {
       return errorResponse('Selected time slot is not available', env, request, 400)
     }

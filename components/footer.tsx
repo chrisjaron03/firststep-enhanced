@@ -92,20 +92,20 @@ export function Footer({ onDownloadClick }: { onDownloadClick?: () => void }) {
             </p>
             <div className="mt-6 space-y-3">
               <a
-                href="tel:+919894163796"
+                href="tel:+917200743010"
                 className="flex items-center gap-2 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
               >
                 <Phone className="h-4 w-4" />
-                +91 98941 63796
+                +91 72007 43010
               </a>
               <a
-                href="https://wa.me/919894163796?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
+                href="https://wa.me/917200743010?text=Hi%2C%20I%27m%20interested%20in%20your%20investment%20consultancy."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-sm text-primary-foreground/70 transition-colors hover:text-primary-foreground"
               >
                 <MessageCircle className="h-4 w-4 text-[#25D366]" />
-                +91 98941 63796 (WhatsApp)
+                +91 72007 43010 (WhatsApp)
               </a>
               <a
                 href="mailto:francis@firststepcs.com"

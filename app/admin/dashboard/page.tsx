@@ -8,10 +8,26 @@ import {
   LogOut, Trash2, Edit2, Check, X, Loader2,
   TrendingUp, MousePointerClick, Eye,
   Shield, RefreshCw, Calendar, Video, ExternalLink,
+  Clock, Plus, CalendarOff, Settings, CheckCircle2, AlertCircle,
+  ChevronLeft, ChevronRight, Sparkles, Phone, Search, Ticket, Megaphone,
 } from "lucide-react"
 import { adminApi, hasAdminSession, getAdminUser, clearAdminSession, type AdminUser } from "@/lib/admin-api"
+import {
+  DEFAULT_SCHEDULE,
+  DAY_NAMES,
+  DAY_SHORT_NAMES,
+  MONTH_NAMES,
+  formatTime12h,
+  getLocalSchedule,
+  saveLocalSchedule,
+  getLocalBlockedDates,
+  saveLocalBlockedDates,
+  type DaySchedule,
+  type BlockedDate,
+} from "@/lib/booking-service"
+import { EventsManager } from "@/components/admin/events-manager"
 
-type Tab = "overview" | "leads" | "contacts" | "analytics" | "audit" | "bookings"
+type Tab = "overview" | "leads" | "contacts" | "analytics" | "audit" | "bookings" | "events"
 
 interface Lead {
   id: number
@@ -109,6 +125,25 @@ export default function AdminDashboardPage() {
   const [auditLog, setAuditLog] = useState<AuditEntry[]>([])
   const [bookings, setBookings] = useState<any[]>([])
   const [bookingsFilter, setBookingsFilter] = useState("")
+  const [bookingSearch, setBookingSearch] = useState("")
+  const [bookingSubTab, setBookingSubTab] = useState<"list" | "weekly" | "blocked" | "calendar">("list")
+  const [schedule, setSchedule] = useState<DaySchedule[]>(DEFAULT_SCHEDULE)
+  const [blockedDates, setBlockedDates] = useState<BlockedDate[]>([])
+  const [scheduleSaving, setScheduleSaving] = useState(false)
+  const [scheduleSuccess, setScheduleSuccess] = useState("")
+  const [newBlockedDate, setNewBlockedDate] = useState("")
+  const [newBlockedReason, setNewBlockedReason] = useState("")
+  const [adminCalMonth, setAdminCalMonth] = useState(() => new Date())
+  const [manualModalOpen, setManualModalOpen] = useState(false)
+  const [manualName, setManualName] = useState("")
+  const [manualEmail, setManualEmail] = useState("")
+  const [manualPhone, setManualPhone] = useState("")
+  const [manualDate, setManualDate] = useState("")
+  const [manualTime, setManualTime] = useState("10:00")
+  const [manualService, setManualService] = useState("Mutual Funds & SIP")
+  const [manualNotes, setManualNotes] = useState("")
+  const [manualSubmitting, setManualSubmitting] = useState(false)
+  const [manualError, setManualError] = useState("")
   const [insightsRange, setInsightsRange] = useState("7d")
   const [customStartDate, setCustomStartDate] = useState("")
   const [customEndDate, setCustomEndDate] = useState("")
@@ -193,6 +228,28 @@ export default function AdminDashboardPage() {
     setLoading(false)
   }, [bookingsFilter])
 
+  const fetchAvailability = useCallback(async () => {
+    const res = await adminApi.getAvailability()
+    if (res.ok && res.data) {
+      const d = res.data as { schedule: DaySchedule[]; blocked_dates: BlockedDate[] }
+      if (Array.isArray(d.schedule) && d.schedule.length > 0) {
+        const merged = DEFAULT_SCHEDULE.map((def) => {
+          const found = d.schedule.find((s) => s.day_of_week === def.day_of_week)
+          return found ? { ...def, ...found, is_active: Boolean(found.is_active) } : def
+        })
+        setSchedule(merged)
+        saveLocalSchedule(merged)
+      }
+      if (Array.isArray(d.blocked_dates)) {
+        setBlockedDates(d.blocked_dates)
+        saveLocalBlockedDates(d.blocked_dates)
+      }
+    } else {
+      setSchedule(getLocalSchedule())
+      setBlockedDates(getLocalBlockedDates())
+    }
+  }, [])
+
   useEffect(() => {
     if (!authChecked) return
     if (tab === "leads") fetchLeads()
@@ -200,8 +257,11 @@ export default function AdminDashboardPage() {
     if (tab === "analytics") fetchInsights()
     if (tab === "audit") fetchAudit()
     if (tab === "overview") fetchInsights()
-    if (tab === "bookings") fetchBookings()
-  }, [tab, authChecked, fetchLeads, fetchContacts, fetchInsights, fetchAudit, fetchBookings])
+    if (tab === "bookings") {
+      fetchBookings()
+      fetchAvailability()
+    }
+  }, [tab, authChecked, fetchLeads, fetchContacts, fetchInsights, fetchAudit, fetchBookings, fetchAvailability])
 
   const handleUpdateBooking = async (id: number, status: string) => {
     await adminApi.updateBooking(id, { status })
@@ -212,6 +272,80 @@ export default function AdminDashboardPage() {
     if (!confirm("Delete this booking?")) return
     await adminApi.deleteBooking(id)
     fetchBookings()
+  }
+
+  const handleScheduleChange = (dayOfWeek: number, field: keyof DaySchedule, value: any) => {
+    setSchedule((prev) =>
+      prev.map((item) => (item.day_of_week === dayOfWeek ? { ...item, [field]: value } : item))
+    )
+  }
+
+  const handleSaveSchedule = async () => {
+    setScheduleSaving(true)
+    setScheduleSuccess("")
+    saveLocalSchedule(schedule)
+    const res = await adminApi.updateAvailability(schedule)
+    if (res.ok) {
+      setScheduleSuccess("Weekly working hours saved successfully!")
+    } else {
+      setScheduleSuccess("Saved locally. Changes will apply immediately.")
+    }
+    setScheduleSaving(false)
+    setTimeout(() => setScheduleSuccess(""), 4000)
+  }
+
+  const handleAddBlockedDate = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newBlockedDate) return
+    const updated = [
+      { date: newBlockedDate, reason: newBlockedReason || "Out of Office / Holiday" },
+      ...blockedDates.filter((b) => b.date !== newBlockedDate),
+    ]
+    setBlockedDates(updated)
+    saveLocalBlockedDates(updated)
+    await adminApi.addBlockedDate(newBlockedDate, newBlockedReason || undefined)
+    setNewBlockedDate("")
+    setNewBlockedReason("")
+    fetchAvailability()
+  }
+
+  const handleRemoveBlockedDate = async (date: string) => {
+    const updated = blockedDates.filter((b) => b.date !== date)
+    setBlockedDates(updated)
+    saveLocalBlockedDates(updated)
+    await adminApi.deleteBlockedDate(date)
+    fetchAvailability()
+  }
+
+  const handleCreateManualBooking = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!manualName || !manualEmail || !manualDate || !manualTime) {
+      setManualError("Please fill in required fields: Name, Email, Date, Time")
+      return
+    }
+    setManualSubmitting(true)
+    setManualError("")
+    const res = await adminApi.createBooking({
+      client_name: manualName,
+      client_email: manualEmail,
+      client_phone: manualPhone || undefined,
+      date: manualDate,
+      start_time: manualTime,
+      notes: manualNotes ? `[Manual Phone Booking] Service: ${manualService}. Notes: ${manualNotes}` : `[Manual Phone Booking] Service: ${manualService}`,
+    })
+    if (res.ok) {
+      setManualModalOpen(false)
+      setManualName("")
+      setManualEmail("")
+      setManualPhone("")
+      setManualDate("")
+      setManualTime("10:00")
+      setManualNotes("")
+      fetchBookings()
+    } else {
+      setManualError(res.error || "Failed to create appointment")
+    }
+    setManualSubmitting(false)
   }
 
   const handleCalendarAuth = () => {
@@ -262,6 +396,7 @@ export default function AdminDashboardPage() {
     { id: "leads", label: "Leads", icon: Users },
     { id: "contacts", label: "Contacts", icon: Mail },
     { id: "bookings", label: "Bookings", icon: Calendar },
+    { id: "events", label: "Events", icon: Ticket },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
     { id: "audit", label: "Audit Log", icon: ScrollText },
   ]
@@ -640,32 +775,49 @@ export default function AdminDashboardPage() {
                 </div>
               )}
 
-              {/* Bookings Tab */}
+              {/* Bookings & Availability Tab */}
               {tab === "bookings" && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold">Bookings <span className="text-sm font-normal text-white/40">({bookings.length})</span></h2>
-                    <div className="flex items-center gap-3">
-                      <select
-                        value={bookingsFilter}
-                        onChange={(e) => setBookingsFilter(e.target.value)}
-                        className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/70 focus:outline-none"
-                      >
-                        <option value="" className="bg-[#0a0f1c]">All statuses</option>
-                        <option value="confirmed" className="bg-[#0a0f1c]">Confirmed</option>
-                        <option value="completed" className="bg-[#0a0f1c]">Completed</option>
-                        <option value="cancelled" className="bg-[#0a0f1c]">Cancelled</option>
-                      </select>
+                <div className="space-y-6">
+                  {/* Top Bar */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h2 className="text-xl font-bold flex items-center gap-2">
+                        <span>Bookings & Availability</span>
+                        <span className="rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/30 px-2.5 py-0.5 text-xs text-[var(--gold)]">
+                          {bookings.length} Total Bookings
+                        </span>
+                      </h2>
+                      <p className="text-xs text-white/50 mt-0.5">
+                        Manage client appointments, weekly consultation hours, and holiday blocker.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2.5 flex-wrap">
                       <button
-                        onClick={handleCalendarAuth}
-                        className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-xs text-white/60 hover:bg-white/5"
+                        type="button"
+                        onClick={() => setManualModalOpen(true)}
+                        className="flex items-center gap-1.5 rounded-lg bg-[var(--gold)] px-3.5 py-2 text-xs font-bold text-[var(--navy-deep)] transition-all hover:opacity-90 cursor-pointer shadow-md shadow-[var(--gold)]/20"
                       >
-                        <ExternalLink className="h-3.5 w-3.5" />
-                        Link Google Calendar
+                        <Plus className="h-3.5 w-3.5" />
+                        Manual Booking
                       </button>
+
                       <button
-                        onClick={fetchBookings}
-                        className="flex items-center gap-2 rounded-lg border border-white/10 px-3 py-2 text-sm text-white/60 hover:bg-white/5"
+                        type="button"
+                        onClick={handleCalendarAuth}
+                        className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5 text-[var(--gold)]" />
+                        Google Calendar
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          fetchBookings()
+                          fetchAvailability()
+                        }}
+                        className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 hover:bg-white/10 hover:text-white transition-colors cursor-pointer"
                       >
                         <RefreshCw className="h-3.5 w-3.5" />
                         Refresh
@@ -673,85 +825,689 @@ export default function AdminDashboardPage() {
                     </div>
                   </div>
 
-                  <div className="overflow-x-auto rounded-xl border border-white/10">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="border-b border-white/10 bg-white/5 text-left text-xs uppercase tracking-wider text-white/40">
-                          <th className="px-4 py-3">Client</th>
-                          <th className="px-4 py-3">Date / Time</th>
-                          <th className="px-4 py-3">Meet Link</th>
-                          <th className="px-4 py-3">Status</th>
-                          <th className="px-4 py-3">Created</th>
-                          <th className="px-4 py-3">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {bookings.length === 0 && (
-                          <tr><td colSpan={6} className="px-4 py-12 text-center text-white/30">No bookings found</td></tr>
-                        )}
-                        {bookings.map((b: any) => (
-                          <tr key={b.id} className="border-b border-white/5 hover:bg-white/5">
-                            <td className="px-4 py-3">
-                              <div className="font-medium text-white">{b.client_name}</div>
-                              <div className="text-xs text-white/50">{b.client_email}</div>
-                              {b.client_phone && <div className="text-xs text-white/40">{b.client_phone}</div>}
-                            </td>
-                            <td className="px-4 py-3">
-                              <div className="text-white/80">
-                                {new Date(b.date + "T00:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-                              </div>
-                              <div className="text-xs text-white/50">{b.start_time} — {b.end_time}</div>
-                            </td>
-                            <td className="px-4 py-3">
-                              {b.meet_link ? (
-                                <a href={b.meet_link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-red-400 hover:text-red-300">
-                                  <Video className="h-3.5 w-3.5" />
-                                  Join
-                                </a>
-                              ) : (
-                                <span className="text-xs text-white/30">—</span>
-                              )}
-                            </td>
-                            <td className="px-4 py-3">
-                              <span className={`rounded-md border px-2 py-1 text-xs ${STATUS_COLORS[b.status] || STATUS_COLORS.new}`}>
-                                {b.status}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3 text-xs text-white/40">
-                              {new Date(b.created_at + "Z").toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
-                            </td>
-                            <td className="px-4 py-3">
-                              <div className="flex gap-2">
-                                {b.status === "confirmed" && (
-                                  <button
-                                    onClick={() => handleUpdateBooking(b.id, "completed")}
-                                    className="rounded-md bg-green-500/10 px-2 py-1 text-xs text-green-400 hover:bg-green-500/20"
-                                  >
-                                    Complete
-                                  </button>
-                                )}
-                                {b.status !== "cancelled" && (
-                                  <button
-                                    onClick={() => handleUpdateBooking(b.id, "cancelled")}
-                                    className="rounded-md bg-red-500/10 px-2 py-1 text-xs text-red-400 hover:bg-red-500/20"
-                                  >
-                                    Cancel
-                                  </button>
-                                )}
-                                <button
-                                  onClick={() => handleDeleteBooking(b.id)}
-                                  className="text-white/30 hover:text-red-400"
-                                >
-                                  <Trash2 className="h-3.5 w-3.5" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  {/* Sub Tabs Pill Navigation */}
+                  <div className="flex items-center gap-2 border-b border-white/10 pb-3 overflow-x-auto scrollbar-none">
+                    <button
+                      type="button"
+                      onClick={() => setBookingSubTab("list")}
+                      className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all cursor-pointer ${
+                        bookingSubTab === "list"
+                          ? "bg-[var(--gold)] text-[var(--navy-deep)] shadow-md shadow-[var(--gold)]/20"
+                          : "border border-white/10 bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      <Calendar className="h-3.5 w-3.5" />
+                      Appointments ({bookings.length})
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setBookingSubTab("weekly")}
+                      className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all cursor-pointer ${
+                        bookingSubTab === "weekly"
+                          ? "bg-[var(--gold)] text-[var(--navy-deep)] shadow-md shadow-[var(--gold)]/20"
+                          : "border border-white/10 bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      <Clock className="h-3.5 w-3.5" />
+                      Weekly Schedule & Hours
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setBookingSubTab("blocked")}
+                      className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all cursor-pointer ${
+                        bookingSubTab === "blocked"
+                          ? "bg-[var(--gold)] text-[var(--navy-deep)] shadow-md shadow-[var(--gold)]/20"
+                          : "border border-white/10 bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      <CalendarOff className="h-3.5 w-3.5" />
+                      Blocked Dates & Holidays ({blockedDates.length})
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setBookingSubTab("calendar")}
+                      className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all cursor-pointer ${
+                        bookingSubTab === "calendar"
+                          ? "bg-[var(--gold)] text-[var(--navy-deep)] shadow-md shadow-[var(--gold)]/20"
+                          : "border border-white/10 bg-white/5 text-white/60 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      <LayoutDashboard className="h-3.5 w-3.5" />
+                      Monthly Visual Calendar
+                    </button>
                   </div>
+
+                  {/* ────────────────── SUB-TAB 1: APPOINTMENTS LIST ────────────────── */}
+                  {bookingSubTab === "list" && (
+                    <div className="space-y-4">
+                      {/* Search & Filter */}
+                      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white/[0.02] p-3 rounded-2xl border border-white/10">
+                        <div className="relative w-full sm:w-80">
+                          <Search className="absolute left-3 top-2.5 h-4 w-4 text-white/40" />
+                          <input
+                            type="text"
+                            placeholder="Search client, email, or date..."
+                            value={bookingSearch}
+                            onChange={(e) => setBookingSearch(e.target.value)}
+                            className="w-full rounded-xl border border-white/10 bg-white/5 pl-9 pr-4 py-2 text-xs text-white placeholder:text-white/30 outline-none focus:border-[var(--gold)]"
+                          />
+                        </div>
+
+                        <div className="flex items-center gap-3 w-full sm:w-auto">
+                          <select
+                            value={bookingsFilter}
+                            onChange={(e) => setBookingsFilter(e.target.value)}
+                            className="w-full sm:w-auto rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 focus:outline-none [&>option]:bg-[#0a0f1c]"
+                          >
+                            <option value="">All Statuses</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Appointments Table */}
+                      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.02]">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-white/10 bg-white/5 text-left text-xs uppercase tracking-wider text-white/40">
+                              <th className="px-4 py-3">Client</th>
+                              <th className="px-4 py-3">Date & Time</th>
+                              <th className="px-4 py-3">Service / Topic</th>
+                              <th className="px-4 py-3">Status</th>
+                              <th className="px-4 py-3">Booked On</th>
+                              <th className="px-4 py-3 text-right">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {bookings
+                              .filter((b: any) => {
+                                if (!bookingSearch) return true
+                                const q = bookingSearch.toLowerCase()
+                                return (
+                                  b.client_name?.toLowerCase().includes(q) ||
+                                  b.client_email?.toLowerCase().includes(q) ||
+                                  b.client_phone?.toLowerCase().includes(q) ||
+                                  b.date?.includes(q)
+                                )
+                              })
+                              .map((b: any) => (
+                                <tr key={b.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                  <td className="px-4 py-3">
+                                    <div className="font-semibold text-white">{b.client_name}</div>
+                                    <div className="text-xs text-white/50">{b.client_email}</div>
+                                    {b.client_phone && (
+                                      <div className="text-xs text-white/40 flex items-center gap-1 mt-0.5">
+                                        <Phone className="h-3 w-3" />
+                                        {b.client_phone}
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td className="px-4 py-3">
+                                    <div className="font-medium text-white/90">
+                                      {new Date(b.date + "T00:00:00").toLocaleDateString("en-IN", {
+                                        weekday: "short",
+                                        day: "numeric",
+                                        month: "short",
+                                        year: "numeric",
+                                      })}
+                                    </div>
+                                    <div className="text-xs text-[var(--gold)] flex items-center gap-1 mt-0.5">
+                                      <Clock className="h-3 w-3" />
+                                      {formatTime12h(b.start_time)} – {formatTime12h(b.end_time)}
+                                    </div>
+                                  </td>
+                                  <td className="px-4 py-3">
+                                    <div className="text-xs font-semibold text-white/90">{b.service || "Comprehensive Advisory"}</div>
+                                    {b.notes && (
+                                      <div className="text-[11px] text-white/40 truncate max-w-xs mt-0.5" title={b.notes}>
+                                        {b.notes}
+                                      </div>
+                                    )}
+                                  </td>
+                                  <td className="px-4 py-3">
+                                    <span className={`rounded-md border px-2.5 py-1 text-xs uppercase tracking-wider font-semibold ${
+                                      b.status === "confirmed"
+                                        ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                                        : b.status === "completed"
+                                          ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
+                                          : "bg-red-500/10 text-red-400 border-red-500/30"
+                                    }`}>
+                                      {b.status}
+                                    </span>
+                                  </td>
+                                  <td className="px-4 py-3 text-xs text-white/40">
+                                    {b.created_at ? new Date(b.created_at + (b.created_at.endsWith("Z") ? "" : "Z")).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "—"}
+                                  </td>
+                                  <td className="px-4 py-3 text-right">
+                                    <div className="flex items-center justify-end gap-2">
+                                      {b.status === "confirmed" && (
+                                        <button
+                                          type="button"
+                                          onClick={() => handleUpdateBooking(b.id, "completed")}
+                                          className="rounded-lg bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 text-xs text-emerald-400 hover:bg-emerald-500/25 transition-colors cursor-pointer"
+                                        >
+                                          Mark Done
+                                        </button>
+                                      )}
+                                      {b.status !== "cancelled" && (
+                                        <button
+                                          type="button"
+                                          onClick={() => handleUpdateBooking(b.id, "cancelled")}
+                                          className="rounded-lg bg-red-500/15 border border-red-500/30 px-2.5 py-1 text-xs text-red-400 hover:bg-red-500/25 transition-colors cursor-pointer"
+                                        >
+                                          Cancel
+                                        </button>
+                                      )}
+                                      <button
+                                        type="button"
+                                        onClick={() => handleDeleteBooking(b.id)}
+                                        className="text-white/30 hover:text-red-400 p-1 transition-colors cursor-pointer"
+                                        title="Delete Booking"
+                                      >
+                                        <Trash2 className="h-4 w-4" />
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            {bookings.length === 0 && (
+                              <tr>
+                                <td colSpan={6} className="px-4 py-16 text-center text-white/30">
+                                  <Calendar className="h-8 w-8 mx-auto mb-2 opacity-30" />
+                                  <p className="font-medium text-white/60">No consultations booked yet</p>
+                                  <p className="text-xs text-white/40 mt-1">
+                                    Clients will appear here once they book on /book or when you create a manual booking.
+                                  </p>
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ────────────────── SUB-TAB 2: WEEKLY SCHEDULE ────────────────── */}
+                  {bookingSubTab === "weekly" && (
+                    <div className="space-y-6">
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+                          <div>
+                            <h3 className="font-serif text-lg font-bold text-white flex items-center gap-2">
+                              <Clock className="h-5 w-5 text-[var(--gold)]" />
+                              Recurring Weekly Working Hours
+                            </h3>
+                            <p className="text-xs text-white/50 mt-1">
+                              Configure which days Francis J. accepts bookings, starting & ending hours, and consultation slot durations.
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={handleSaveSchedule}
+                            disabled={scheduleSaving}
+                            className="flex items-center gap-2 rounded-xl bg-[var(--gold)] px-5 py-2.5 text-xs font-bold text-[var(--navy-deep)] shadow-lg shadow-[var(--gold)]/20 hover:opacity-90 disabled:opacity-50 transition-all cursor-pointer shrink-0"
+                          >
+                            {scheduleSaving ? (
+                              <>
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <span>Saving...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Check className="h-4 w-4" />
+                                <span>Save Weekly Hours</span>
+                              </>
+                            )}
+                          </button>
+                        </div>
+
+                        {scheduleSuccess && (
+                          <div className="my-4 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs text-emerald-400">
+                            <CheckCircle2 className="h-4 w-4 shrink-0" />
+                            <span>{scheduleSuccess}</span>
+                          </div>
+                        )}
+
+                        {/* Days List */}
+                        <div className="divide-y divide-white/5 pt-4 space-y-4">
+                          {[1, 2, 3, 4, 5, 6, 0].map((dayNum) => {
+                            const item = schedule.find((s) => s.day_of_week === dayNum) || {
+                              day_of_week: dayNum,
+                              start_time: "09:30",
+                              end_time: "18:00",
+                              slot_duration: 30,
+                              is_active: dayNum !== 0,
+                            }
+                            const isActive = Boolean(item.is_active)
+
+                            return (
+                              <div
+                                key={dayNum}
+                                className={`pt-4 first:pt-0 flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-xl transition-colors ${
+                                  isActive ? "bg-white/[0.02]" : "bg-white/[0.01] opacity-60"
+                                }`}
+                              >
+                                <div className="flex items-center gap-3 w-44">
+                                  <input
+                                    type="checkbox"
+                                    id={`active-${dayNum}`}
+                                    checked={isActive}
+                                    onChange={(e) => handleScheduleChange(dayNum, "is_active", e.target.checked)}
+                                    className="h-4 w-4 rounded border-white/20 bg-white/5 text-[var(--gold)] focus:ring-[var(--gold)] cursor-pointer"
+                                  />
+                                  <label htmlFor={`active-${dayNum}`} className="font-semibold text-sm cursor-pointer select-none">
+                                    {DAY_NAMES[dayNum]}
+                                  </label>
+                                </div>
+
+                                <div className="flex flex-wrap items-center gap-4">
+                                  {isActive ? (
+                                    <>
+                                      <div className="flex items-center gap-2 text-xs">
+                                        <span className="text-white/40">From:</span>
+                                        <input
+                                          type="time"
+                                          value={item.start_time}
+                                          onChange={(e) => handleScheduleChange(dayNum, "start_time", e.target.value)}
+                                          className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white focus:border-[var(--gold)] outline-none [color-scheme:dark]"
+                                        />
+                                      </div>
+
+                                      <div className="flex items-center gap-2 text-xs">
+                                        <span className="text-white/40">To:</span>
+                                        <input
+                                          type="time"
+                                          value={item.end_time}
+                                          onChange={(e) => handleScheduleChange(dayNum, "end_time", e.target.value)}
+                                          className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white focus:border-[var(--gold)] outline-none [color-scheme:dark]"
+                                        />
+                                      </div>
+
+                                      <div className="flex items-center gap-2 text-xs">
+                                        <span className="text-white/40">Slot Duration:</span>
+                                        <select
+                                          value={item.slot_duration || 30}
+                                          onChange={(e) => handleScheduleChange(dayNum, "slot_duration", Number(e.target.value))}
+                                          className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white outline-none focus:border-[var(--gold)] [&>option]:bg-[#0a0f1c]"
+                                        >
+                                          <option value={15}>15 mins</option>
+                                          <option value={30}>30 mins</option>
+                                          <option value={45}>45 mins</option>
+                                          <option value={60}>60 mins</option>
+                                        </select>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <span className="text-xs text-white/40 italic">
+                                      Closed / Unavailable on {DAY_NAMES[dayNum]}s
+                                    </span>
+                                  )}
+                                </div>
+
+                                <div className="text-xs text-[var(--gold)]/80 font-medium">
+                                  {isActive ? `${formatTime12h(item.start_time)} – ${formatTime12h(item.end_time)}` : "Closed"}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ────────────────── SUB-TAB 3: BLOCKED DATES ────────────────── */}
+                  {bookingSubTab === "blocked" && (
+                    <div className="space-y-6">
+                      {/* Add Blocked Date Form */}
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+                        <h3 className="font-serif text-lg font-bold text-white mb-2 flex items-center gap-2">
+                          <CalendarOff className="h-5 w-5 text-accent" />
+                          Block a Specific Date or Holiday
+                        </h3>
+                        <p className="text-xs text-white/50 mb-5">
+                          Mark specific full days as unavailable for festivals, travel, personal leave, or public holidays.
+                        </p>
+
+                        <form onSubmit={handleAddBlockedDate} className="flex flex-col sm:flex-row items-end gap-3">
+                          <div className="w-full sm:w-48">
+                            <label className="block text-xs text-white/60 mb-1.5 font-medium">Date to Block</label>
+                            <input
+                              type="date"
+                              required
+                              value={newBlockedDate}
+                              onChange={(e) => setNewBlockedDate(e.target.value)}
+                              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white focus:border-[var(--gold)] outline-none [color-scheme:dark]"
+                            />
+                          </div>
+
+                          <div className="w-full sm:flex-1">
+                            <label className="block text-xs text-white/60 mb-1.5 font-medium">Reason / Label</label>
+                            <input
+                              type="text"
+                              placeholder="e.g. Diwali Holiday, Out of Station, Client Meetings..."
+                              value={newBlockedReason}
+                              onChange={(e) => setNewBlockedReason(e.target.value)}
+                              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white placeholder:text-white/30 focus:border-[var(--gold)] outline-none"
+                            />
+                          </div>
+
+                          <button
+                            type="submit"
+                            disabled={!newBlockedDate}
+                            className="w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-xl bg-accent px-5 py-2.5 text-xs font-bold text-white hover:opacity-90 disabled:opacity-40 transition-all cursor-pointer shrink-0"
+                          >
+                            <Plus className="h-3.5 w-3.5" />
+                            Block Date
+                          </button>
+                        </form>
+                      </div>
+
+                      {/* Blocked Dates List */}
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+                        <h4 className="font-semibold text-sm text-white mb-4">
+                          Currently Blocked Dates ({blockedDates.length})
+                        </h4>
+
+                        {blockedDates.length === 0 ? (
+                          <p className="text-xs text-white/40 py-6 text-center">No dates are currently blocked.</p>
+                        ) : (
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                            {blockedDates.map((b) => {
+                              const d = new Date(b.date + "T00:00:00")
+                              const formatted = d.toLocaleDateString("en-IN", {
+                                weekday: "short",
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              })
+
+                              return (
+                                <div
+                                  key={b.date}
+                                  className="flex items-center justify-between p-3.5 rounded-xl border border-red-500/20 bg-red-500/5 text-xs"
+                                >
+                                  <div>
+                                    <p className="font-semibold text-white">{formatted}</p>
+                                    <p className="text-white/50 text-[11px] mt-0.5">{b.reason || "Out of Office"}</p>
+                                  </div>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => handleRemoveBlockedDate(b.date)}
+                                    className="p-1 text-white/40 hover:text-red-400 transition-colors cursor-pointer"
+                                    title="Unblock Date"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ────────────────── SUB-TAB 4: MONTHLY VISUAL CALENDAR ────────────────── */}
+                  {bookingSubTab === "calendar" && (
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-serif text-lg font-bold text-white">
+                            {MONTH_NAMES[adminCalMonth.getMonth()]} {adminCalMonth.getFullYear()}
+                          </h3>
+                          <p className="text-xs text-white/50">
+                            Overview of confirmed bookings and blocked dates this month.
+                          </p>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setAdminCalMonth(new Date(adminCalMonth.getFullYear(), adminCalMonth.getMonth() - 1, 1))}
+                            className="p-2 rounded-lg border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 cursor-pointer"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setAdminCalMonth(new Date(adminCalMonth.getFullYear(), adminCalMonth.getMonth() + 1, 1))}
+                            className="p-2 rounded-lg border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 cursor-pointer"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Admin Visual Calendar Grid */}
+                      <div className="grid grid-cols-7 gap-2">
+                        {DAY_SHORT_NAMES.map((d) => (
+                          <div key={d} className="text-center text-xs font-semibold uppercase text-white/40 py-1">
+                            {d}
+                          </div>
+                        ))}
+
+                        {(() => {
+                          const year = adminCalMonth.getFullYear()
+                          const month = adminCalMonth.getMonth()
+                          const numDays = new Date(year, month + 1, 0).getDate()
+                          const firstDay = new Date(year, month, 1).getDay()
+
+                          const cells = []
+                          for (let i = 0; i < firstDay; i++) {
+                            cells.push(<div key={`empty-${i}`} className="h-24 rounded-xl bg-white/[0.01]" />)
+                          }
+
+                          for (let day = 1; day <= numDays; day++) {
+                            const dateStr = `${year}-${(month + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
+                            const dayOfWeek = new Date(year, month, day).getDay()
+                            const sched = schedule.find((s) => s.day_of_week === dayOfWeek)
+                            const isSchedActive = sched ? Boolean(sched.is_active) : dayOfWeek !== 0
+
+                            const isBlocked = blockedDates.some((b) => b.date === dateStr)
+                            const dayBookings = bookings.filter((b: any) => b.date === dateStr && b.status === "confirmed")
+
+                            cells.push(
+                              <div
+                                key={dateStr}
+                                className={`h-24 rounded-xl border p-2 flex flex-col justify-between transition-all ${
+                                  isBlocked
+                                    ? "border-red-500/20 bg-red-500/5 text-white/40"
+                                    : !isSchedActive
+                                      ? "border-white/5 bg-white/[0.01] text-white/30"
+                                      : dayBookings.length > 0
+                                        ? "border-[var(--gold)]/30 bg-[var(--gold)]/5 text-white"
+                                        : "border-white/10 bg-white/[0.02] text-white/80 hover:border-white/20"
+                                }`}
+                              >
+                                <div className="flex items-center justify-between text-xs">
+                                  <span className="font-bold">{day}</span>
+                                  {isBlocked ? (
+                                    <span className="text-[10px] text-red-400 font-semibold">Blocked</span>
+                                  ) : !isSchedActive ? (
+                                    <span className="text-[10px] text-white/30">Off</span>
+                                  ) : (
+                                    <span className="text-[10px] text-emerald-400">Open</span>
+                                  )}
+                                </div>
+
+                                <div className="space-y-1">
+                                  {dayBookings.length > 0 && (
+                                    <div className="rounded-md bg-[var(--gold)]/20 px-1.5 py-0.5 text-[10px] font-semibold text-[var(--gold)] text-center">
+                                      {dayBookings.length} Booked
+                                    </div>
+                                  )}
+                                </div>
+
+                                <div className="flex justify-end">
+                                  {isBlocked ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveBlockedDate(dateStr)}
+                                      className="text-[10px] text-white/40 hover:text-emerald-400 cursor-pointer"
+                                    >
+                                      Unblock
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setNewBlockedDate(dateStr)
+                                        setBookingSubTab("blocked")
+                                      }}
+                                      className="text-[10px] text-white/30 hover:text-red-400 cursor-pointer"
+                                    >
+                                      Block
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          }
+
+                          return cells
+                        })()}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Manual Booking Modal */}
+                  {manualModalOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                      <div className="w-full max-w-lg rounded-3xl border border-white/15 bg-gradient-to-b from-[#101c30] to-[#0a0f1c] p-6 sm:p-8 shadow-2xl text-white">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="font-serif text-xl font-bold">Add Manual Appointment</h3>
+                          <button
+                            type="button"
+                            onClick={() => setManualModalOpen(false)}
+                            className="text-white/50 hover:text-white cursor-pointer"
+                          >
+                            <X className="h-5 w-5" />
+                          </button>
+                        </div>
+
+                        <form onSubmit={handleCreateManualBooking} className="space-y-4">
+                          <div>
+                            <label className="block text-xs text-white/60 mb-1">Client Full Name *</label>
+                            <input
+                              type="text"
+                              required
+                              placeholder="e.g. Anand Kumar"
+                              value={manualName}
+                              onChange={(e) => setManualName(e.target.value)}
+                              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs text-white outline-none focus:border-[var(--gold)]"
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-xs text-white/60 mb-1">Client Email *</label>
+                              <input
+                                type="email"
+                                required
+                                placeholder="client@example.com"
+                                value={manualEmail}
+                                onChange={(e) => setManualEmail(e.target.value)}
+                                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs text-white outline-none focus:border-[var(--gold)]"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-white/60 mb-1">Client Phone</label>
+                              <input
+                                type="tel"
+                                placeholder="+91 98765 43210"
+                                value={manualPhone}
+                                onChange={(e) => setManualPhone(e.target.value)}
+                                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs text-white outline-none focus:border-[var(--gold)]"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-xs text-white/60 mb-1">Date *</label>
+                              <input
+                                type="date"
+                                required
+                                value={manualDate}
+                                onChange={(e) => setManualDate(e.target.value)}
+                                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs text-white outline-none focus:border-[var(--gold)] [color-scheme:dark]"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-white/60 mb-1">Start Time *</label>
+                              <input
+                                type="time"
+                                required
+                                value={manualTime}
+                                onChange={(e) => setManualTime(e.target.value)}
+                                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs text-white outline-none focus:border-[var(--gold)] [color-scheme:dark]"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-xs text-white/60 mb-1">Service</label>
+                            <select
+                              value={manualService}
+                              onChange={(e) => setManualService(e.target.value)}
+                              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-xs text-white outline-none focus:border-[var(--gold)] [&>option]:bg-[#0a0f1c]"
+                            >
+                              <option value="Mutual Funds & SIP">Mutual Funds & SIP</option>
+                              <option value="PMS">Portfolio Management Services (PMS)</option>
+                              <option value="AIF">Alternative Investment Funds (AIF)</option>
+                              <option value="NRI Investment">NRI Investment Solutions</option>
+                              <option value="Comprehensive Planning">Comprehensive Wealth Planning</option>
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="block text-xs text-white/60 mb-1">Internal Notes</label>
+                            <textarea
+                              rows={2}
+                              placeholder="Notes about client request, phone call conversation..."
+                              value={manualNotes}
+                              onChange={(e) => setManualNotes(e.target.value)}
+                              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white outline-none focus:border-[var(--gold)] resize-none"
+                            />
+                          </div>
+
+                          {manualError && (
+                            <p className="text-xs text-red-400">{manualError}</p>
+                          )}
+
+                          <div className="flex items-center justify-end gap-3 pt-2">
+                            <button
+                              type="button"
+                              onClick={() => setManualModalOpen(false)}
+                              className="rounded-xl border border-white/10 px-4 py-2 text-xs text-white/60 hover:text-white"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="submit"
+                              disabled={manualSubmitting}
+                              className="flex items-center gap-2 rounded-xl bg-[var(--gold)] px-5 py-2 text-xs font-bold text-[var(--navy-deep)] hover:opacity-90 disabled:opacity-50"
+                            >
+                              {manualSubmitting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Save Appointment"}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  )}
                 </div>
+              )}
+
+              {/* Events Tab */}
+              {tab === "events" && (
+                <EventsManager />
               )}
 
               {/* Analytics Tab */}

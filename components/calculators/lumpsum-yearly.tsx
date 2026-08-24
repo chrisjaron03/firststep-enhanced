@@ -2,10 +2,9 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calculator, BarChart3, TrendingUp, ShieldCheck, TrendingDown, AlertTriangle, Zap, ArrowRight, CheckCircle2 } from "lucide-react"
+import { Calculator, BarChart3, TrendingUp, ArrowRight, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { api } from "@/lib/api"
-import { computeTrueWealth, type TrueWealth } from "./shared"
 import { SliderInput } from "./slider-input"
 
 export function LumpsumYearlyCalculator() {
@@ -20,16 +19,8 @@ export function LumpsumYearlyCalculator() {
 
   const rate = expectedReturn / 100
   const totalInvestment = yearlyInvestment * tenure
-  const futureValue = yearlyInvestment * ((Math.pow(1 + rate, tenure) - 1) / rate)
+  const futureValue = yearlyInvestment * ((Math.pow(1 + rate, tenure) - 1) / rate) * (1 + rate)
   const estimatedReturns = Math.round(futureValue - totalInvestment)
-
-  const trueWealthData: TrueWealth = {
-    maturityValue: Math.round(futureValue),
-    totalInvested: totalInvestment,
-    gains: estimatedReturns,
-    holdingYears: tenure,
-    taxType: tenure >= 1 ? "equity-ltcg" : "equity-stcg",
-  }
 
   const formatCurrency = (value: number) =>
     new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value)
@@ -50,9 +41,6 @@ export function LumpsumYearlyCalculator() {
     setStage("done")
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-
-  const tw = trueWealthData
-  const t = computeTrueWealth(tw)
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -144,53 +132,6 @@ export function LumpsumYearlyCalculator() {
                       <li>Maturity Value: {formatCurrency(Math.round(futureValue))}</li>
                     </ul>
                   </div>
-                </div>
-              </div>
-
-              {/* TRUE WEALTH */}
-              <div className="rounded-xl border-2 border-amber-500/30 bg-gradient-to-br from-amber-500/5 via-card to-red-500/5 p-6 sm:p-8 space-y-6">
-                <div className="flex items-start gap-3">
-                  <div className="rounded-full bg-amber-500/10 p-2">
-                    <AlertTriangle className="h-5 w-5 text-amber-600" />
-                  </div>
-                  <div className="w-full">
-                    <h4 className="font-sans text-xl font-bold text-foreground">The Reality Check</h4>
-                    <p className="mt-1 text-sm text-muted-foreground">The calculator shows you one number. Here&apos;s what your money <em>actually</em> buys.</p>
-                  </div>
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-xl bg-secondary/50 border border-border p-5">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">What the calculator says</p>
-                    <p className="font-sans text-3xl font-bold text-foreground">{formatCurrency(tw.maturityValue)}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{t.nominalReturn}% total return on {formatCurrency(tw.totalInvested)}</p>
-                  </div>
-                  <div className="rounded-xl bg-primary/5 border border-primary/20 p-5">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-3"><Zap className="inline h-3 w-3 mr-1" />What it&apos;s actually worth</p>
-                    <p className="font-sans text-3xl font-bold text-primary">{formatCurrency(t.purchasingPower)}</p>
-                    <p className="mt-1 text-xs text-primary/70">Real return: {t.realReturn}% after tax & inflation</p>
-                  </div>
-                </div>
-                <div className="rounded-xl border border-border bg-card p-5">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="flex items-center justify-between rounded-lg bg-red-500/5 border border-red-500/10 px-4 py-3">
-                      <div>
-                        <p className="text-sm font-medium text-red-600">{t.taxLabel}</p>
-                        <p className="text-xs text-red-500/70">{t.taxNote}</p>
-                      </div>
-                      <p className="font-sans text-lg font-bold text-red-600">-{formatCurrency(t.taxPaid)}</p>
-                    </div>
-                    <div className="flex items-center justify-between rounded-lg bg-amber-500/5 border border-amber-500/10 px-4 py-3">
-                      <div>
-                        <p className="text-sm font-medium text-amber-600"><TrendingDown className="inline h-3 w-3 mr-1" />Inflation Erosion (6% p.a.)</p>
-                        <p className="text-xs text-amber-500/70">Purchasing power lost over {tw.holdingYears}yr</p>
-                      </div>
-                      <p className="font-sans text-lg font-bold text-amber-600">-{formatCurrency(Math.round(tw.maturityValue - t.purchasingPower))}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="rounded-xl bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border border-primary/20 p-5 text-center">
-                  <p className="text-sm text-muted-foreground">{t.whatCouldBuy}</p>
-                  <p className="mt-2 font-sans text-xs text-muted-foreground/80">That&apos;s {t.lossPercent}% of your maturity value lost to the combined effect of taxes and rising prices.</p>
                 </div>
               </div>
 

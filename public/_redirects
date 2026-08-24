@@ -1,0 +1,3 @@
+# Fallback for static export dynamic event routes — serve the placeholder HTML for any unknown event slug.
+# The placeholder's JS reads window.location to fetch the correct event, so new events work without a rebuild.
+/events/*  /events/placeholder.html  200

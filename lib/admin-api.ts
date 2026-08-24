@@ -148,6 +148,20 @@ export const adminApi = {
     return adminFetch(`/api/admin/bookings?${qs.toString()}`)
   },
 
+  createBooking: (data: {
+    client_name: string
+    client_email: string
+    client_phone?: string
+    date: string
+    start_time: string
+    timezone?: string
+    notes?: string
+  }) =>
+    adminFetch(`/api/bookings`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
   updateBooking: (id: number, data: { status: string; notes?: string }) =>
     adminFetch(`/api/admin/bookings`, {
       method: 'PUT',
@@ -156,4 +170,55 @@ export const adminApi = {
 
   deleteBooking: (id: number) =>
     adminFetch(`/api/admin/bookings?id=${id}`, { method: 'DELETE' }),
+
+  // Availability & Blocked Dates
+  getAvailability: () => adminFetch('/api/admin/availability'),
+
+  updateAvailability: (schedule: {
+    day_of_week: number
+    start_time: string
+    end_time: string
+    slot_duration: number
+    is_active: number | boolean
+  }[]) =>
+    adminFetch('/api/admin/availability', {
+      method: 'PUT',
+      body: JSON.stringify({ schedule }),
+    }),
+
+  addBlockedDate: (date: string, reason?: string) =>
+    adminFetch('/api/admin/blocked-dates', {
+      method: 'POST',
+      body: JSON.stringify({ date, reason }),
+    }),
+
+  deleteBlockedDate: (date: string) =>
+    adminFetch(`/api/admin/blocked-dates?date=${date}`, {
+      method: 'DELETE',
+    }),
+
+  // Events (admin CRUD)
+  getEvents: (params?: { page?: number; limit?: number; status?: string }) => {
+    const qs = new URLSearchParams()
+    if (params?.page) qs.set('page', String(params.page))
+    if (params?.limit) qs.set('limit', String(params.limit))
+    if (params?.status) qs.set('status', params.status)
+    return adminFetch(`/api/admin/events?${qs.toString()}`)
+  },
+
+  createEvent: (data: Record<string, unknown>) =>
+    adminFetch('/api/admin/events', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  updateEvent: (id: number, data: Record<string, unknown>) =>
+    adminFetch('/api/admin/events', {
+      method: 'PUT',
+      body: JSON.stringify({ id, ...data }),
+    }),
+
+  deleteEvent: (id: number) =>
+    adminFetch(`/api/admin/events?id=${id}`, { method: 'DELETE' }),
 }
+

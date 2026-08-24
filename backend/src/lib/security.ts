@@ -103,6 +103,8 @@ export function validatePagination(page: string | null, limit: string | null): {
 
 const VALID_LEAD_STATUSES = ['new', 'contacted', 'qualified', 'converted', 'lost']
 const VALID_CONTACT_STATUSES = ['new', 'contacted', 'scheduled', 'completed', 'lost']
+const VALID_EVENT_STATUSES = ['draft', 'published', 'archived']
+const VALID_DELIVERY_MODES = ['online', 'offline', 'hybrid']
 
 export function validateLeadStatus(status: string): boolean {
   return VALID_LEAD_STATUSES.includes(status)
@@ -112,9 +114,48 @@ export function validateContactStatus(status: string): boolean {
   return VALID_CONTACT_STATUSES.includes(status)
 }
 
+export function validateEventStatus(status: string): boolean {
+  return VALID_EVENT_STATUSES.includes(status)
+}
+
+export function validateDeliveryMode(mode: string): boolean {
+  return VALID_DELIVERY_MODES.includes(mode)
+}
+
+export function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, 64) || 'event'
+}
+
+export function validateSlug(slug: string): boolean {
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) && slug.length >= 3 && slug.length <= 64
+}
+
+// ─── Events helpers ───
+
+export function parseCurriculum(input: unknown): string {
+  if (!Array.isArray(input)) return '[]'
+  const mods = input.slice(0, 12).map((m) => {
+    if (typeof m === 'string') return { title: sanitizeString(m, 120), lessons: [] as string[] }
+    if (m && typeof m === 'object') {
+      const o = m as Record<string, unknown>
+      const title = sanitizeString(String(o.title || ''), 120)
+      const lessonsRaw = Array.isArray(o.lessons) ? o.lessons : []
+      const lessons = lessonsRaw.map((l) => sanitizeString(String(l), 300)).filter(Boolean).slice(0, 15)
+      return { title, lessons }
+    }
+    return null
+  }).filter(Boolean)
+  return JSON.stringify(mods)
+}
+
 // ─── Request Body Size Limit ───
 
-const MAX_BODY_SIZE = 16 * 1024 // 16KB
+const MAX_BODY_SIZE = 32 * 1024 // 32KB — events with curriculum need more headroom
 
 export async function safelyParseJSON(request: Request): Promise<{ ok: true; data: Record<string, unknown> } | { ok: false; error: string }> {
   const contentLength = request.headers.get('Content-Length')

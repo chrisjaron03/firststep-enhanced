@@ -1,273 +1,184 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calendar, Clock, ChevronLeft, ChevronRight, CheckCircle2, Loader2, Video } from "lucide-react"
+import {
+  ShieldCheck,
+  CheckCircle2,
+  Briefcase,
+  Phone,
+  Mail,
+  Clock,
+  Sparkles,
+} from "lucide-react"
 import { Navigation } from "@/components/navigation"
+import { PageHero } from "@/components/page-hero"
 import { Footer } from "@/components/footer"
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://firststep-backend.chrisjaron99.workers.dev"
-
-function generateDates(daysAhead: number): string[] {
-  const dates: string[] = []
-  const today = new Date()
-  for (let i = 0; i < daysAhead; i++) {
-    const d = new Date(today)
-    d.setDate(d.getDate() + i)
-    dates.push(d.toISOString().split("T")[0])
-  }
-  return dates
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr + "T00:00:00")
-  return d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })
-}
-
-function formatTime(timeStr: string): string {
-  const [h, m] = timeStr.split(":").map(Number)
-  const ampm = h >= 12 ? "PM" : "AM"
-  const hh = h % 12 || 12
-  return `${hh}:${m.toString().padStart(2, "0")} ${ampm}`
-}
+import { WhatsAppButton } from "@/components/whatsapp-button"
+import { BookingCalendarWidget } from "@/components/booking/booking-calendar-widget"
+import { BookingFormModal } from "@/components/booking/booking-form-modal"
+import { BookingSuccessCard } from "@/components/booking/booking-success-card"
+import type { Booking } from "@/lib/booking-service"
 
 export default function BookPage() {
-  const [dates] = useState(() => generateDates(14))
-  const [selectedDate, setSelectedDate] = useState("")
-  const [slots, setSlots] = useState<string[]>([])
-  const [selectedSlot, setSelectedSlot] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [booking, setBooking] = useState(false)
-  const [booked, setBooked] = useState(false)
-  const [meetLink, setMeetLink] = useState("")
+  const [selectedSlot, setSelectedSlot] = useState<{
+    date: string
+    time: string
+    duration: number
+  } | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [confirmedBooking, setConfirmedBooking] = useState<Booking | null>(null)
 
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [phone, setPhone] = useState("")
-  const [error, setError] = useState("")
+  const handleSelectSlot = (date: string, time: string, duration: number) => {
+    setSelectedSlot({ date, time, duration })
+    setIsModalOpen(true)
+  }
 
-  // Set default selected date to tomorrow if available
-  useEffect(() => {
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    const ts = tomorrow.toISOString().split("T")[0]
-    if (dates.includes(ts)) {
-      setSelectedDate(ts)
-    } else if (dates.length > 0) {
-      setSelectedDate(dates[0])
-    }
-  }, [dates])
+  const handleBookingSuccess = (booking: Booking) => {
+    setConfirmedBooking(booking)
+    setSelectedSlot(null)
+  }
 
-  const fetchSlots = useCallback(async () => {
-    if (!selectedDate) return
-    setLoading(true)
-    setSelectedSlot("")
-    try {
-      const res = await fetch(`${API_BASE}/api/bookings/slots?date=${selectedDate}`)
-      const data = await res.json()
-      setSlots(data.slots || [])
-    } catch {
-      setSlots([])
-    }
-    setLoading(false)
-  }, [selectedDate])
-
-  useEffect(() => {
-    fetchSlots()
-  }, [fetchSlots])
-
-  const handleBook = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!name || !email || !selectedSlot) return
-    setBooking(true)
-    setError("")
-    try {
-      const res = await fetch(`${API_BASE}/api/bookings`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          client_name: name,
-          client_email: email,
-          client_phone: phone || undefined,
-          date: selectedDate,
-          start_time: selectedSlot,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        }),
-      })
-      const data = await res.json()
-      if (!res.ok) {
-        setError(data.error || "Booking failed")
-      } else {
-        setBooked(true)
-        if (data.meet_link) setMeetLink(data.meet_link)
-      }
-    } catch {
-      setError("Network error. Please try again.")
-    }
-    setBooking(false)
+  const handleReset = () => {
+    setConfirmedBooking(null)
+    setSelectedSlot(null)
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0f1c]">
+    <div className="min-h-screen bg-background text-foreground selection:bg-accent selection:text-white">
       <Navigation />
-      <main className="mx-auto max-w-2xl px-6 pb-24 pt-28 lg:pb-32 lg:pt-36">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[var(--gold)] to-accent">
-              <Calendar className="h-7 w-7 text-white" />
-            </div>
-            <h1 className="font-serif text-3xl font-bold text-white sm:text-4xl">
-              Book a Consultation
-            </h1>
-            <p className="mt-2 text-white/60">
-              Schedule a free call with our financial advisors
-            </p>
-          </div>
 
-          <AnimatePresence mode="wait">
-            {booked ? (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="rounded-2xl border border-white/10 bg-white/5 p-8 text-center"
-              >
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20">
-                  <CheckCircle2 className="h-8 w-8 text-green-400" />
-                </div>
-                <h2 className="font-serif text-2xl font-bold text-white">Booking Confirmed!</h2>
-                <p className="mt-2 text-white/60">
-                  {formatDate(selectedDate)} at {formatTime(selectedSlot)}
-                </p>
-                {meetLink && (
-                  <a
-                    href={meetLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[var(--gold)] px-6 py-3 font-bold text-[var(--navy-deep)] transition-opacity hover:opacity-90"
-                  >
-                    <Video className="h-5 w-5" />
-                    Join Google Meet
-                  </a>
-                )}
-                <p className="mt-4 text-sm text-white/40">
-                  A confirmation email has been sent to {email}
-                </p>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="booking"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8"
-              >
-                {/* Date selector */}
-                <div className="mb-6">
-                  <label className="mb-3 block text-sm font-medium text-white/70">Select a Date</label>
-                  <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-                    {dates.map((d) => (
-                      <button
-                        key={d}
-                        onClick={() => setSelectedDate(d)}
-                        className={`shrink-0 rounded-xl border px-4 py-3 text-center text-sm transition-all ${
-                          selectedDate === d
-                            ? "border-[var(--gold)] bg-[var(--gold)]/10 text-[var(--gold)]"
-                            : "border-white/10 text-white/60 hover:border-white/20 hover:text-white/80"
-                        }`}
-                      >
-                        <div className="text-xs opacity-60">
-                          {new Date(d + "T00:00:00").toLocaleDateString("en-IN", { weekday: "short" })}
-                        </div>
-                        <div className="mt-0.5 text-base font-semibold">
-                          {new Date(d + "T00:00:00").getDate()}
-                        </div>
-                        <div className="text-xs opacity-60">
-                          {new Date(d + "T00:00:00").toLocaleDateString("en-IN", { month: "short" })}
-                        </div>
-                      </button>
-                    ))}
+      <main>
+        {/* Brand Page Hero */}
+        <PageHero
+          badge="Schedule Consultation"
+          title="Book Your Financial Advisory Session"
+          description="Schedule a 1-on-1 consultation with Francis J., AMFI Registered Mutual Fund Distributor. Select your preferred date and time from the live availability below."
+          image="/images/contact-hero.jpg"
+        />
+
+        {/* Booking Module Section */}
+        <section className="relative py-12 lg:py-20 bg-section-warm">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Left/Main Column: Calendar & Booking Card */}
+              <div className="lg:col-span-8">
+                <AnimatePresence mode="wait">
+                  {confirmedBooking ? (
+                    <BookingSuccessCard
+                      key="success"
+                      booking={confirmedBooking}
+                      onReset={handleReset}
+                    />
+                  ) : (
+                    <motion.div
+                      key="calendar"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                    >
+                      <BookingCalendarWidget onSelectSlot={handleSelectSlot} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Right Column: Consultant Profile & Highlights */}
+              <div className="lg:col-span-4 space-y-6">
+                {/* Consultant Card */}
+                <div className="rounded-3xl border border-border bg-card p-6 sm:p-7 shadow-lg relative overflow-hidden">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent to-[#B91C1C] text-white font-serif font-bold text-2xl shadow-md shadow-accent/20">
+                      FJ
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-lg font-bold text-primary">Francis J.</h3>
+                      <p className="text-xs text-accent font-semibold">
+                        AMFI Registered Mutual Fund Distributor
+                      </p>
+                      <p className="text-[11px] text-muted-foreground">First Step Consultancy Services</p>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-muted-foreground leading-relaxed pb-4 border-b border-border">
+                    Over 15+ years guiding retail, HNI, and NRI investors in mutual fund portfolios, PMS, AIF, and structured wealth compounding.
+                  </p>
+
+                  <div className="pt-4 space-y-2.5 text-xs text-foreground">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
+                      <span>AMFI Certified & Regulatory Compliant</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
+                      <span>Direct 1-on-1 personalized advisory session</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-accent shrink-0" />
+                      <span>Zero upfront advisory fees</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Time slots */}
-                <div className="mb-6">
-                  <label className="mb-3 block text-sm font-medium text-white/70">Select a Time</label>
-                  {loading ? (
-                    <div className="flex items-center justify-center py-8">
-                      <Loader2 className="h-6 w-6 animate-spin text-white/40" />
+                {/* What We Discuss */}
+                <div className="rounded-3xl border border-border bg-card p-6 shadow-lg space-y-4">
+                  <h4 className="font-serif text-base font-bold text-primary flex items-center gap-2">
+                    <Briefcase className="h-4 w-4 text-accent" />
+                    What to Expect in Your Call
+                  </h4>
+                  <div className="space-y-3 text-xs text-muted-foreground">
+                    <div className="rounded-xl border border-border bg-secondary/50 p-3">
+                      <p className="font-semibold text-primary">1. Portfolio Diagnostics</p>
+                      <p className="mt-0.5 text-muted-foreground">
+                        Analyzing risk overlap, underperforming funds, and asset allocation gaps.
+                      </p>
                     </div>
-                  ) : slots.length === 0 ? (
-                    <p className="py-8 text-center text-sm text-white/40">No available slots for this date</p>
-                  ) : (
-                    <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-                      {slots.map((s) => (
-                        <button
-                          key={s}
-                          onClick={() => setSelectedSlot(s)}
-                          className={`rounded-xl border px-3 py-2.5 text-center text-sm transition-all ${
-                            selectedSlot === s
-                              ? "border-[var(--gold)] bg-[var(--gold)]/10 text-[var(--gold)]"
-                              : "border-white/10 text-white/60 hover:border-white/20 hover:text-white/80"
-                          }`}
-                        >
-                          <Clock className="mx-auto mb-1 h-3.5 w-3.5 opacity-60" />
-                          {formatTime(s)}
-                        </button>
-                      ))}
+
+                    <div className="rounded-xl border border-border bg-secondary/50 p-3">
+                      <p className="font-semibold text-primary">2. Goal Alignment</p>
+                      <p className="mt-0.5 text-muted-foreground">
+                        Structuring SIPs, lumpsum, or PMS strategies mapped to your timeframe.
+                      </p>
                     </div>
-                  )}
+
+                    <div className="rounded-xl border border-border bg-secondary/50 p-3">
+                      <p className="font-semibold text-primary">3. Actionable Next Steps</p>
+                      <p className="mt-0.5 text-muted-foreground">
+                        Clear recommendations on fund selection and execution with zero lock-in pressure.
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Booking form */}
-                <form onSubmit={handleBook} className="space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Phone (optional)"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition-colors focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]/20"
-                  />
-                  {error && (
-                    <p className="text-sm text-red-400">{error}</p>
-                  )}
-                  <button
-                    type="submit"
-                    disabled={booking || !selectedSlot || !name || !email}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--gold)] px-6 py-3 font-bold text-[var(--navy-deep)] transition-opacity hover:opacity-90 disabled:opacity-40"
-                  >
-                    {booking ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                    ) : (
-                      "Confirm Booking"
-                    )}
-                  </button>
-                </form>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+                {/* Direct Phone / Assistance */}
+                <div className="rounded-2xl border border-accent/20 bg-accent/5 p-5 text-center space-y-2 text-xs">
+                  <p className="text-muted-foreground font-medium">Need immediate assistance or have urgent queries?</p>
+                  <p className="text-sm font-bold text-accent flex items-center justify-center gap-1.5">
+                    <Phone className="h-4 w-4" />
+                    +91 98400 00000
+                  </p>
+                  <p className="text-muted-foreground text-[11px]">Mon – Sat • 9:30 AM – 6:00 PM IST</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+
+      {/* Booking Form Modal */}
+      {selectedSlot && (
+        <BookingFormModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          date={selectedSlot.date}
+          startTime={selectedSlot.time}
+          duration={selectedSlot.duration}
+          onBookingSuccess={handleBookingSuccess}
+        />
+      )}
+
       <Footer />
+      <WhatsAppButton />
     </div>
   )
 }

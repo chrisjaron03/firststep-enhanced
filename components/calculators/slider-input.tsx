@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useId } from "react"
 
 interface SliderInputProps {
   label: string
@@ -19,6 +19,8 @@ function formatCurrency(value: number) {
 
 export function SliderInput({ label, value, min, max, step, suffix, formatDisplay, onChange }: SliderInputProps) {
   const [inputValue, setInputValue] = useState(String(value))
+  const uniqueId = useId()
+  const inputId = `slider-input-${uniqueId}`
 
   useEffect(() => {
     setInputValue(String(value))
@@ -56,10 +58,14 @@ export function SliderInput({ label, value, min, max, step, suffix, formatDispla
   return (
     <div className="w-full">
       <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1">
-        <label className="text-xs sm:text-sm font-medium text-foreground min-w-0 shrink">{label}</label>
-        <span className="text-xs font-semibold text-primary shrink-0 max-w-full truncate">{displayValue}</span>
+        <label htmlFor={inputId} className="text-xs sm:text-sm font-medium text-foreground min-w-0 shrink">
+          {label}
+        </label>
+        <span className="text-xs sm:text-sm font-semibold text-primary shrink-0 max-w-full truncate" aria-live="polite">
+          {displayValue}
+        </span>
       </div>
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-2.5 sm:gap-3">
         <input
           type="range"
           min={min}
@@ -67,21 +73,29 @@ export function SliderInput({ label, value, min, max, step, suffix, formatDispla
           step={step}
           value={value}
           onChange={handleSliderChange}
-          className="flex-1 accent-primary h-2 cursor-pointer min-w-0"
+          aria-label={`${label} slider`}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuenow={value}
+          aria-valuetext={displayValue}
+          className="flex-1 accent-primary h-2 cursor-pointer min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
         />
         <input
+          id={inputId}
           type="text"
           inputMode="decimal"
           value={inputValue}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
-          className="w-24 sm:w-28 shrink-0 rounded-lg border border-border bg-card px-2 sm:px-3 py-1 text-xs sm:text-sm text-center font-medium outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-colors truncate"
+          aria-label={`${label} numeric input`}
+          className="w-24 sm:w-28 shrink-0 rounded-lg border border-border bg-card px-2 sm:px-3 py-1.5 text-xs sm:text-sm text-center font-medium text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-colors truncate"
         />
       </div>
-      <div className="flex justify-between text-[10px] sm:text-xs text-muted-foreground mt-1">
+      <div className="flex justify-between text-xs text-muted-foreground mt-1 font-medium">
         <span className="truncate">{min.toLocaleString("en-IN")}</span>
         <span className="truncate">{max.toLocaleString("en-IN")}</span>
       </div>
     </div>
   )
 }
+

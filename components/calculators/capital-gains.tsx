@@ -12,9 +12,9 @@ const config: CalcConfig = {
   ],
   calculate: (v) => {
     const gains = Math.max(0, v.sellPrice - v.buyPrice)
-    const isLtcg = v.holdYears >= 3
-    const taxRate = isLtcg ? 0.1 : (v.holdYears < 1 ? 0.15 : 0.1)
-    const exemption = isLtcg ? 100000 : 0
+    const isLtcg = v.holdYears >= 1
+    const taxRate = isLtcg ? 0.125 : 0.20
+    const exemption = isLtcg ? 125000 : 0
     const taxableGains = Math.max(0, gains - exemption)
     const tax = Math.round(taxableGains * taxRate)
     const netProceeds = v.sellPrice - tax
@@ -27,10 +27,10 @@ const config: CalcConfig = {
       breakdown: [
         { label: "Purchase Price", value: formatCurrency(v.buyPrice) },
         { label: "Selling Price", value: formatCurrency(v.sellPrice) },
-        { label: "Holding Period", value: v.holdYears >= 1 ? `${v.holdYears} years` : `${v.holdYears * 12} months` },
-        { label: "Type", value: isLtcg ? "Long Term" : "Short Term" },
-        { label: "Tax Rate", value: `${Math.round(taxRate * 100)}%` },
-        { label: "Tax Exemption", value: formatCurrency(exemption) },
+        { label: "Holding Period", value: v.holdYears >= 1 ? `${v.holdYears} year${v.holdYears > 1 ? 's' : ''}` : "< 1 year" },
+        { label: "Asset Type & Classification", value: isLtcg ? "Equity LTCG (>= 1 Yr)" : "Equity STCG (< 1 Yr)" },
+        { label: "Tax Rate", value: isLtcg ? "12.5%" : "20%" },
+        { label: "LTCG Exemption", value: isLtcg ? formatCurrency(exemption) : "N/A" },
         { label: "Taxable Gains", value: formatCurrency(taxableGains) },
         { label: "Tax Payable", value: formatCurrency(tax) },
       ],
