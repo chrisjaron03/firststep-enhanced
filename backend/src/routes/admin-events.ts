@@ -54,6 +54,8 @@ async function ensureEventsTable(env: Env) {
         tagline         TEXT,
         value_anchor_price INTEGER,
         instructor_note TEXT,
+        meeting_link    TEXT,
+        whatsapp_community_link TEXT,
         created_by      INTEGER REFERENCES admin_users(id),
         created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
         updated_at      TEXT    NOT NULL DEFAULT (datetime('now'))
@@ -86,6 +88,8 @@ async function ensureEventsTable(env: Env) {
       `ALTER TABLE events ADD COLUMN tagline TEXT`,
       `ALTER TABLE events ADD COLUMN value_anchor_price INTEGER`,
       `ALTER TABLE events ADD COLUMN instructor_note TEXT`,
+      `ALTER TABLE events ADD COLUMN meeting_link TEXT`,
+      `ALTER TABLE events ADD COLUMN whatsapp_community_link TEXT`,
     ]
     for (const sql of adds) { try { await env.DB.exec(sql) } catch { } }
   } catch { }
@@ -230,15 +234,17 @@ export async function handleAdminEvents(request: Request, env: Env): Promise<Res
     const timezone = body.timezone ? sanitizeString(String(body.timezone), 50) : 'Asia/Kolkata'
     const tagline = body.tagline ? sanitizeString(String(body.tagline), 300) : null
     const instructorNote = body.instructor_note ? sanitizeString(String(body.instructor_note), 5000) : null
+    const meetingLink = body.meeting_link ? sanitizeString(String(body.meeting_link), 2048) : null
+    const whatsappCommunityLink = body.whatsapp_community_link ? sanitizeString(String(body.whatsapp_community_link), 2048) : null
     const featured = body.featured ? 1 : 0
     const maxSeats = body.max_seats !== undefined && body.max_seats !== null && body.max_seats !== ''
       ? Math.max(1, Math.min(Number(body.max_seats), 100000))
       : null
 
     const result = await env.DB.prepare(
-      `INSERT INTO events (slug, title, subtitle, description, agenda, curriculum, learn_items, outcomes, for_you, not_for_you, inside_flow, venue, event_date, price, original_price, value_anchor_price, currency, cover_image, gallery, video_url, cta_label, cta_url, status, featured, max_seats, is_free, delivery_mode, duration_mins, language, timezone, tagline, instructor_note, created_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    ).bind(slug, title, subtitle, description, agenda, curriculum, learn_items, outcomes, for_you, not_for_you, inside_flow, venue, eventDate, price, originalPrice, valueAnchor, currency, coverImage, gallery, videoUrl, ctaLabel, ctaUrl, status, featured, maxSeats, is_free, deliveryMode, durationMins, language, timezone, tagline, instructorNote, adminId).run()
+      `INSERT INTO events (slug, title, subtitle, description, agenda, curriculum, learn_items, outcomes, for_you, not_for_you, inside_flow, venue, event_date, price, original_price, value_anchor_price, currency, cover_image, gallery, video_url, cta_label, cta_url, status, featured, max_seats, is_free, delivery_mode, duration_mins, language, timezone, tagline, instructor_note, meeting_link, whatsapp_community_link, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(slug, title, subtitle, description, agenda, curriculum, learn_items, outcomes, for_you, not_for_you, inside_flow, venue, eventDate, price, originalPrice, valueAnchor, currency, coverImage, gallery, videoUrl, ctaLabel, ctaUrl, status, featured, maxSeats, is_free, deliveryMode, durationMins, language, timezone, tagline, instructorNote, meetingLink, whatsappCommunityLink, adminId).run()
 
     if (!result.success) return errorResponse('Failed to create event', env, request, 500)
     const id = result.meta.last_row_id
@@ -324,6 +330,8 @@ export async function handleAdminEvents(request: Request, env: Env): Promise<Res
     if (body.timezone !== undefined) setIf('timezone', body.timezone ? sanitizeString(String(body.timezone), 50) : null)
     if (body.tagline !== undefined) setIf('tagline', body.tagline ? sanitizeString(String(body.tagline), 300) : null)
     if (body.instructor_note !== undefined) setIf('instructor_note', body.instructor_note ? sanitizeString(String(body.instructor_note), 5000) : null)
+    if (body.meeting_link !== undefined) setIf('meeting_link', body.meeting_link ? sanitizeString(String(body.meeting_link), 2048) : null)
+    if (body.whatsapp_community_link !== undefined) setIf('whatsapp_community_link', body.whatsapp_community_link ? sanitizeString(String(body.whatsapp_community_link), 2048) : null)
     if (body.featured !== undefined) setIf('featured', body.featured ? 1 : 0)
     if (body.max_seats !== undefined) {
       const v = body.max_seats === '' || body.max_seats === null ? null : Math.max(1, Math.min(Number(body.max_seats as number), 100000))

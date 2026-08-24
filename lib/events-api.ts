@@ -41,6 +41,8 @@ export interface PublicEvent {
   tagline: string | null
   value_anchor_price: number | null
   instructor_note: string | null
+  meeting_link: string | null
+  whatsapp_community_link: string | null
   created_at: string
   updated_at: string
 }
@@ -145,6 +147,8 @@ const MOCK_BLUEPRINT: PublicEvent = {
   tagline: "Earn. Protect. Grow. Build.",
   value_anchor_price: 1999,
   instructor_note: "Why FREE? This is education-first. We teach the system free — no stock tips, no guaranteed returns, no single-product pitch. If you want us to implement it for you (Mutual Funds / PMS / AIF / GIFT City), you can book a 1:1 Money Clarity Session after — no obligation, education first. Led by Francis J., AMFI-Registered MFD (ARN-335677), 10+ years guiding 100+ families.",
+  meeting_link: "https://meet.google.com/firststep-blueprint",
+  whatsapp_community_link: "https://chat.whatsapp.com/FIRSTSTEP_MONEY_BLUEPRINT",
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
 }

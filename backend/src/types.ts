@@ -41,6 +41,8 @@ export interface EventRecord {
   tagline: string | null
   value_anchor_price: number | null
   instructor_note: string | null
+  meeting_link: string | null
+  whatsapp_community_link: string | null
   created_by: number | null
   created_at: string
   updated_at: string

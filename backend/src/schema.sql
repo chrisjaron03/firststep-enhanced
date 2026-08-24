@@ -272,6 +272,8 @@ CREATE TABLE IF NOT EXISTS events (
   tagline         TEXT,
   value_anchor_price INTEGER,
   instructor_note TEXT,
+  meeting_link    TEXT,
+  whatsapp_community_link TEXT,
   created_by      INTEGER REFERENCES admin_users(id),
   created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
   updated_at      TEXT    NOT NULL DEFAULT (datetime('now'))

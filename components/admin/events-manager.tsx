@@ -44,6 +44,8 @@ interface AdminEvent {
   timezone: string
   tagline: string | null
   instructor_note: string | null
+  meeting_link: string | null
+  whatsapp_community_link: string | null
   created_at: string
   updated_at: string
 }
@@ -147,6 +149,8 @@ Primary promise: In one practical live session, understand the five money decisi
     "Q&A → Build your personal plan + optional Money Clarity Session",
   ],
   instructor_note: "Why FREE? This is education-first. We teach the system free — no stock tips, no guaranteed returns, no product push. If you want us to implement it for you (Mutual Funds / PMS / AIF / GIFT City), you can book a 1:1 Money Clarity Session after. No obligation. Led by Francis J., AMFI-Registered MFD (ARN-335677), 10+ years guiding 100+ families.",
+  meeting_link: "https://meet.google.com/firststep-blueprint",
+  whatsapp_community_link: "https://chat.whatsapp.com/FIRSTSTEP_MONEY_BLUEPRINT",
 }
 
 function emptyForm() {
@@ -181,6 +185,8 @@ function emptyForm() {
     language: "English",
     timezone: "Asia/Kolkata",
     instructor_note: MONEY_BLUEPRINT_TEMPLATE.instructor_note,
+    meeting_link: MONEY_BLUEPRINT_TEMPLATE.meeting_link,
+    whatsapp_community_link: MONEY_BLUEPRINT_TEMPLATE.whatsapp_community_link,
     featured: true,
     max_seats: 100 as string | number,
   }
@@ -240,6 +246,8 @@ export function EventsManager() {
       slug: "the-money-blueprint",
       featured: true,
       max_seats: 200,
+      meeting_link: t.meeting_link,
+      whatsapp_community_link: t.whatsapp_community_link,
     }))
   }
 
@@ -286,6 +294,8 @@ export function EventsManager() {
       language: ev.language || "English",
       timezone: ev.timezone || "Asia/Kolkata",
       instructor_note: ev.instructor_note || MONEY_BLUEPRINT_TEMPLATE.instructor_note,
+      meeting_link: (ev as unknown as { meeting_link?: string | null }).meeting_link || MONEY_BLUEPRINT_TEMPLATE.meeting_link,
+      whatsapp_community_link: (ev as unknown as { whatsapp_community_link?: string | null }).whatsapp_community_link || MONEY_BLUEPRINT_TEMPLATE.whatsapp_community_link,
       featured: Boolean(ev.featured),
       max_seats: ev.max_seats ?? 100,
     })
@@ -335,6 +345,8 @@ export function EventsManager() {
       video_url: form.video_url.trim() || null,
       cta_label: form.cta_label.trim() || (form.is_free ? "RESERVE MY FREE SEAT" : "Reserve Your Spot"),
       cta_url: form.cta_url.trim() || null,
+      meeting_link: (form as unknown as { meeting_link: string }).meeting_link?.trim() || null,
+      whatsapp_community_link: (form as unknown as { whatsapp_community_link: string }).whatsapp_community_link?.trim() || null,
       status: form.status,
       delivery_mode: form.delivery_mode,
       duration_mins: form.duration_mins === "" ? null : Number(form.duration_mins),
@@ -550,6 +562,14 @@ export function EventsManager() {
                     </>
                   )}
                   {form.is_free && <div><label className="block text-xs text-white/60 mb-1">CTA Link (optional — Zoom link if known)</label><input value={form.cta_url} onChange={(e) => setForm({ ...form, cta_url: e.target.value })} placeholder="Leave blank — Zoom link sent after registration" className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm outline-none focus:border-[var(--gold)]" /></div>}
+                </div>
+
+                {/* Meeting + WhatsApp — revenue critical */}
+                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.06] p-5 space-y-4">
+                  <h4 className="text-sm font-bold text-emerald-400 flex items-center gap-2">🔗 Meeting & WhatsApp Community — After Registration</h4>
+                  <p className="text-xs text-white/50">Meeting link = Zoom / Google Meet shared after registration. WhatsApp Community link is **mandatory** — users auto-join after booking.</p>
+                  <div><label className="block text-xs text-white/60 mb-1">Meeting Link (Zoom / Google Meet) *</label><input value={(form as unknown as { meeting_link: string }).meeting_link || ""} onChange={(e) => setForm({ ...form, meeting_link: e.target.value } as never)} placeholder="https://zoom.us/j/...  or  https://meet.google.com/xxx-xxxx-xxx" className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm outline-none focus:border-emerald-500" /></div>
+                  <div><label className="block text-xs text-white/60 mb-1">WhatsApp Community Link *</label><input value={(form as unknown as { whatsapp_community_link: string }).whatsapp_community_link || ""} onChange={(e) => setForm({ ...form, whatsapp_community_link: e.target.value } as never)} placeholder="https://chat.whatsapp.com/..." className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm outline-none focus:border-emerald-500" /><p className="text-[11px] text-white/30 mt-1">Shown as big green CTA after registration. Also used in confirmation email/WA.</p></div>
                 </div>
 
                 {/* Curriculum */}
