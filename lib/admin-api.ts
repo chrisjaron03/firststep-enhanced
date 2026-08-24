@@ -220,5 +220,19 @@ export const adminApi = {
 
   deleteEvent: (id: number) =>
     adminFetch(`/api/admin/events?id=${id}`, { method: 'DELETE' }),
+
+  // Event registrations
+  getRegistrations: (params?: { page?: number; limit?: number; event_id?: number; event_slug?: string; search?: string }) => {
+    const qs = new URLSearchParams()
+    if (params?.page) qs.set('page', String(params.page))
+    if (params?.limit) qs.set('limit', String(params.limit))
+    if (params?.event_id) qs.set('event_id', String(params.event_id))
+    if (params?.event_slug) qs.set('event_slug', params.event_slug)
+    if (params?.search) qs.set('search', params.search)
+    return adminFetch(`/api/admin/event-registrations?${qs.toString()}`)
+  },
+
+  deleteRegistration: (id: number) =>
+    adminFetch(`/api/admin/event-registrations?id=${id}`, { method: 'DELETE' }),
 }
 

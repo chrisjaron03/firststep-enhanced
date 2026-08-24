@@ -357,9 +357,30 @@ export default function EventDetailPage() {
                     <p className="text-xs text-white/70 mt-1">{isSoldOut ? "We’ll notify you if a seat opens." : "Zoom/Meet link sent instantly + calendar invite. No spam."}</p>
                   </div>
                   <div className="p-6">
-                    <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
-                      <div className="flex items-baseline gap-2"><span className="text-2xl font-extrabold text-emerald-600">FREE</span>{event.value_anchor_price && <><span className="text-sm line-through text-muted-foreground">₹{event.value_anchor_price.toLocaleString("en-IN")}</span><span className="rounded-full bg-emerald-500 px-2 py-0.5 text-xs font-bold text-white">Worth ₹{event.value_anchor_price.toLocaleString("en-IN")}</span></>}<span className="ml-auto hidden sm:inline text-xs font-semibold text-emerald-700">{remaining} seats left • {pillDate}</span></div>
-                      <p className="mt-1 text-xs text-muted-foreground">Pay ₹0 today. Live session + Q&A. Join via {meetingLink.includes("zoom")?"Zoom":"Google Meet"} on any device.</p>
+                    <div className="rounded-2xl border border-emerald-500/15 bg-gradient-to-br from-emerald-50 to-white p-5 space-y-3.5">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <span className="text-3xl font-black text-emerald-600 tracking-tight">FREE</span>
+                          {event.value_anchor_price && (
+                            <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs font-bold text-white shadow-sm">Worth ₹{event.value_anchor_price.toLocaleString("en-IN")}</span>
+                          )}
+                        </div>
+                        {event.value_anchor_price && (
+                          <span className="hidden sm:inline text-sm text-muted-foreground line-through">₹{event.value_anchor_price.toLocaleString("en-IN")}</span>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/10 border border-emerald-500/20 px-3 py-1.5 text-xs font-semibold text-emerald-700">
+                          <Users className="h-3.5 w-3.5" /> {remaining} seats left
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-border shadow-sm px-3 py-1.5 text-xs font-medium text-foreground">
+                          <Calendar className="h-3.5 w-3.5 text-[var(--gold)]" /> {formatDateShort(event.event_date)}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--navy-deep)] text-white px-3 py-1.5 text-xs font-semibold shadow-sm">
+                          <Clock className="h-3.5 w-3.5" /> {formatTimeIST(event.event_date, event.timezone)}
+                        </span>
+                      </div>
+                      <p className="text-xs leading-relaxed text-muted-foreground">Pay ₹0 today. Live 90-min session + Q&A. Join via {meetingLink.includes("zoom")?"Zoom":"Google Meet"} on any device. No card, no spam.</p>
                     </div>
 
                     {success ? (

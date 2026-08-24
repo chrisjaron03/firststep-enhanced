@@ -12,6 +12,7 @@ import { handleCalendar } from './routes/calendar'
 import { handleAdminAvailability } from './routes/admin-availability'
 import { handleEvents } from './routes/events'
 import { handleAdminEvents } from './routes/admin-events'
+import { handleAdminRegistrations } from './routes/admin-registrations'
 import { securityHeaders } from './lib/security'
 import { authenticateRequest } from './lib/auth'
 
@@ -140,6 +141,11 @@ export default {
       // Admin events CRUD
       if (path === '/api/admin/events') {
         return await handleAdminEvents(request, env)
+      }
+
+      // Admin event registrations (with filters)
+      if (path === '/api/admin/event-registrations' || path === '/api/admin/registrations') {
+        return await handleAdminRegistrations(request, env)
       }
 
       // Insights — admin-only (business analytics must not be public)

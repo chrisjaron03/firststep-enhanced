@@ -26,8 +26,9 @@ import {
   type BlockedDate,
 } from "@/lib/booking-service"
 import { EventsManager } from "@/components/admin/events-manager"
+import { RegistrationsManager } from "@/components/admin/registrations-manager"
 
-type Tab = "overview" | "leads" | "contacts" | "analytics" | "audit" | "bookings" | "events"
+type Tab = "overview" | "leads" | "contacts" | "analytics" | "audit" | "bookings" | "events" | "registrations"
 
 interface Lead {
   id: number
@@ -397,6 +398,7 @@ export default function AdminDashboardPage() {
     { id: "contacts", label: "Contacts", icon: Mail },
     { id: "bookings", label: "Bookings", icon: Calendar },
     { id: "events", label: "Events", icon: Ticket },
+    { id: "registrations", label: "Registrations", icon: Users },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
     { id: "audit", label: "Audit Log", icon: ScrollText },
   ]
@@ -1508,6 +1510,11 @@ export default function AdminDashboardPage() {
               {/* Events Tab */}
               {tab === "events" && (
                 <EventsManager />
+              )}
+
+              {/* Registrations Tab */}
+              {tab === "registrations" && (
+                <RegistrationsManager />
               )}
 
               {/* Analytics Tab */}

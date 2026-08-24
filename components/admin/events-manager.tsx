@@ -101,6 +101,34 @@ function pillarsToStrings(pillars: Pillar[]): string[] {
     return d ? `${t} — ${d}` : t
   }).filter(Boolean)
 }
+function toISTISOString(local: string, tz: string): string | null {
+  if (!local) return null
+  // local is "2026-08-29T18:50" from datetime-local (wall time in tz)
+  if (tz === "Asia/Kolkata") {
+    // Interpret as IST (UTC+05:30)
+    const d = new Date(local + ":00+05:30")
+    if (isNaN(d.getTime())) return null
+    return d.toISOString()
+  }
+  const d = new Date(local)
+  if (isNaN(d.getTime())) return null
+  return d.toISOString()
+}
+function fromISOStringToISTInput(iso: string | null, tz: string): string {
+  if (!iso) return ""
+  try {
+    const d = new Date(iso)
+    if (isNaN(d.getTime())) return iso.slice(0, 16)
+    // Use Intl to get wall time in tz for datetime-local input (YYYY-MM-DDTHH:mm)
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: tz || "Asia/Kolkata",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hour12: false,
+    }).formatToParts(d)
+    const get = (t: string) => parts.find((p) => p.type === t)?.value || ""
+    return `${get("year")}-${get("month")}-${get("day")}T${get("hour")}:${get("minute")}`
+  } catch { return iso.slice(0, 16) }
+}
 
 const STATUS_COLORS: Record<string, string> = {
   published: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
@@ -330,7 +358,7 @@ export function EventsManager() {
       not_for_you: parseJsonArray(ev.not_for_you).length ? parseJsonArray(ev.not_for_you) : [""],
       inside_flow: parseJsonArray(ev.inside_flow).length ? parseJsonArray(ev.inside_flow) : [""],
       venue: ev.venue || "",
-      event_date: ev.event_date ? ev.event_date.slice(0, 16) : "",
+      event_date: fromISOStringToISTInput(ev.event_date, (ev as unknown as { timezone?: string }).timezone || "Asia/Kolkata"),
       is_free: Boolean(ev.is_free),
       price: ev.price,
       original_price: ev.original_price ?? "",
@@ -394,7 +422,7 @@ export function EventsManager() {
       not_for_you: form.not_for_you.map((a) => a.trim()).filter(Boolean),
       inside_flow: form.inside_flow.map((a) => a.trim()).filter(Boolean),
       venue: form.venue.trim() || null,
-      event_date: form.event_date ? new Date(form.event_date).toISOString() : null,
+      event_date: toISTISOString(form.event_date, form.timezone),
       is_free: form.is_free,
       price: form.is_free ? 0 : Number(form.price) || 0,
       original_price: form.is_free ? null : (form.original_price === "" ? null : Number(form.original_price)),
