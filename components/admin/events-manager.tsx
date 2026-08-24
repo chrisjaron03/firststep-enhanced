@@ -692,13 +692,35 @@ export function EventsManager() {
                   </div>
                 </div>
 
-                {/* 4 Money Pillars — structured */}
+                {/* Pillars — heading editable, not hard-coded to 4 */}
                 <div className="rounded-2xl border border-[var(--gold)]/20 bg-[var(--gold)]/[0.04] p-5 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-bold text-[var(--gold)] flex items-center gap-2"><Target className="h-4 w-4" /> 4 Money Pillars — What You&apos;ll Learn</h4>
-                    <button type="button" onClick={addPillar} className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs hover:bg-white/10"><Plus className="h-3 w-3 inline mr-1" />Add Pillar</button>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <Target className="h-4 w-4 text-[var(--gold)] shrink-0" />
+                      <input
+                        value={(form as unknown as { section_headings: Record<string, string> }).section_headings?.pillars_title || ""}
+                        onChange={(e) => updateHeading("pillars_title", e.target.value)}
+                        placeholder="What You’ll Learn — e.g. 4 Money Pillars — What You’ll Learn"
+                        className="flex-1 min-w-0 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm font-bold text-[var(--gold)] placeholder:text-[var(--gold)]/40 outline-none focus:border-[var(--gold)]"
+                      />
+                    </div>
+                    <button type="button" onClick={addPillar} className="shrink-0 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs hover:bg-white/10"><Plus className="h-3 w-3 inline mr-1" />Add Pillar</button>
                   </div>
-                  <p className="text-xs text-white/40">Each pillar has a Title + short description. They render as the 4 cards (“Master Your Money” etc.) on the landing page. Numbering 01–04 is automatic.</p>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <input
+                      value={(form as unknown as { section_headings: Record<string, string> }).section_headings?.pillars_kicker || ""}
+                      onChange={(e) => updateHeading("pillars_kicker", e.target.value)}
+                      placeholder="Kicker — e.g. In 90 Minutes, You’ll Learn"
+                      className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 placeholder:text-white/30 outline-none focus:border-[var(--gold)]"
+                    />
+                    <input
+                      value={(form as unknown as { section_headings: Record<string, string> }).section_headings?.pillars_desc || ""}
+                      onChange={(e) => updateHeading("pillars_desc", e.target.value)}
+                      placeholder="Description under heading"
+                      className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70 placeholder:text-white/30 outline-none focus:border-[var(--gold)]"
+                    />
+                  </div>
+                  <p className="text-xs text-white/40">Each pillar has a Title + short description. They render as cards on the landing page. Numbering 01–{String((form.learn_items as unknown as Pillar[]).length).padStart(2, "0")} is automatic. Works for 3, 4, 5… pillars — heading above is fully editable so it’s not locked to “4 Money Pillars”.</p>
                   <div className="space-y-3">
                     {(form.learn_items as unknown as Pillar[]).map((p, i) => (
                       <div key={i} className="rounded-xl border border-white/10 bg-white/5 p-3 space-y-2">
