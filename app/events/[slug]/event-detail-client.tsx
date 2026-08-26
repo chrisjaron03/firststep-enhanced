@@ -178,12 +178,12 @@ export default function EventDetailPage() {
     if (!phone.trim()) { setFormError("WhatsApp number is required — we send the joining link there."); return }
     setSubmitting(true)
     try {
-      if (event) {
+      if (event && !isSoldOut) {
         const reg = await eventsApi.register({ event_id: event.id, name: name.trim(), email: email.trim(), phone: phone.trim() || undefined })
         if (!reg.ok) {
           api.submitLead({ source: "general-guide", name: name.trim(), email: email.trim(), phone: phone.trim(), page_url: typeof window !== "undefined" ? window.location.href : undefined })
           if (reg.error?.toLowerCase().includes("fully booked")) {
-            setFormError(reg.error)
+            setSuccess("You’re on the waitlist! We’ll notify you if a seat opens up.")
             return
           }
           setFormError(reg.error || "Registration failed. Please try again or contact us.")
@@ -193,7 +193,9 @@ export default function EventDetailPage() {
       } else {
         await api.submitLead({ source: "general-guide", name: name.trim(), email: email.trim(), phone: phone.trim(), page_url: typeof window !== "undefined" ? window.location.href : undefined })
       }
-      setSuccess("You’re in! Your joining links are below — join the WhatsApp community first so you never miss the reminder.")
+      setSuccess(isSoldOut
+        ? "You’re on the waitlist! We’ll notify you if a seat opens up."
+        : "You’re in! Your joining links are below — join the WhatsApp community first so you never miss the reminder.")
     } catch {
       setFormError("Something went wrong. Please try again.")
     } finally {
@@ -378,7 +380,7 @@ export default function EventDetailPage() {
                       <div className="mt-5 space-y-4">
                         <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-800">
                           <p className="font-bold flex items-center gap-2"><CheckCircle2 className="h-5 w-5" /> {success}</p>
-                          <p className="mt-1 text-xs text-emerald-700">We’ve also queued your link on WhatsApp/email. Add to calendar so you don’t miss it.</p>
+                          {!isSoldOut && <p className="mt-1 text-xs text-emerald-700">We’ve also queued your link on WhatsApp/email. Add to calendar so you don’t miss it.</p>}
                         </div>
 
                         <a
@@ -418,6 +420,7 @@ export default function EventDetailPage() {
 
                         <div className="rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 p-3 text-xs leading-relaxed">
                           <span className="font-bold flex items-center gap-1.5"><Gift className="h-4 w-4 text-[var(--gold)]" /> What happens next?</span>
+                          {isSoldOut ? (<>You’re on the waitlist. We’ll email <span className="font-mono bg-white border px-1 rounded">{email || "your email"}</span> and message you on WhatsApp as soon as a seat opens up.</>) : (<>Zoom/Meet link + WhatsApp invite on this screen + sent to <span className="font-mono bg-white border px-1 rounded">{email || "your email"}</span> & WA in 15 mins. Join the community now — that’s where last-minute links go.</>)}
                           Zoom/Meet link + WhatsApp invite on this screen + sent to <span className="font-mono bg-white border px-1 rounded">{email || "your email"}</span> & WA in 15 mins. Join the community now — that’s where last-minute links go.
                         </div>
                       </div>
@@ -427,7 +430,7 @@ export default function EventDetailPage() {
                         <div><label className="text-xs font-semibold">Email *</label><input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="you@email.com" className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-3 text-sm outline-none focus:border-[var(--gold)]" required /></div>
                         <div><label className="text-xs font-semibold">WhatsApp number *</label><input value={phone} onChange={(e)=>setPhone(e.target.value)} placeholder="+91 98xxxxxxxx" className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-3 text-sm outline-none focus:border-[var(--gold)]" required /><p className="mt-1 text-[11px] text-muted-foreground">We send the {meetingLink.includes("zoom")?"Zoom":"Google Meet"} link + community invite here.</p></div>
                         {formError && <p className="rounded-lg bg-accent/10 px-3 py-2 text-xs text-accent border border-accent/20">{formError}</p>}
-                        <Button type="submit" disabled={submitting || isSoldOut} className="w-full gap-2 py-6 text-base shadow-md bg-emerald-600 hover:bg-emerald-700 text-white">
+                        <Button type="submit" disabled={submitting} className="w-full gap-2 py-6 text-base shadow-md bg-emerald-600 hover:bg-emerald-700 text-white">
                           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Zap className="h-4 w-4" /> {ctaLabel}</>}
                         </Button>
                         <p className="text-center text-[11px] text-muted-foreground">No card • No spam • Takes 20 secs • <a href={waLink} target="_blank" rel="noreferrer" className="underline text-emerald-600">Join WhatsApp community</a> after booking</p>
