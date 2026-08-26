@@ -56,7 +56,7 @@ export function EventsListClient() {
           </div>
           <h2 className="mt-6 font-serif text-2xl font-bold text-foreground">No upcoming events right now</h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            We’re planning the next intimate session. Leave your details and we’ll notify you first — early-bird seats go in hours, not days.
+            We’re planning the next intimate session. Leave your details and we’ll notify you first.
           </p>
           <div className="mt-8 flex justify-center gap-3">
             <Link href="/contact"><Button className="bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground gap-2">Get Notified <ArrowRight className="h-4 w-4" /></Button></Link>
@@ -96,7 +96,7 @@ export function EventsListClient() {
         {featured.length > 0 && rest.length === 0 && null}
       </div>
 
-      <p className="mt-10 text-center text-xs text-muted-foreground">Free webinars are truly free — limited live seats, no recording sold separately. Paid events show GST-inclusive prices. Seats allocated first-come, first-served. Past attendees 4.9/5.</p>
+      <p className="mt-10 text-center text-xs text-muted-foreground">Free webinars are truly free — live interactive session with direct Q&A, no recording sold separately. Paid events show GST-inclusive prices. Past attendees 4.9/5.</p>
     </section>
   )
 }

@@ -149,7 +149,7 @@ const MOCK_BLUEPRINT: PublicEvent = {
   value_anchor_price: 1999,
   instructor_note: "Why FREE? This is education-first. We teach the system free — no stock tips, no guaranteed returns, no single-product pitch. If you want us to implement it for you (Mutual Funds / PMS / AIF / GIFT City), you can book a 1:1 Money Clarity Session after — no obligation, education first. Led by Francis J., AMFI-Registered MFD (ARN-335677), 10+ years guiding 100+ families.",
   meeting_link: "https://meet.google.com/firststep-blueprint",
-  whatsapp_community_link: "https://chat.whatsapp.com/FIRSTSTEP_MONEY_BLUEPRINT",
+  whatsapp_community_link: "https://chat.whatsapp.com/JW86PXO8VOD8EGOAFcljce",
   section_headings: {
     pillars_kicker: "In 90 Minutes, You’ll Learn",
     pillars_title: "What You’ll Learn — The 4 Money Pillars",

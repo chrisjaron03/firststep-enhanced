@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Calendar, MapPin, Users, ArrowRight } from "lucide-react"
+import { Calendar, MapPin, ArrowRight } from "lucide-react"
 import type { PublicEvent } from "@/lib/events-api"
 
 function formatDate(d: string | null) {
@@ -22,7 +22,6 @@ function discountPct(ev: PublicEvent): number | null {
 export function EventCard({ event, index = 0 }: { event: PublicEvent; index?: number }) {
   const isFree = Boolean((event as PublicEvent & { is_free?: boolean }).is_free)
   const pct = isFree ? null : discountPct(event)
-  const remaining = event.max_seats !== null ? Math.max(0, event.max_seats - event.seats_sold) : null
   const curriculum = (event as unknown as { curriculum?: unknown[] }).curriculum
   const totalLessons = Array.isArray(curriculum) ? curriculum.reduce((n: number, m: unknown) => n + (((m as { lessons?: unknown[] })?.lessons?.length) || 0), 0) : 0
 
@@ -78,11 +77,6 @@ export function EventCard({ event, index = 0 }: { event: PublicEvent; index?: nu
             {event.venue && (
               <span className="inline-flex items-center gap-1 rounded-full border border-border bg-secondary/50 px-2.5 py-1">
                 <MapPin className="h-3 w-3 text-[var(--gold)]" />{event.venue}
-              </span>
-            )}
-            {remaining !== null && (
-              <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${remaining <= 10 ? "bg-accent/10 text-accent border border-accent/20" : "border border-border bg-secondary/50"}`}>
-                <Users className="h-3 w-3" />{remaining <= 0 ? "Sold out" : `${remaining} seats left`}
               </span>
             )}
           </div>

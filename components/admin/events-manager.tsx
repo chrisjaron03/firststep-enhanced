@@ -203,7 +203,7 @@ Primary promise: In one practical live session, understand the five money decisi
   ],
   instructor_note: "Why FREE? This is education-first. We teach the system free — no stock tips, no guaranteed returns, no product push. If you want us to implement it for you (Mutual Funds / PMS / AIF / GIFT City), you can book a 1:1 Money Clarity Session after. No obligation. Led by Francis J., AMFI-Registered MFD (ARN-335677), 10+ years guiding 100+ families.",
   meeting_link: "https://meet.google.com/firststep-blueprint",
-  whatsapp_community_link: "https://chat.whatsapp.com/FIRSTSTEP_MONEY_BLUEPRINT",
+  whatsapp_community_link: "https://chat.whatsapp.com/JW86PXO8VOD8EGOAFcljce",
 }
 
 function emptyForm() {

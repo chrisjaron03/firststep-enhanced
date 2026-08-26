@@ -6,11 +6,11 @@ import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import {
-  Calendar, MapPin, Clock, Users, Check, ShieldCheck,
+  Calendar, MapPin, Clock, Check, ShieldCheck,
   ArrowRight, Loader2, AlertCircle, Play, Image as ImageIcon, Star,
   Timer, Award, MessageCircle, PiggyBank, Shield, TrendingUp, Wallet,
   Target, BookOpen, GraduationCap, XCircle, ChevronRight, Download, Lightbulb, Lock,
-  Video, Sparkles, Quote, HelpCircle, ExternalLink, Copy, CheckCircle2, Gift, Zap, Eye
+  Video, Sparkles, Quote, HelpCircle, ExternalLink, Copy, CheckCircle2, Gift, Zap
 } from "lucide-react"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -142,7 +142,6 @@ export default function EventDetailPage() {
   const [formError, setFormError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [showSticky, setShowSticky] = useState(false)
-  const [viewed, setViewed] = useState(0)
   const [unlocked, setUnlocked] = useState(false)
   const registerRef = useRef<HTMLDivElement>(null)
 
@@ -164,14 +163,11 @@ export default function EventDetailPage() {
     window.addEventListener("scroll", onScroll)
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
+
   useEffect(() => {
     if (!event) return
     try { if (typeof window !== "undefined" && localStorage.getItem(`fscs_unlocked_${event.slug}`)) setUnlocked(true) } catch {}
-    const base = event.seats_sold + 38 + Math.floor(Math.random() * 9)
-    setViewed(base)
-    const id = setInterval(() => setViewed((v) => v + (Math.random() > 0.6 ? 2 : 1)), 6500)
-    return () => clearInterval(id)
-  }, [event?.seats_sold])
+  }, [event?.slug])
 
   const scrollToRegister = () => registerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
 
@@ -181,23 +177,28 @@ export default function EventDetailPage() {
     if (!name.trim() || !email.trim()) { setFormError("Name and email are required."); return }
     if (!phone.trim()) { setFormError("WhatsApp number is required — we send the joining link there."); return }
     setSubmitting(true)
-    if (event) {
-      const reg = await eventsApi.register({ event_id: event.id, name: name.trim(), email: email.trim(), phone: phone.trim() || undefined })
-      if (!reg.ok) {
-        await api.submitLead({ source: "general-guide", name: name.trim(), email: email.trim(), phone: phone.trim(), page_url: typeof window !== "undefined" ? window.location.href : undefined })
-        if (reg.error?.toLowerCase().includes("fully booked")) {
-          setFormError(reg.error)
-          setSubmitting(false)
+    try {
+      if (event) {
+        const reg = await eventsApi.register({ event_id: event.id, name: name.trim(), email: email.trim(), phone: phone.trim() || undefined })
+        if (!reg.ok) {
+          api.submitLead({ source: "general-guide", name: name.trim(), email: email.trim(), phone: phone.trim(), page_url: typeof window !== "undefined" ? window.location.href : undefined })
+          if (reg.error?.toLowerCase().includes("fully booked")) {
+            setFormError(reg.error)
+            return
+          }
+          setFormError(reg.error || "Registration failed. Please try again or contact us.")
           return
         }
-      } else {
         api.submitLead({ source: "general-guide", name: name.trim(), email: email.trim(), phone: phone.trim(), page_url: typeof window !== "undefined" ? window.location.href : undefined })
+      } else {
+        await api.submitLead({ source: "general-guide", name: name.trim(), email: email.trim(), phone: phone.trim(), page_url: typeof window !== "undefined" ? window.location.href : undefined })
       }
-    } else {
-      await api.submitLead({ source: "general-guide", name: name.trim(), email: email.trim(), phone: phone.trim(), page_url: typeof window !== "undefined" ? window.location.href : undefined })
+      setSuccess("You’re in! Your joining links are below — join the WhatsApp community first so you never miss the reminder.")
+    } catch {
+      setFormError("Something went wrong. Please try again.")
+    } finally {
+      setSubmitting(false)
     }
-    setSuccess("You’re in! Your joining links are below — join the WhatsApp community first so you never miss the reminder.")
-    setSubmitting(false)
   }
 
   const copyLink = (link: string) => {
@@ -246,7 +247,7 @@ export default function EventDetailPage() {
   const insideFlow = event.inside_flow.length ? event.inside_flow : (isFree ? FALLBACK_FLOW : [])
   const totalLessons = curriculum.reduce((n, m) => n + (m.lessons?.length || 0), 0)
   const meetingLink = (event as unknown as { meeting_link?: string | null }).meeting_link || "https://meet.google.com/firststep-blueprint"
-  const waLink = (event as unknown as { whatsapp_community_link?: string | null }).whatsapp_community_link || "https://chat.whatsapp.com/FIRSTSTEP_MONEY_BLUEPRINT"
+  const waLink = (event as unknown as { whatsapp_community_link?: string | null }).whatsapp_community_link || "https://chat.whatsapp.com/JW86PXO8VOD8EGOAFcljce"
   const headings = (event as unknown as { section_headings?: Record<string, string> }).section_headings || {}
   const H = (k: string, fallback: string) => (headings[k]?.trim() ? headings[k] : fallback)
   const ctaHref = isSoldOut ? "/contact" : (event.cta_url || "#register")
@@ -264,7 +265,6 @@ export default function EventDetailPage() {
             <div className="flex items-center gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-2.5 py-1 font-bold text-white shadow"><Zap className="h-3 w-3" /> LIVE</span>
               <span className="hidden sm:inline-flex items-center gap-1.5 text-white/80"><Calendar className="h-3.5 w-3.5 text-[var(--gold)]" /> {event.event_date ? formatDateLong(event.event_date) : "TBA"} • {formatTimeIST(event.event_date, event.timezone) || "7:00 PM IST"}</span>
-              {remaining !== null && <span className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/10 px-2.5 py-1 font-semibold backdrop-blur"><Users className="h-3.5 w-3.5" /> {isSoldOut ? "Sold out — waitlist open" : remaining + " seats left"}</span>}
             </div>
             <div className="flex items-center gap-2">
               <span className="hidden md:inline text-white/60">Worth ₹{(event.value_anchor_price || 1999).toLocaleString("en-IN")} <span className="text-emerald-400 font-bold">FREE today</span> • No card • No spam</span>
@@ -320,16 +320,10 @@ export default function EventDetailPage() {
                 </div>
 
                 <div className="mt-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
-                  <div className="flex -space-x-2">
-                    {["/images/francis-j.jpeg","/images/about-team.jpg","/images/services-hero.jpg"].map((s,i)=>(
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img key={i} src={s} alt="" className="h-8 w-8 rounded-full border-2 border-[var(--navy-deep)] object-cover" />
-                    ))}
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--navy-deep)] bg-[var(--gold)] text-xs font-bold text-[var(--navy-deep)]">+{event.seats_sold}</span>
-                  </div>
+                  <Sparkles className="h-5 w-5 text-[var(--gold)] shrink-0" />
                   <div className="text-xs">
-                    <p className="font-semibold text-white">{event.seats_sold} registered • Only {remaining} seats left</p>
-                    <div className="mt-1 h-1.5 w-40 overflow-hidden rounded-full bg-white/15"><div className="h-full bg-emerald-500 transition-all" style={{ width: event.max_seats ? Math.round((event.seats_sold / event.max_seats)*100)+"%" : "73%" }} /></div>
+                    <p className="font-semibold text-white">Live Interactive Session • Direct Q&A with Francis J.</p>
+                    <p className="text-white/60 mt-0.5">Practical, jargon-free wealth framework</p>
                   </div>
                   <div className="ml-auto hidden sm:flex items-center gap-2 text-xs text-white/60">Replay not guaranteed • Live only</div>
                 </div>
@@ -370,9 +364,6 @@ export default function EventDetailPage() {
                         )}
                       </div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/10 border border-emerald-500/20 px-3 py-1.5 text-xs font-semibold text-emerald-700">
-                          <Users className="h-3.5 w-3.5" /> {remaining} seats left
-                        </span>
                         <span className="inline-flex items-center gap-1.5 rounded-full bg-white border border-border shadow-sm px-3 py-1.5 text-xs font-medium text-foreground">
                           <Calendar className="h-3.5 w-3.5 text-[var(--gold)]" /> {formatDateShort(event.event_date)}
                         </span>
@@ -445,7 +436,7 @@ export default function EventDetailPage() {
                     )}
                   </div>
                   <div className="border-t border-border bg-secondary/30 px-6 py-3 flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground flex items-center gap-1.5"><Eye className="h-3.5 w-3.5" /> {viewed || event.seats_sold + 38} people viewed this today</span>
+                    <span className="text-muted-foreground flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> AMFI Registered Guidance</span>
                     <span className="font-semibold text-[var(--navy-deep)] flex items-center gap-1"><Star className="h-3.5 w-3.5 fill-[var(--gold)] text-[var(--gold)]" /> 4.9/5 (187 reviews)</span>
                   </div>
                 </div>
@@ -654,7 +645,7 @@ export default function EventDetailPage() {
                 <div className="relative">
                   <p className="text-xs font-bold tracking-widest text-[var(--gold)] uppercase flex items-center gap-2"><Sparkles className="h-4 w-4" /> {H("final_kicker","Final Call")}</p>
                   <h3 className="mt-2 font-serif text-2xl font-bold leading-tight">{H("final_title","Stop earning & saving. Start managing money with a system.")}</h3>
-                  <p className="mt-2 text-sm text-white/70">90 mins live. 8 modules. Worth ₹{event.value_anchor_price||1999} — free for this batch only. {remaining} seats left.</p>
+                  <p className="mt-2 text-sm text-white/70">90 mins live. 8 modules. Worth ₹{event.value_anchor_price||1999} — free for this batch only.</p>
                   <div className="mt-5 flex flex-wrap gap-3">
                     <button onClick={scrollToRegister} className="rounded-xl bg-emerald-500 px-7 py-3 font-bold text-white hover:bg-emerald-600 inline-flex items-center gap-2">Reserve My Free Seat — 20 sec <ArrowRight className="h-4 w-4" /></button>
                     <a href={waLink} target="_blank" rel="noreferrer" className="rounded-xl border border-white/20 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur hover:bg-white/15 inline-flex items-center gap-2"><MessageCircle className="h-4 w-4" /> Join WhatsApp First</a>
@@ -694,7 +685,7 @@ export default function EventDetailPage() {
               <div className="mx-auto flex max-w-7xl items-center gap-3">
                 <div className="min-w-0">
                   <p className="text-sm font-bold leading-none truncate">{event.title}</p>
-                  <p className="text-xs text-muted-foreground">{remaining} seats left • {formatTimeIST(event.event_date, event.timezone)}</p>
+                  <p className="text-xs text-muted-foreground">{event.event_date ? formatDateShort(event.event_date) + " • " : ""}{formatTimeIST(event.event_date, event.timezone)}</p>
                 </div>
                 <button onClick={scrollToRegister} className="ml-auto shrink-0 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow">Reserve Free Seat</button>
               </div>
