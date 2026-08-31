@@ -66,7 +66,7 @@ export function CtaBanner() {
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           {/* CTA button with pulse + shimmer */}
-          <Link href="/contact#schedule">
+          <Link href="/book">
             <motion.div
               animate={{ scale: [1, 1.03, 1] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
@@ -88,9 +88,9 @@ export function CtaBanner() {
               </motion.div>
               <Button
                 size="lg"
-                className="relative bg-white text-[var(--navy-deep)] hover:bg-white/90 gap-2 px-8 text-base cursor-pointer shadow-xl shadow-black/20 font-bold"
+                className="btn-glow relative bg-white text-[var(--navy-deep)] hover:bg-white/90 gap-2 px-8 text-base cursor-pointer shadow-xl shadow-black/20 font-bold"
               >
-                Book Introductory Call
+                Book Consultation
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </motion.div>

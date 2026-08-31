@@ -90,7 +90,7 @@ export function computeTrueWealth(tw: TrueWealth) {
 }
 
 function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value)
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value).replace(/₹\s/u, "₹")
 }
 
 function formatCompactRupees(value: number): string {
@@ -104,6 +104,58 @@ function formatCompactRupees(value: number): string {
 }
 
 export { formatCurrency, formatCompactRupees }
+
+const INFLATION_DEFAULT = 6
+
+export function InflationAwareness({
+  presentValue,
+  futureValue,
+  years,
+  variant = "growth",
+}: {
+  presentValue: number
+  futureValue: number
+  years: number
+  variant?: "growth" | "goal" | "withdrawal"
+}) {
+  const inflationFactor = Math.pow(1 + INFLATION_DEFAULT / 100, years)
+  const purchasingPower = Math.round(presentValue / inflationFactor)
+  const realGain = futureValue - purchasingPower
+  const beatsInflation = realGain > 0
+
+  if (variant === "goal") {
+    const realGoalValue = Math.round(futureValue / inflationFactor)
+    return (
+      <div className="rounded-lg border border-emerald-200 bg-emerald-500/5 px-3 py-2 overflow-hidden flex items-center gap-2">
+        <span className="text-sm shrink-0" aria-hidden="true">💡</span>
+        <p className="text-xs leading-snug text-muted-foreground">
+          <span className="font-semibold text-foreground">Inflation Insight:</span> At {INFLATION_DEFAULT}% inflation, <span className="font-semibold text-foreground">{formatCurrency(futureValue)}</span> in {years}y will be worth <span className="font-semibold text-foreground">{formatCurrency(realGoalValue)}</span> today — start early to outpace inflation.
+        </p>
+      </div>
+    )
+  }
+
+  if (variant === "withdrawal") {
+    const realWithdrawal = Math.round(presentValue / inflationFactor)
+    return (
+      <div className="rounded-lg border border-emerald-200 bg-emerald-500/5 px-3 py-2 overflow-hidden flex items-center gap-2">
+        <span className="text-sm shrink-0" aria-hidden="true">💡</span>
+        <p className="text-xs leading-snug text-muted-foreground">
+          <span className="font-semibold text-foreground">Inflation Insight:</span> At {INFLATION_DEFAULT}% inflation, <span className="font-semibold text-foreground">{formatCurrency(presentValue)}</span> today will feel like <span className="font-semibold text-foreground">{formatCurrency(realWithdrawal)}</span> in {years}y — your corpus growth helps maintain lifestyle.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="rounded-lg border border-emerald-200 bg-emerald-500/5 px-3 py-2 overflow-hidden flex items-center gap-2">
+      <span className="text-sm shrink-0" aria-hidden="true">💡</span>
+      <p className="text-xs leading-snug text-muted-foreground">
+        <span className="font-semibold text-foreground">Inflation Insight:</span> At {INFLATION_DEFAULT}% inflation, <span className="font-semibold text-foreground">{formatCurrency(presentValue)}</span> today → <span className="font-semibold text-foreground">{formatCurrency(purchasingPower)}</span> in {years}y, but your investment grows to <span className="font-semibold text-emerald-600">{formatCurrency(futureValue)}</span> — <span className="font-semibold text-emerald-600">{formatCurrency(Math.max(0, realGain))}</span> above inflation!
+      </p>
+    </div>
+  )
+}
 
 export function CalcShell({ config }: { config: CalcConfig }) {
   const [stage, setStage] = useState<"input" | "results" | "contact" | "done">("input")

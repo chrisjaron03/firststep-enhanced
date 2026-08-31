@@ -14,7 +14,7 @@ interface SliderInputProps {
 }
 
 function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value)
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value).replace(/₹\s/u, "₹")
 }
 
 export function SliderInput({ label, value, min, max, step, suffix, formatDisplay, onChange }: SliderInputProps) {

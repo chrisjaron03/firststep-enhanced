@@ -244,9 +244,15 @@ export async function handleBooking(request: Request, env: Env): Promise<Respons
     // Try to create a Google Calendar event with Meet link (non-blocking)
     let meetLink: string | null = null
     try {
+      const notesStr = (body.notes ? sanitizeString(String(body.notes), 1000) : null) || null
+      // Persist notes if provided
+      if (notesStr) {
+        await env.DB.prepare(`UPDATE appointments SET notes = ? WHERE id = ?`).bind(notesStr, appointmentId).run()
+      }
+      const serviceStr = body.service ? sanitizeString(String(body.service), 100) : null
       meetLink = await createCalendarEvent(env, {
         summary: `Consultation: ${clientName}`,
-        description: `Booking #${appointmentId}\nClient: ${clientName}\nEmail: ${clientEmail}\nPhone: ${clientPhone || 'N/A'}`,
+        description: `Booking #${appointmentId}\nClient: ${clientName}\nEmail: ${clientEmail}\nPhone: ${clientPhone || 'N/A'}${serviceStr ? `\nService: ${serviceStr}` : ''}${notesStr ? `\nNotes: ${notesStr}` : ''}`,
         startTime: `${date}T${startTime}:00`,
         endTime: `${date}T${endTime}:00`,
         timezone,
@@ -260,6 +266,36 @@ export async function handleBooking(request: Request, env: Env): Promise<Respons
       }
     } catch {
       // Calendar integration is optional; booking still succeeds
+    }
+
+    // ── Email notifications (best-effort, never blocks response) ──
+    try {
+      const { sendBookingCustomerEmail, sendAdminBookingEmail } = await import('../lib/email')
+      const from = env.RESEND_FROM_EMAIL
+      const serviceStr = body.service ? sanitizeString(String(body.service), 100) : null
+      const notesStr = body.notes ? sanitizeString(String(body.notes), 1000) : null
+      const customerPromise = sendBookingCustomerEmail(env.RESEND_API_KEY, {
+        to: clientEmail,
+        name: clientName,
+        date,
+        startTime,
+        endTime,
+        service: serviceStr,
+        meetLink,
+      }, from)
+      const adminPromise = sendAdminBookingEmail(env.RESEND_API_KEY, {
+        clientName,
+        clientEmail,
+        clientPhone,
+        date,
+        startTime,
+        endTime,
+        service: serviceStr,
+        notes: notesStr,
+      }, from)
+      await Promise.allSettled([customerPromise, adminPromise])
+    } catch (e) {
+      console.error('[bookings] email error', e)
     }
 
     return json({

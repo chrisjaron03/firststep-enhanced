@@ -221,10 +221,10 @@ export function Navigation() {
           </div>
         </div>
 
-        {/* Desktop CTA - compact */}
+        {/* Desktop CTA - glowing */}
         <div className="hidden items-center gap-3 lg:flex">
           <Link href="/book">
-            <Button size="sm" className="bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground hover:from-[#B91C1C] hover:to-accent gap-1.5 cursor-pointer text-sm px-4 shadow-md shadow-accent/20">
+            <Button size="sm" className="btn-glow bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground hover:from-[#B91C1C] hover:to-accent gap-1.5 cursor-pointer text-sm px-4">
               Book Consultation
               <ArrowRight className="h-3.5 w-3.5" />
             </Button>
@@ -329,7 +329,7 @@ export function Navigation() {
               </motion.div>
               <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
                 <Link href="/book">
-                  <Button className="bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground hover:from-[#B91C1C] hover:to-accent w-full gap-2 cursor-pointer shadow-md shadow-accent/20">
+                  <Button className="btn-glow bg-gradient-to-r from-accent to-[#B91C1C] text-accent-foreground hover:from-[#B91C1C] hover:to-accent w-full gap-2 cursor-pointer">
                     Book Consultation
                     <ArrowRight className="h-4 w-4" />
                   </Button>

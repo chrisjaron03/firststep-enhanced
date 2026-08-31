@@ -4,6 +4,10 @@ export interface Env {
   JWT_SECRET: string
   GOOGLE_CLIENT_ID?: string
   GOOGLE_CLIENT_SECRET?: string
+  RESEND_API_KEY?: string
+  RESEND_FROM_EMAIL?: string
+  ADMIN_EMAIL?: string
+  FRONTEND_URL?: string
 }
 
 export interface EventRecord {

@@ -205,6 +205,29 @@ export async function handleEvents(request: Request, env: Env): Promise<Response
     await env.DB.prepare(`INSERT INTO event_registrations (event_id, name, email, phone) VALUES (?, ?, ?, ?)`).bind(eventId, name, email, phone || null).run()
     await env.DB.prepare(`UPDATE events SET seats_sold = seats_sold + 1, updated_at = datetime('now') WHERE id = ?`).bind(eventId).run()
 
+    // ── Email notifications (best-effort) ──
+    try {
+      const { sendEventRegistrationCustomerEmail, sendAdminEventRegistrationEmail } = await import('../lib/email')
+      const from = env.RESEND_FROM_EMAIL
+      const eventRow = await env.DB.prepare(`SELECT title, event_date, meeting_link FROM events WHERE id = ?`).bind(eventId).first<{ title: string; event_date: string | null; meeting_link: string | null }>()
+      const customerPromise = sendEventRegistrationCustomerEmail(env.RESEND_API_KEY, {
+        to: email,
+        name,
+        eventTitle: eventRow?.title || `Event #${eventId}`,
+        eventDate: eventRow?.event_date || null,
+        meetingLink: eventRow?.meeting_link || null,
+      }, from)
+      const adminPromise = sendAdminEventRegistrationEmail(env.RESEND_API_KEY, {
+        eventTitle: eventRow?.title || `Event #${eventId}`,
+        name,
+        email,
+        phone: phone || null,
+      }, from)
+      await Promise.allSettled([customerPromise, adminPromise])
+    } catch (e) {
+      console.error('[events/register] email error', e)
+    }
+
     return json({ success: true, message: 'Registered successfully' }, env, request, 201)
   }
 

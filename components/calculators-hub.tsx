@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { TrendingUp, PiggyBank, Target, Calculator, ArrowDownToLine, ChevronRight } from "lucide-react"
+import { TrendingUp, PiggyBank, Target, Calculator, ArrowDownToLine, ChevronRight, IndianRupee } from "lucide-react"
 import { SipStepUpLiveCalculator } from "@/components/calculators/sip-stepup-live"
 import { LumpsumLiveCalculator } from "@/components/calculators/lumpsum-live"
 import { RetirementLiveCalculator } from "@/components/calculators/retirement-live"
 import { SwpLiveCalculator } from "@/components/calculators/swp-live"
+import { InflationCalculator } from "@/components/calculators/inflation"
 
-type CalcId = "sip" | "lumpsum" | "retirement" | "swp"
+type CalcId = "sip" | "lumpsum" | "retirement" | "swp" | "inflation"
 
 interface CalcItem {
   id: CalcId
@@ -48,6 +49,13 @@ const CALCULATORS: CalcItem[] = [
     badge: "Income",
     icon: ArrowDownToLine,
   },
+  {
+    id: "inflation",
+    title: "Inflation Impact",
+    subtitle: "₹1 Lakh today vs future — 6% inflation",
+    badge: "New",
+    icon: IndianRupee,
+  },
 ]
 
 export function CalculatorsHub() {
@@ -73,7 +81,7 @@ export function CalculatorsHub() {
 
   return (
     <section className="bg-[var(--section-warm)] pt-4 pb-8 lg:pt-6 lg:pb-8" aria-label="Financial Calculators Hub">
-      <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-3 sm:px-4 lg:px-4">
         
         {/* COMPACT TOP BAR */}
         <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-3">
@@ -97,7 +105,7 @@ export function CalculatorsHub() {
         </div>
 
         {/* MAIN LAYOUT WITH SIDEBAR */}
-        <div className="grid gap-4 lg:grid-cols-12 items-start">
+        <div className="grid gap-3 lg:grid-cols-12 items-start">
           
           {/* DESKTOP & MOBILE SIDEBAR (3 Cols on lg screen) */}
           <aside className="lg:col-span-4 xl:col-span-3" aria-label="Calculator Selection">
@@ -154,7 +162,7 @@ export function CalculatorsHub() {
           </aside>
 
           {/* MAIN CALCULATOR CONTENT (9 Cols on lg screen) */}
-          <main className="lg:col-span-8 xl:col-span-9 bg-card rounded-xl border border-border p-4 sm:p-5 lg:p-6 shadow-sm">
+          <main className="lg:col-span-8 xl:col-span-9 bg-card rounded-xl border border-border p-3 sm:p-4 shadow-sm">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeCalc}
@@ -167,6 +175,7 @@ export function CalculatorsHub() {
                 {activeCalc === "lumpsum" && <LumpsumLiveCalculator />}
                 {activeCalc === "retirement" && <RetirementLiveCalculator />}
                 {activeCalc === "swp" && <SwpLiveCalculator />}
+                {activeCalc === "inflation" && <InflationCalculator />}
               </motion.div>
             </AnimatePresence>
           </main>

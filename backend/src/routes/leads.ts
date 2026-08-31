@@ -3,7 +3,7 @@ import { json, errorResponse } from '../lib/cors'
 import { hashIP } from '../lib/utils'
 import { safelyParseJSON, sanitizeString, validateEmail, validatePhone, checkRateLimit, getRateLimitKey } from '../lib/security'
 
-const VALID_SOURCES = ['lead_capture_modal', 'exit_intent_modal', 'sip_calculator', 'general-guide', 'contact-download', 'nri-guide-popup', 'nri-guide-download']
+const VALID_SOURCES = ['lead_capture_modal', 'exit_intent_modal', 'sip_calculator', 'sip_stepup_calculator', 'lumpsum_calculator', 'retirement_calculator', 'swp_calculator', 'general-guide', 'contact-download', 'nri-guide-popup', 'nri-guide-download', 'inflation_calculator']
 
 export async function handleLeads(request: Request, env: Env): Promise<Response> {
   if (request.method !== 'POST') {
@@ -71,6 +71,20 @@ export async function handleLeads(request: Request, env: Env): Promise<Response>
 
   if (!result.success) {
     return errorResponse('Failed to store lead', env, request, 500)
+  }
+
+  // ── Email notifications (best-effort, never blocks response) ──
+  try {
+    const { sendLeadCustomerEmail, sendAdminLeadEmail } = await import('../lib/email')
+    const from = env.RESEND_FROM_EMAIL
+    // Customer confirmation
+    const customerPromise = sendLeadCustomerEmail(env.RESEND_API_KEY, { to: email, name, source, projectedValue }, from)
+    // Admin notification
+    const adminPromise = sendAdminLeadEmail(env.RESEND_API_KEY, { name, email, phone, source, pageUrl, projectedValue, monthlyInvestment, expectedReturn, tenureYears }, from)
+    // Wait for both but don't fail the request if email fails
+    await Promise.allSettled([customerPromise, adminPromise])
+  } catch (e) {
+    console.error('[leads] email error', e)
   }
 
   return json({ success: true, id: result.meta.last_row_id }, env, request, 201)

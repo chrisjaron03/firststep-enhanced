@@ -4,7 +4,10 @@
   "main": "src/index.ts",
   "compatibility_date": "2025-01-01",
   "vars": {
-    "ALLOWED_ORIGINS": "http://localhost:3000,https://firststep-enhanced.pages.dev,https://firststep-enhanced-ybh.pages.dev,https://www.firststepcs.com,https://firststepcs.com"
+    "ALLOWED_ORIGINS": "http://localhost:3000,https://firststep-enhanced.pages.dev,https://firststep-enhanced-ybh.pages.dev,https://www.firststepcs.com,https://firststepcs.com",
+    "RESEND_FROM_EMAIL": "First Step Consultancy Services <admin@firststepcs.com>",
+    "ADMIN_EMAIL": "francis@firststepcs.com",
+    "FRONTEND_URL": "https://firststepcs.com"
   },
   "d1_databases": [
     {

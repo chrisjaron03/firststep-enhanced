@@ -406,10 +406,14 @@ export function ContactForm() {
                 <>
                   <div className="mb-6">
                     <h3 className="font-serif text-2xl font-bold text-card-foreground">
-                      Schedule Your Introductory Call
+                      Book a Consultation
                     </h3>
                     <p className="mt-2 text-sm text-primary/80">
-                      Fill in your details and our consultant will reach out within 24 hours.
+                      Fill in your details and our consultant will reach out within 24 hours. Or{" "}
+                      <a href="/book" className="font-semibold text-accent underline underline-offset-2 hover:text-accent/80">
+                        pick your slot directly
+                      </a>
+                      {"."}
                     </p>
                   </div>
 
@@ -486,7 +490,7 @@ export function ContactForm() {
                       <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 cursor-pointer h-12 text-base"
+                        className="btn-glow w-full bg-accent text-accent-foreground hover:bg-accent/90 gap-2 cursor-pointer h-12 text-base"
                       >
                         {isSubmitting ? (
                           <motion.span
@@ -497,7 +501,7 @@ export function ContactForm() {
                           </motion.span>
                         ) : (
                           <>
-                            Book Introductory Call
+                            Book Consultation
                             <ArrowRight className="h-4 w-4" />
                           </>
                         )}

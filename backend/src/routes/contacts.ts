@@ -76,5 +76,16 @@ export async function handleContacts(request: Request, env: Env): Promise<Respon
     return errorResponse('Failed to store contact', env, request, 500)
   }
 
+  // ── Email notifications (best-effort, never blocks response) ──
+  try {
+    const { sendContactCustomerEmail, sendAdminContactEmail } = await import('../lib/email')
+    const from = env.RESEND_FROM_EMAIL
+    const customerPromise = sendContactCustomerEmail(env.RESEND_API_KEY, { to: email, firstName, lastName, service }, from)
+    const adminPromise = sendAdminContactEmail(env.RESEND_API_KEY, { firstName, lastName, email, phone, investmentRange, service, message, pageUrl }, from)
+    await Promise.allSettled([customerPromise, adminPromise])
+  } catch (e) {
+    console.error('[contacts] email error', e)
+  }
+
   return json({ success: true, id: result.meta.last_row_id }, env, request, 201)
 }

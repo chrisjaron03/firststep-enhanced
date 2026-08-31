@@ -155,7 +155,7 @@ export default function BookPage() {
                   <p className="text-muted-foreground font-medium">Need immediate assistance or have urgent queries?</p>
                   <p className="text-sm font-bold text-accent flex items-center justify-center gap-1.5">
                     <Phone className="h-4 w-4" />
-                    +91 98400 00000
+                    +91 72007 43010
                   </p>
                   <p className="text-muted-foreground text-[11px]">Mon – Sat • 9:30 AM – 6:00 PM IST</p>
                 </div>

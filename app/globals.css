@@ -111,3 +111,36 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Glowing Book Consultation button */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.45), 0 0 28px rgba(220, 38, 38, 0.25), 0 4px 14px rgba(220, 38, 38, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.65), 0 0 40px rgba(220, 38, 38, 0.4), 0 6px 20px rgba(220, 38, 38, 0.4);
+  }
+}
+
+.btn-glow {
+  animation: glowPulse 2.2s ease-in-out infinite;
+  position: relative;
+}
+
+.btn-glow::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #DC2626, #D4AF37, #DC2626);
+  background-size: 200% 100%;
+  z-index: -1;
+  opacity: 0.55;
+  filter: blur(8px);
+  animation: glowShift 3s linear infinite;
+}
+
+@keyframes glowShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
