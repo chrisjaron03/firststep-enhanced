@@ -2,8 +2,8 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Calendar, MapPin, ArrowRight } from "lucide-react"
-import type { PublicEvent } from "@/lib/events-api"
+import { Calendar, MapPin, ArrowRight, Clock3 } from "lucide-react"
+import { isEventEnded, type PublicEvent } from "@/lib/events-api"
 
 function formatDate(d: string | null) {
   if (!d) return null
@@ -20,6 +20,7 @@ function discountPct(ev: PublicEvent): number | null {
 }
 
 export function EventCard({ event, index = 0 }: { event: PublicEvent; index?: number }) {
+  const ended = isEventEnded(event)
   const isFree = Boolean((event as PublicEvent & { is_free?: boolean }).is_free)
   const pct = isFree ? null : discountPct(event)
   const curriculum = (event as unknown as { curriculum?: unknown[] }).curriculum
@@ -33,7 +34,7 @@ export function EventCard({ event, index = 0 }: { event: PublicEvent; index?: nu
     >
       <Link
         href={`/events/${event.slug}`}
-        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl hover:border-[var(--gold)]/30"
+        className={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl ${ended ? "border-border/60 opacity-95 hover:border-border/60 hover:shadow-sm hover:translate-y-0" : "border-border hover:border-[var(--gold)]/30"}`}
       >
         {/* cover */}
         <div className="relative aspect-[16/9] overflow-hidden bg-muted">
@@ -42,7 +43,7 @@ export function EventCard({ event, index = 0 }: { event: PublicEvent; index?: nu
             <img
               src={event.cover_image}
               alt={event.title}
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className={`h-full w-full object-cover transition-transform duration-700 ${ended ? "grayscale-[35%] group-hover:scale-100" : "group-hover:scale-105"}`}
               loading="lazy"
             />
           ) : (
@@ -51,12 +52,15 @@ export function EventCard({ event, index = 0 }: { event: PublicEvent; index?: nu
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          {event.featured && (
+          {ended && <div className="absolute inset-0 bg-white/55 backdrop-blur-[0.5px]" aria-hidden />}
+          {ended ? (
+            <span className="absolute left-3 top-3 rounded-full bg-zinc-900 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow border border-white/20 inline-flex items-center gap-1"><Clock3 className="h-3 w-3" /> Ended</span>
+          ) : event.featured ? (
             <span className="absolute left-3 top-3 rounded-full bg-[var(--gold)] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-[var(--navy-deep)] shadow">Featured</span>
-          )}
-          {isFree ? (
+          ) : null}
+          {!ended && isFree ? (
             <span className="absolute right-3 top-3 rounded-full bg-emerald-500 px-2.5 py-1 text-xs font-bold text-white shadow">FREE</span>
-          ) : pct !== null ? (
+          ) : !ended && pct !== null ? (
             <span className="absolute right-3 top-3 rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-accent-foreground shadow">{pct}% OFF</span>
           ) : null}
           {isFree && totalLessons > 0 && (
@@ -83,7 +87,12 @@ export function EventCard({ event, index = 0 }: { event: PublicEvent; index?: nu
 
           <div className="mt-4 flex items-end justify-between gap-3 border-t border-border pt-4">
             <div>
-              {isFree ? (
+              {ended ? (
+                <>
+                  <div className="flex items-baseline gap-2"><span className="text-sm font-bold uppercase tracking-wider text-zinc-500">Event Ended</span></div>
+                  <span className="text-xs text-muted-foreground">Registrations closed • Watch for next batch</span>
+                </>
+              ) : isFree ? (
                 <>
                   <div className="flex items-baseline gap-2"><span className="text-xl font-bold text-emerald-600">FREE</span>{(event as unknown as { value_anchor_price?: number | null }).value_anchor_price ? <span className="text-sm text-muted-foreground line-through">₹{(event as unknown as { value_anchor_price?: number }).value_anchor_price!.toLocaleString("en-IN")}</span> : null}</div>
                   <span className="text-xs text-muted-foreground">Live webinar • {(event as unknown as { duration_mins?: number | null }).duration_mins || 90} mins + Q&A</span>
@@ -100,7 +109,7 @@ export function EventCard({ event, index = 0 }: { event: PublicEvent; index?: nu
                 </>
               )}
             </div>
-            <span className={`inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-2 transition-all ${isFree ? "text-emerald-600" : "text-accent"}`}>View <ArrowRight className="h-4 w-4" /></span>
+            <span className={`inline-flex items-center gap-1.5 text-sm font-semibold group-hover:gap-2 transition-all ${ended ? "text-zinc-500" : isFree ? "text-emerald-600" : "text-accent"}`}>{ended ? "View Details" : "View"} <ArrowRight className="h-4 w-4" /></span>
           </div>
         </div>
       </Link>

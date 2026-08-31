@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Calendar, ArrowRight, Sparkles, Loader2 } from "lucide-react"
-import { eventsApi, type PublicEvent } from "@/lib/events-api"
+import { Calendar, ArrowRight, Sparkles, Loader2, Clock3 } from "lucide-react"
+import { eventsApi, isEventEnded, type PublicEvent } from "@/lib/events-api"
 import { EventCard } from "@/components/events/event-card"
 import { Button } from "@/components/ui/button"
 
@@ -67,8 +67,10 @@ export function EventsListClient() {
     )
   }
 
-  const featured = events.filter((e) => e.featured)
-  const rest = events.filter((e) => !e.featured)
+  const upcoming = events.filter((e) => !isEventEnded(e))
+  const ended = events.filter((e) => isEventEnded(e))
+  const featuredUpcoming = upcoming.filter((e) => e.featured)
+  const restUpcoming = upcoming.filter((e) => !e.featured)
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
@@ -78,23 +80,41 @@ export function EventsListClient() {
         <span className="hidden sm:inline text-muted-foreground">— Intimate cohorts, no recordings sold separately.</span>
       </div>
 
-      {featured.length > 0 && (
+      {upcoming.length === 0 && ended.length > 0 && (
+        <div className="mb-8 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 flex items-center gap-2">
+          <Clock3 className="h-4 w-4" /> All current batches have ended — next dates will be announced soon. You can still view past events below.
+        </div>
+      )}
+
+      {featuredUpcoming.length > 0 && (
         <div className="mb-12">
           <h2 className="font-serif text-xl font-bold text-foreground">Featured</h2>
           <div className="mt-4 grid gap-6 md:grid-cols-2">
-            {featured.map((ev, i) => <EventCard key={ev.id} event={ev} index={i} />)}
+            {featuredUpcoming.map((ev, i) => <EventCard key={ev.id} event={ev} index={i} />)}
           </div>
         </div>
       )}
 
       <div>
-        <h2 className="font-serif text-xl font-bold text-foreground">{featured.length ? "All Events" : "Upcoming Events"}</h2>
-        <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {(featured.length ? rest : events).map((ev, i) => <EventCard key={ev.id} event={ev} index={i} />)}
-        </div>
-        {/* when there are featured, also show them in the grid for completeness */}
-        {featured.length > 0 && rest.length === 0 && null}
+        <h2 className="font-serif text-xl font-bold text-foreground">{featuredUpcoming.length ? "Upcoming Events" : upcoming.length ? "Upcoming Events" : "Upcoming Events"}</h2>
+        {upcoming.length === 0 ? (
+          <p className="mt-3 text-sm text-muted-foreground">No upcoming batches open right now. Past events are shown below.</p>
+        ) : (
+          <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {(featuredUpcoming.length ? restUpcoming : upcoming).map((ev, i) => <EventCard key={ev.id} event={ev} index={i} />)}
+          </div>
+        )}
       </div>
+
+      {ended.length > 0 && (
+        <div className="mt-12 border-t border-border pt-8">
+          <h2 className="font-serif text-xl font-bold text-foreground flex items-center gap-2"><Clock3 className="h-5 w-5 text-zinc-500" /> Past Events • Ended</h2>
+          <p className="mt-1 text-sm text-muted-foreground">These batches have completed. Registrations are closed — view details for recordings/slides if shared.</p>
+          <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {ended.map((ev, i) => <EventCard key={ev.id} event={ev} index={i} />)}
+          </div>
+        </div>
+      )}
 
       <p className="mt-10 text-center text-xs text-muted-foreground">Free webinars are truly free — live interactive session with direct Q&A, no recording sold separately. Paid events show GST-inclusive prices. Past attendees 4.9/5.</p>
     </section>

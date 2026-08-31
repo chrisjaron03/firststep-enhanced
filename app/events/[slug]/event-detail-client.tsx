@@ -18,7 +18,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { Button } from "@/components/ui/button"
 import { CountdownTimer } from "@/components/events/countdown-timer"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { eventsApi, type PublicEvent, downloadIcs } from "@/lib/events-api"
+import { eventsApi, isEventEnded, type PublicEvent, downloadIcs } from "@/lib/events-api"
 import { api } from "@/lib/api"
 
 const FALLBACK_LEARN = [
@@ -238,6 +238,8 @@ export default function EventDetailPage() {
   const pct = event.original_price && event.original_price > event.price ? Math.round(((event.original_price - event.price) / event.original_price) * 100) : null
   const remaining = event.max_seats !== null ? Math.max(0, event.max_seats - event.seats_sold) : null
   const isSoldOut = remaining !== null && remaining <= 0
+  const ended = isEventEnded(event)
+  const isRegistrationClosed = ended || isSoldOut
   const vid = youtubeId(event.video_url)
   const agenda = Array.isArray(event.agenda) ? (event.agenda as string[]).filter(Boolean) : []
   const gallery = Array.isArray(event.gallery) ? event.gallery as { type: "image" | "video"; url: string; alt?: string }[] : []
@@ -252,25 +254,35 @@ export default function EventDetailPage() {
   const waLink = (event as unknown as { whatsapp_community_link?: string | null }).whatsapp_community_link || "https://chat.whatsapp.com/JW86PXO8VOD8EGOAFcljce"
   const headings = (event as unknown as { section_headings?: Record<string, string> }).section_headings || {}
   const H = (k: string, fallback: string) => (headings[k]?.trim() ? headings[k] : fallback)
-  const ctaHref = isSoldOut ? "/contact" : (event.cta_url || "#register")
-  const ctaLabel = isSoldOut ? "Join Waitlist" : event.cta_label
+  const ctaHref = ended ? "/events" : isSoldOut ? "/contact" : (event.cta_url || "#register")
+  const ctaLabel = ended ? "Event Ended" : isSoldOut ? "Join Waitlist" : event.cta_label
   const pillDate = event.event_date ? formatDateShort(event.event_date) + (formatTimeIST(event.event_date, event.timezone) ? " • " + formatTimeIST(event.event_date, event.timezone) : "") : "TBA"
-  const heroBadge = isFree ? "FREE LIVE WEBINAR" : "LIVE EVENT"
+  const heroBadge = ended ? "EVENT ENDED" : isFree ? "FREE LIVE WEBINAR" : "LIVE EVENT"
 
   return (
     <>
       <Navigation />
       <main className="pb-24">
         {/* URGENCY BAR */}
-        <div className="sticky top-[64px] z-30 border-b border-white/10 bg-[var(--navy-deep)] text-white shadow-[0_4px_20px_rgba(0,0,0,0.25)]">
+        <div className={`sticky top-[64px] z-30 border-b text-white shadow-[0_4px_20px_rgba(0,0,0,0.25)] ${ended ? "bg-zinc-900 border-white/10" : "bg-[var(--navy-deep)] border-white/10"}`}>
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-6 py-2.5 lg:px-8 text-xs">
             <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-2.5 py-1 font-bold text-white shadow"><Zap className="h-3 w-3" /> LIVE</span>
+              {ended ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-700 px-2.5 py-1 font-bold text-white shadow"><Clock className="h-3 w-3" /> ENDED</span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500 px-2.5 py-1 font-bold text-white shadow"><Zap className="h-3 w-3" /> LIVE</span>
+              )}
               <span className="hidden sm:inline-flex items-center gap-1.5 text-white/80"><Calendar className="h-3.5 w-3.5 text-[var(--gold)]" /> {event.event_date ? formatDateLong(event.event_date) : "TBA"} • {formatTimeIST(event.event_date, event.timezone) || "7:00 PM IST"}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="hidden md:inline text-white/60">Worth ₹{(event.value_anchor_price || 1999).toLocaleString("en-IN")} <span className="text-emerald-400 font-bold">FREE today</span> • No card • No spam</span>
-              <button onClick={scrollToRegister} className="rounded-full bg-emerald-500 px-4 py-1.5 font-bold text-white hover:bg-emerald-600 transition">Reserve My Seat →</button>
+              {ended ? (
+                <span className="text-white/70">This batch ended on {event.event_date ? formatDateLong(event.event_date) : "—"} • Registrations closed</span>
+              ) : (
+                <>
+                  <span className="hidden md:inline text-white/60">Worth ₹{(event.value_anchor_price || 1999).toLocaleString("en-IN")} <span className="text-emerald-400 font-bold">FREE today</span> • No card • No spam</span>
+                  <button onClick={scrollToRegister} className="rounded-full bg-emerald-500 px-4 py-1.5 font-bold text-white hover:bg-emerald-600 transition">Reserve My Seat →</button>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -296,10 +308,11 @@ export default function EventDetailPage() {
               {/* LEFT */}
               <div className="pt-8">
                 <div className="flex flex-wrap items-center gap-2.5">
-                  <span className="rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow">{heroBadge}</span>
-                  {event.featured && <span className="rounded-full bg-[var(--gold)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--navy-deep)]">Featured</span>}
-                  <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold text-white backdrop-blur">Worth ₹{(event.value_anchor_price || 1999).toLocaleString("en-IN")} — FREE Today</span>
-                  {!isFree && pct !== null && <span className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-white">{pct}% Early Bird</span>}
+                  <span className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider shadow ${ended ? "bg-zinc-700 text-white border border-white/20" : "bg-emerald-500 text-white"}`}>{heroBadge}</span>
+                  {!ended && event.featured && <span className="rounded-full bg-[var(--gold)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--navy-deep)]">Featured</span>}
+                  {!ended && <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold text-white backdrop-blur">Worth ₹{(event.value_anchor_price || 1999).toLocaleString("en-IN")} — FREE Today</span>}
+                  {!ended && !isFree && pct !== null && <span className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-white">{pct}% Early Bird</span>}
+                  {ended && <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold text-white/80">Ended on {event.event_date ? formatDateShort(event.event_date) : "—"}</span>}
                 </div>
 
                 <p className="mt-3 text-sm font-semibold tracking-[0.18em] text-[var(--gold)] uppercase">{event.tagline || "Earn. Protect. Grow. Build."}</p>
@@ -331,15 +344,30 @@ export default function EventDetailPage() {
                 </div>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <button onClick={scrollToRegister} className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-7 py-3.5 text-base font-bold text-white shadow-lg hover:bg-emerald-600">Reserve My Free Seat <ArrowRight className="h-4 w-4" /></button>
-                  <a href={waLink} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3.5 text-base font-bold text-white shadow hover:bg-[#20bd5a]"><MessageCircle className="h-5 w-5" /> Join WhatsApp Community</a>
+                  {ended ? (
+                    <>
+                      <span className="inline-flex items-center gap-2 rounded-xl bg-zinc-700 px-7 py-3.5 text-base font-bold text-white/80"><Clock className="h-4 w-4" /> Event Ended — Registrations Closed</span>
+                      <Link href="/events" className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-3.5 text-base font-bold text-white backdrop-blur hover:bg-white/15">View Other Events <ArrowRight className="h-4 w-4" /></Link>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={scrollToRegister} className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-7 py-3.5 text-base font-bold text-white shadow-lg hover:bg-emerald-600">Reserve My Free Seat <ArrowRight className="h-4 w-4" /></button>
+                      <a href={waLink} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3.5 text-base font-bold text-white shadow hover:bg-[#20bd5a]"><MessageCircle className="h-5 w-5" /> Join WhatsApp Community</a>
+                    </>
+                  )}
                 </div>
-                <p className="mt-2 text-xs text-white/50">No card required • Zoom/Meet link via WhatsApp & email within 15 mins after registration.</p>
+                {!ended && <p className="mt-2 text-xs text-white/50">No card required • Zoom/Meet link via WhatsApp & email within 15 mins after registration.</p>}
 
-                {event.event_date && new Date(event.event_date).getTime() > Date.now() && (
+                {!ended && event.event_date && new Date(event.event_date).getTime() > Date.now() && (
                   <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
                     <p className="text-xs uppercase tracking-widest text-white/60 mb-2 flex items-center gap-1.5"><Timer className="h-3.5 w-3.5" /> Starts in</p>
                     <CountdownTimer targetDate={event.event_date} />
+                  </div>
+                )}
+                {ended && (
+                  <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur text-sm text-white/80">
+                    <p className="font-semibold text-white flex items-center gap-2"><Clock className="h-4 w-4" /> This batch ended {event.event_date ? formatDateLong(event.event_date) : ""} at {formatTimeIST(event.event_date, event.timezone) || ""}</p>
+                    <p className="mt-1 text-xs text-white/60">New batches are announced soon. Join the WhatsApp community to be notified first.</p>
                   </div>
                 )}
               </div>
@@ -347,10 +375,10 @@ export default function EventDetailPage() {
               {/* RIGHT — sticky registration */}
               <div ref={registerRef} id="register" className="lg:sticky lg:top-32 h-fit">
                 <div className="overflow-hidden rounded-3xl border border-white/10 bg-white shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
-                  <div className="bg-gradient-to-r from-[var(--navy-deep)] to-[#1a2744] px-6 py-4 text-white">
-                    <p className="text-xs font-semibold tracking-widest text-[var(--gold)] uppercase">Secure Your Live Seat • Free</p>
-                    <h3 className="font-serif text-xl font-bold leading-tight mt-1">{isSoldOut ? "Join Waitlist" : "Reserve My Free Seat"}</h3>
-                    <p className="text-xs text-white/70 mt-1">{isSoldOut ? "We’ll notify you if a seat opens." : "Zoom/Meet link sent instantly + calendar invite. No spam."}</p>
+                  <div className={`px-6 py-4 text-white ${ended ? "bg-zinc-900" : "bg-gradient-to-r from-[var(--navy-deep)] to-[#1a2744]"}`}>
+                    <p className="text-xs font-semibold tracking-widest text-[var(--gold)] uppercase">{ended ? "Registration Closed" : "Secure Your Live Seat • Free"}</p>
+                    <h3 className="font-serif text-xl font-bold leading-tight mt-1">{ended ? "This Event Has Ended" : isSoldOut ? "Join Waitlist" : "Reserve My Free Seat"}</h3>
+                    <p className="text-xs text-white/70 mt-1">{ended ? `Ended on ${event.event_date ? formatDateLong(event.event_date) : "—"}` : isSoldOut ? "We’ll notify you if a seat opens." : "Zoom/Meet link sent instantly + calendar invite. No spam."}</p>
                   </div>
                   <div className="p-6">
                     <div className="rounded-2xl border border-emerald-500/15 bg-gradient-to-br from-emerald-50 to-white p-5 space-y-3.5">
@@ -422,6 +450,16 @@ export default function EventDetailPage() {
                           <span className="font-bold flex items-center gap-1.5"><Gift className="h-4 w-4 text-[var(--gold)]" /> What happens next?</span>
                           {isSoldOut ? (<>You’re on the waitlist. We’ll email <span className="font-mono bg-white border px-1 rounded">{email || "your email"}</span> and message you on WhatsApp as soon as a seat opens up.</>) : (<>Zoom/Meet link + WhatsApp invite on this screen + sent to <span className="font-mono bg-white border px-1 rounded">{email || "your email"}</span> & WA in 15 mins. Join the community now — that’s where last-minute links go.</>)}
                           Zoom/Meet link + WhatsApp invite on this screen + sent to <span className="font-mono bg-white border px-1 rounded">{email || "your email"}</span> & WA in 15 mins. Join the community now — that’s where last-minute links go.
+                        </div>
+                      </div>
+                    ) : ended ? (
+                      <div className="mt-5 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 text-center">
+                        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-zinc-200"><Clock className="h-6 w-6 text-zinc-600" /></div>
+                        <h4 className="mt-3 font-bold">Registrations Closed — This Batch Has Ended</h4>
+                        <p className="mt-1 text-sm text-muted-foreground">This event ended on {event.event_date ? formatDateLong(event.event_date) : "—"} at {formatTimeIST(event.event_date, event.timezone)}. Registrations are no longer accepted.</p>
+                        <div className="mt-4 flex flex-col gap-2">
+                          <Link href="/events" className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--navy-deep)] px-5 py-3 text-sm font-bold text-white hover:opacity-90">View Upcoming Events <ArrowRight className="h-4 w-4" /></Link>
+                          <a href={waLink} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white hover:bg-[#20bd5a]"><MessageCircle className="h-4 w-4" /> Join WhatsApp — Get Next Batch Alert</a>
                         </div>
                       </div>
                     ) : (
@@ -683,7 +721,7 @@ export default function EventDetailPage() {
         </div>
 
         <AnimatePresence>
-          {showSticky && !success && (
+          {showSticky && !success && !ended && (
             <motion.div initial={{ y: 80 }} animate={{ y: 0 }} exit={{ y: 80 }} className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-white/95 backdrop-blur px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.12)] lg:hidden">
               <div className="mx-auto flex max-w-7xl items-center gap-3">
                 <div className="min-w-0">

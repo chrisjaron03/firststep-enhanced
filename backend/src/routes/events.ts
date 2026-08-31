@@ -105,7 +105,21 @@ function parseHeadings(value: string | null): Record<string, string> {
   } catch { return {} }
 }
 
+function isEnded(eventDate: string | null, durationMins: unknown): boolean {
+  if (!eventDate) return false
+  try {
+    const start = new Date(eventDate)
+    if (isNaN(start.getTime())) return false
+    const duration = typeof durationMins === 'number' && durationMins > 0 ? durationMins : 90
+    const end = new Date(start.getTime() + duration * 60 * 1000)
+    return Date.now() > end.getTime()
+  } catch { return false }
+}
+
 function toPublicEvent(row: Record<string, unknown>) {
+  const durationMins = row.duration_mins as number | null
+  const eventDate = row.event_date as string | null
+  const ended = isEnded(eventDate, durationMins)
   return {
     id: row.id,
     slug: row.slug,
@@ -124,12 +138,14 @@ function toPublicEvent(row: Record<string, unknown>) {
     cta_label: row.cta_label,
     cta_url: row.cta_url ?? null,
     status: row.status,
+    // derived: mark ended when end-time has passed (event_date + duration)
+    is_ended: ended,
     featured: Boolean(row.featured),
     max_seats: row.max_seats ?? null,
     seats_sold: row.seats_sold,
     is_free: Boolean(row.is_free),
     delivery_mode: (row.delivery_mode as string) || 'online',
-    duration_mins: row.duration_mins ?? null,
+    duration_mins: durationMins,
     language: (row.language as string) || 'English',
     timezone: (row.timezone as string) || 'Asia/Kolkata',
     curriculum: parseJsonArray(row.curriculum as string | null),
@@ -155,6 +171,7 @@ export async function handleEvents(request: Request, env: Env): Promise<Response
   const pathname = url.pathname
 
   // GET /api/events — public list (only published by default)
+  // Returns all published, with derived is_ended. Frontend splits upcoming vs past.
   if (request.method === 'GET' && pathname === '/api/events') {
     const limitParam = url.searchParams.get('limit')
     const limit = Math.min(Math.max(parseInt(limitParam || '50', 10) || 50, 1), 100)
@@ -163,7 +180,11 @@ export async function handleEvents(request: Request, env: Env): Promise<Response
       `SELECT * FROM events WHERE status = 'published' ORDER BY featured DESC, event_date ASC, created_at DESC LIMIT ?`
     ).bind(limit).all()
 
-    const data = (rows.results || []).map((r) => toPublicEvent(r as Record<string, unknown>))
+    const all = (rows.results || []).map((r) => toPublicEvent(r as Record<string, unknown>))
+    // Show upcoming first, then ended — preserves featured priority within each group
+    const upcoming = all.filter((e: any) => !e.is_ended)
+    const ended = all.filter((e: any) => e.is_ended)
+    const data = [...upcoming, ...ended]
     return json({ data, total: data.length }, env, request)
   }
 
@@ -198,8 +219,9 @@ export async function handleEvents(request: Request, env: Env): Promise<Response
     if (!eventId || !name || !email) return errorResponse('Missing name, email or event_id', env, request, 400)
     if (!validateEmail(email)) return errorResponse('Invalid email', env, request, 400)
 
-    const event = await env.DB.prepare(`SELECT id, max_seats, seats_sold, status FROM events WHERE id = ?`).bind(eventId).first<{ id: number; max_seats: number | null; seats_sold: number; status: string }>()
+    const event = await env.DB.prepare(`SELECT id, max_seats, seats_sold, status, event_date, duration_mins FROM events WHERE id = ?`).bind(eventId).first<{ id: number; max_seats: number | null; seats_sold: number; status: string; event_date: string | null; duration_mins: number | null }>()
     if (!event || event.status !== 'published') return errorResponse('Event not available', env, request, 404)
+    if (isEnded(event.event_date, event.duration_mins)) return errorResponse('This event has ended — registrations are closed.', env, request, 410)
     if (event.max_seats !== null && event.seats_sold >= event.max_seats) return errorResponse('Event is fully booked', env, request, 400)
 
     await env.DB.prepare(`INSERT INTO event_registrations (event_id, name, email, phone) VALUES (?, ?, ?, ?)`).bind(eventId, name, email, phone || null).run()

@@ -24,6 +24,7 @@ export interface PublicEvent {
   cta_label: string
   cta_url: string | null
   status: string
+  is_ended?: boolean
   featured: boolean
   max_seats: number | null
   seats_sold: number
@@ -46,6 +47,20 @@ export interface PublicEvent {
   section_headings: Record<string, string>
   created_at: string
   updated_at: string
+}
+
+// True when event end-time (event_date + duration_mins) is in the past.
+// Keeps frontend in sync with backend even when is_ended is missing.
+export function isEventEnded(ev: PublicEvent): boolean {
+  if (typeof ev.is_ended === 'boolean') return ev.is_ended
+  if (!ev.event_date) return false
+  try {
+    const start = new Date(ev.event_date)
+    if (isNaN(start.getTime())) return false
+    const dur = typeof ev.duration_mins === 'number' && ev.duration_mins > 0 ? ev.duration_mins : 90
+    const end = new Date(start.getTime() + dur * 60000)
+    return Date.now() > end.getTime()
+  } catch { return false }
 }
 
 function getSessionId(): string {
@@ -81,7 +96,8 @@ const MOCK_BLUEPRINT: PublicEvent = {
   description: "You earn money. But do you have a money system?\nSalary comes in. Bills go out. Some money goes into FD, some into insurance, some into SIPs and some stays in the bank. But is everything working together?\n\nTHE MONEY BLUEPRINT is a practical financial foundation workshop for working individuals and families who want a clear framework for managing, protecting and investing their money.\n\nPrimary promise: In one practical live session, understand the five money decisions that help you move from simply earning and saving to managing money with purpose.",
   agenda: [],
   venue: "Online — Live on Zoom (link shared on WhatsApp after registration)",
-  event_date: "2026-08-30T13:30:00.000Z",
+  // Keep mock upcoming in local/demo so the Ended state is demonstrable via DB or by aging this date.
+  event_date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
   price: 0,
   original_price: null,
   currency: "INR",
